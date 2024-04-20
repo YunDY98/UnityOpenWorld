@@ -26,12 +26,18 @@ public class PlayerMove : MonoBehaviour
     void Update()
     {
        
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
+        float h = Input.GetAxisRaw("Horizontal"); // 미끄러짐 방지 GetAxisRaw  부드러운 움직임은   GetAxix()
+        float v = Input.GetAxisRaw("Vertical");
 
         Vector3 dir = new Vector3(h, 0, v);
-        dir = dir.normalized;
+        
         dir = Camera.main.transform.TransformDirection(dir);
+        dir = dir.normalized;
+
+      
+
+
+      
 
         // if (cc.isGrounded) // 캐릭터가 땅에 닿아 있는지 확인
         // {
@@ -50,14 +56,22 @@ public class PlayerMove : MonoBehaviour
                 yVelocity = 0;
             }
         }
+        else
+        {
+            yVelocity += gravity * Time.deltaTime; // 중략 적용 
+
+       
+        }
 
         if(Input.GetButtonDown("Jump") && !isJumping)
         {
             yVelocity = jumpPower;
             isJumping = true;
         }
-        yVelocity += gravity * Time.deltaTime;
-        dir.y = yVelocity;
+
+      
+        dir.y = yVelocity; // 위를 바라봤을때 위로 날라가는거 방지 
+
 
         cc.Move(dir * moveSpeed * Time.deltaTime);
   
