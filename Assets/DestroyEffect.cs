@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class DestroyEffect : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public float destroyTime = 1.5f;
 
-    // Update is called once per frame
+    float currentTime = 0;
+
     void Update()
     {
-        
+        // 현재 타임이 1.5초가 지난후 사라짐
+        if (currentTime > destroyTime)
+        {
+            Destroy(gameObject);
+
+        }
+        currentTime += Time.deltaTime;  
     }
 }
