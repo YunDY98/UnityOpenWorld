@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class PlayerMove : MonoBehaviour
 {
+    [Header("PlayerInfo")]
     //이동 속도
     public float moveSpeed = 7;
     // 캐릭터 컨트롤러 변수
@@ -13,6 +14,11 @@ public class PlayerMove : MonoBehaviour
     float yVelocity = 0;
 
     int hp = 100;
+
+    int maxHp = 100;
+
+    public Slider hpSlider;
+
 
     //점프
     float jumpPower = 5f;
@@ -93,9 +99,10 @@ public class PlayerMove : MonoBehaviour
 
        // Debug.Log(dir.x+" "+ dir.z);
         cc.Move(dir * moveSpeed * Time.deltaTime);
-  
-        
-          
+    
+
+        //현재 플레이어의 hp%
+        hpSlider.value = (float)hp/(float)maxHp;
           
         
     }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyFSM : MonoBehaviour
 {
@@ -20,6 +21,8 @@ public class EnemyFSM : MonoBehaviour
 
     public int hp = 15;
     int maxHp = 15;
+
+    public Slider hpSlider;
     public int attackPower = 3;
 
     //초기 위치 
@@ -57,6 +60,8 @@ public class EnemyFSM : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        hpSlider.value = (float)hp/(float)maxHp;
+
         switch (m_State)
         {
             case EnemyState.Idle:  
@@ -135,8 +140,8 @@ public class EnemyFSM : MonoBehaviour
             {
                 print("attack");
 
-                //player.GetComponent<PlayerMove>().DamageAction(attackPower);
-                playerMove.DamageAction(attackPower);
+                player.GetComponent<PlayerMove>().DamageAction(attackPower);
+               
                 
                 currentTime = 0;
 
