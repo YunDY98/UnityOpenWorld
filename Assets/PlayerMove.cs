@@ -30,7 +30,7 @@ public class PlayerMove : MonoBehaviour
         float v = Input.GetAxisRaw("Vertical");
 
         Vector3 dir = new Vector3(h, 0, v);
-        Debug.Log(dir);
+        
         /* 위처럼 움직이면 카메라가 말그대로 보는대로 가서 하늘과 땅을 바라보면 안움직임 위로 가야되는데 y값이 0이기 떄문에 
         Vector3 dir = new Vector3(h, 0, v);
         
