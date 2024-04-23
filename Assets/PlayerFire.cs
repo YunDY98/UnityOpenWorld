@@ -11,6 +11,10 @@ public class PlayerFire : MonoBehaviour
     public float throwPower = 15f;
 
     public GameObject bulletEffect;
+    
+
+    //발사 무기 공격력
+    public int weaponPower = 5;
 
     public ParticleSystem ps;
     void Start ()
@@ -42,6 +46,14 @@ public class PlayerFire : MonoBehaviour
 
             if(Physics.Raycast(ray, out hitInfo)) // out키워드는 주소를 복사해 가져옮, 반드시 함수안에서 파라미터 값을 할당할 것을 요구 
             {
+                if(hitInfo.transform.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+                {
+                    EnemyFSM eFSM = hitInfo.transform.GetComponent<EnemyFSM>();
+                    eFSM.HitEnemy(weaponPower);
+                    
+                }
+                else
+                {
 
                 // hit 지점에서 이팩트 
                 bulletEffect.transform.position = hitInfo.point;
@@ -50,6 +62,8 @@ public class PlayerFire : MonoBehaviour
                 bulletEffect.transform.forward = hitInfo.normal;
 
                 ps.Play();
+
+                }
 
             }
         }

@@ -12,6 +12,8 @@ public class PlayerMove : MonoBehaviour
     float gravity = -9f;
     float yVelocity = 0;
 
+    int hp = 100;
+
     //점프
     float jumpPower = 5f;
     bool isJumping = false;
@@ -96,5 +98,10 @@ public class PlayerMove : MonoBehaviour
           
           
         
+    }
+
+    public void DamageAction(int damage)
+    {
+        hp -= damage;
     }
 }

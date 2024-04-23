@@ -18,7 +18,16 @@ public class EnemyFSM : MonoBehaviour
     public float moveSpeed = 5f;
     public float findDistance = 8f;
 
+    public int hp = 15;
+    int maxHp = 15;
     public int attackPower = 3;
+
+    //초기 위치 
+    Vector3 originPos;
+
+    //이동 가능 범위
+    public float moveDistance = 20f;
+
 
     public CharacterController cc;
 
@@ -40,6 +49,9 @@ public class EnemyFSM : MonoBehaviour
     {
         m_State = EnemyState.Idle;
 
+        //자신의 초기 위치 
+        originPos = transform.position;
+
         //player = GameObject.Find("Player").transform;
     }
     // Update is called once per frame
@@ -51,19 +63,19 @@ public class EnemyFSM : MonoBehaviour
                 Idle();
                 break;
             case EnemyState.Move:
-               // Move();
+                Move();
                 break;
             case EnemyState.Attack:
-                //Attack();
+                Attack();
                 break;
             case EnemyState.Return:
-              //  Return();
+                 Return();
                 break;
             case EnemyState.Damaged:
-               // Damaged();
+                Damaged();
                 break;
             case EnemyState.Die:
-              //  Die();
+               // Die();
                 break;
 
 
@@ -86,14 +98,21 @@ public class EnemyFSM : MonoBehaviour
 
     void Move()
     {
+
+        //초기 위치에서 이동 가능 범위를 넘어간다면 
+        if(Vector3.Distance(transform.position,originPos) > moveDistance)
+        {
+            m_State = EnemyState.Return;
+            print("Move -> Return");
+        }
         // 플레이어와의 거리가 공격 범위 밖이라면 플레이러를 향해 이동
-        if(Vector3.Distance(transform.position,player.position) > attackDistance)
+        else if(Vector3.Distance(transform.position,player.position) > attackDistance)
         {
             //이동 방향 설정 
             Vector3 dir = (player.position - transform.position).normalized;    
 
             //캐릭터 컨트롤러 이용하여 이동 
-            cc.Move(dir * moveSpeed * time.deltaTime);
+            cc.Move(dir * moveSpeed * Time.deltaTime);
 
 
 
@@ -101,7 +120,7 @@ public class EnemyFSM : MonoBehaviour
         else
         {
             m_State = EnemyState.Attack;
-            print("Move -> Attack")
+            print("Move -> Attack");
         }
     }
 
@@ -115,6 +134,7 @@ public class EnemyFSM : MonoBehaviour
             if(currentTime > attackDelay)
             {
                 print("attack");
+
                 //player.GetComponent<PlayerMove>().DamageAction(attackPower);
                 playerMove.DamageAction(attackPower);
                 
@@ -130,5 +150,81 @@ public class EnemyFSM : MonoBehaviour
             currentTime = attackDelay;
 
         }
+    }
+
+    void Return()
+    {
+        if(Vector3.Distance(transform.position,originPos) > 0.1f)
+        {
+            Vector3 dir = (originPos - transform.position).normalized;
+            cc.Move(dir * moveSpeed * currentTime* Time.deltaTime);
+
+        }
+        else
+        {
+            transform.position = originPos;
+            hp = maxHp;
+            m_State =  EnemyState.Idle;
+            print("Return -> Idle");
+
+        }
+    }
+
+    public void HitEnemy(int hitPower)
+    {
+        if(m_State == EnemyState.Damaged || m_State == EnemyState.Die || m_State == EnemyState.Return)
+        {
+            return;
+        }
+        //플레이어의 공격력만큼 에너미 체력 감소 
+        hp -= hitPower;
+
+        //에너미의 체력이 0보다 크면 피격 상태
+        if(hp > 0)
+        {
+            m_State = EnemyState.Damaged;
+            print("Any State -> Damaged");
+            Damaged();
+        }
+        else
+        {
+            m_State = EnemyState.Die;
+            print("Any State -> Die");
+            Die();
+        }
+    }
+
+    void Damaged()
+    {
+        StartCoroutine(DamageProcess());
+    }
+    IEnumerator DamageProcess()
+    {
+        // 피격 모션 시간만큼 기다린다
+        yield return new WaitForSeconds(0.5f);
+
+        //현재 상태를 이동 상태로 전환 
+        m_State = EnemyState.Move;
+        print("Damaged -> Move");
+
+    }
+
+    void Die()
+    {
+        StopAllCoroutines();
+
+        //죽음 상태 처리
+        StartCoroutine(DieProcess());
+    }
+
+    IEnumerator DieProcess()
+    {
+        //캐릭터컨트롤러 비활성화
+        cc.enabled = false;
+
+        //2초후 제거
+        yield return new WaitForSeconds(2f);
+        print("소멸");
+        Destroy(gameObject);
     }
 }
