@@ -13,7 +13,9 @@ public class PlayerMove : MonoBehaviour
     float gravity = -9f;
     float yVelocity = 0;
 
-    int hp = 100;
+    public GameObject hitEffect;
+
+    public int hp = 100;
 
     int maxHp = 100;
 
@@ -33,6 +35,11 @@ public class PlayerMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // 게임 중일때만 동작 
+        if(Gamemanager.gm.gState != Gamemanager.GameState.Run)
+        {
+            return;
+        }
        
         float h = Input.GetAxisRaw("Horizontal"); // 미끄러짐 방지 GetAxisRaw  부드러운 움직임은   GetAxix()
         float v = Input.GetAxisRaw("Vertical");
@@ -101,7 +108,7 @@ public class PlayerMove : MonoBehaviour
         cc.Move(dir * moveSpeed * Time.deltaTime);
     
 
-        //현재 플레이어의 hp%
+        // 현재 플레이어의 hp%
         hpSlider.value = (float)hp/(float)maxHp;
           
         
@@ -109,6 +116,24 @@ public class PlayerMove : MonoBehaviour
 
     public void DamageAction(int damage)
     {
+        // 에너미의 공격력 만큼 
         hp -= damage;
+
+        // 피격 효과 
+        if(hp > 0)
+        {
+            StartCoroutine(PlayHitEffect());
+        }
+
+    }
+
+    IEnumerator PlayHitEffect()
+    {
+        // 피격 ui
+        hitEffect.SetActive(true);
+
+        yield return new WaitForSeconds(0.3f);
+
+        hitEffect.SetActive(false);
     }
 }

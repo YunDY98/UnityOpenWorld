@@ -26,6 +26,12 @@ public class PlayerFire : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+         // 게임 중일때만 동작 
+        if(Gamemanager.gm.gState != Gamemanager.GameState.Run)
+        {
+            return;
+        }
+       
 
         if(Input.GetKeyUp(KeyCode.Alpha3))
         {

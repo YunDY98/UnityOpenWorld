@@ -17,13 +17,15 @@ public class EnemyFSM : MonoBehaviour
     [Header("EnemyInfo")]
     public float attackDistance = 2f;
     public float moveSpeed = 5f;
+
+    // 플레이어 발견 범위
     public float findDistance = 8f;
 
     public int hp = 15;
     int maxHp = 15;
 
     public Slider hpSlider;
-    public int attackPower = 3;
+    public int attackPower = 20;
 
     //초기 위치 
     Vector3 originPos;
@@ -34,7 +36,7 @@ public class EnemyFSM : MonoBehaviour
 
     public CharacterController cc;
 
-    PlayerMove playerMove;
+    public PlayerMove pm;
 
 
     //누적 시간 
@@ -43,10 +45,12 @@ public class EnemyFSM : MonoBehaviour
     // 에너미 상태 변수
     EnemyState m_State;
 
-    // 플레이어 발견 범위
+    public Text gameText;
     
     //플레이어 트랜스폼 
     public Transform player;
+
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -55,7 +59,9 @@ public class EnemyFSM : MonoBehaviour
         //자신의 초기 위치 
         originPos = transform.position;
 
-        //player = GameObject.Find("Player").transform;
+       // player = GameObject.Find("Player").transform;
+
+      
     }
     // Update is called once per frame
     void Update()
@@ -126,6 +132,7 @@ public class EnemyFSM : MonoBehaviour
         {
             m_State = EnemyState.Attack;
             print("Move -> Attack");
+            currentTime = attackDelay;
         }
     }
 
@@ -140,9 +147,9 @@ public class EnemyFSM : MonoBehaviour
             {
                 print("attack");
 
-                player.GetComponent<PlayerMove>().DamageAction(attackPower);
+                //player.GetComponent<PlayerMove>().DamageAction(attackPower);
                
-                
+                pm.DamageAction(attackPower);
                 currentTime = 0;
 
             }

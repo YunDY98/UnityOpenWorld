@@ -20,6 +20,12 @@ public class CamRotate : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+         // 게임 중일때만 동작 
+        if(Gamemanager.gm.gState != Gamemanager.GameState.Run)
+        {
+            return;
+        }
+       
         //사용자의 마우스 입력을 받아 물체를 회전시키기
 
         //1.마우스 입력
