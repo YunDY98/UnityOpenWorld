@@ -29,6 +29,7 @@ public class EnemyFSM : MonoBehaviour
 
     //초기 위치 
     Vector3 originPos;
+    Quaternion originRot;
 
     //이동 가능 범위
     public float moveDistance = 20f;
@@ -38,15 +39,14 @@ public class EnemyFSM : MonoBehaviour
 
     public PlayerMove pm;
 
-
+    public Animator anim;
     //누적 시간 
     public float currentTime = 0;
     public float attackDelay = 2f;
     // 에너미 상태 변수
     EnemyState m_State;
 
-    public Text gameText;
-    
+   
     //플레이어 트랜스폼 
     public Transform player;
 
@@ -58,10 +58,11 @@ public class EnemyFSM : MonoBehaviour
 
         //자신의 초기 위치 
         originPos = transform.position;
+        originRot = transform.rotation;
 
        // player = GameObject.Find("Player").transform;
 
-      
+      // anim = transform.GetComponentInchildren<Animator>();
     }
     // Update is called once per frame
     void Update()
@@ -104,6 +105,9 @@ public class EnemyFSM : MonoBehaviour
         {
             m_State = EnemyState.Move;
             print("Idle -> Move");
+
+            //이동 애니메이션
+            anim.SetTrigger("IdleToMove");
         }
     }
 
@@ -124,6 +128,9 @@ public class EnemyFSM : MonoBehaviour
 
             //캐릭터 컨트롤러 이용하여 이동 
             cc.Move(dir * moveSpeed * Time.deltaTime);
+
+            //플레이어를 향해 방향 전환 
+            transform.forward = dir;
 
 
 
@@ -171,13 +178,19 @@ public class EnemyFSM : MonoBehaviour
             Vector3 dir = (originPos - transform.position).normalized;
             cc.Move(dir * moveSpeed * currentTime* Time.deltaTime);
 
+            //방향을 복귀 지점으로 
+            transform.forward = dir;
+
         }
         else
         {
             transform.position = originPos;
+            transform.rotation = originRot;
             hp = maxHp;
             m_State =  EnemyState.Idle;
             print("Return -> Idle");
+
+            anim.SetTrigger("MoveToIdle");
 
         }
     }
