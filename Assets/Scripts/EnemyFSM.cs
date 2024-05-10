@@ -62,7 +62,7 @@ public class EnemyFSM : MonoBehaviour
 
        // player = GameObject.Find("Player").transform;
 
-      // anim = transform.GetComponentInchildren<Animator>();
+       //anim = transform.GetComponentInchildren<Animator>();
     }
     // Update is called once per frame
     void Update()
@@ -140,6 +140,9 @@ public class EnemyFSM : MonoBehaviour
             m_State = EnemyState.Attack;
             print("Move -> Attack");
             currentTime = attackDelay;
+
+            //공격 대기 애니메이션 플레이 
+            anim.SetTrigger("MoveToAttackDelay");
         }
     }
 
@@ -154,10 +157,13 @@ public class EnemyFSM : MonoBehaviour
             {
                 print("attack");
 
-                //player.GetComponent<PlayerMove>().DamageAction(attackPower);
+              
                
-                pm.DamageAction(attackPower);
+               
                 currentTime = 0;
+
+                //공격 애니메이션 플레이 
+                anim.SetTrigger("StartAttck");
 
             }
 
@@ -168,7 +174,18 @@ public class EnemyFSM : MonoBehaviour
             print("Attack -> Move");
             currentTime = attackDelay;
 
+            //이동 
+            anim.SetTrigger("AttackToMove");
+
         }
+    }
+
+    //플레이어의 스크립트의 데미지 처리 함수를 실행 
+    public void AttackAction()
+    {
+        //player.GetComponent<PlayerMove>().DamageAction(attackPower);
+        pm.DamageAction(attackPower);
+
     }
 
     void Return()
@@ -209,12 +226,19 @@ public class EnemyFSM : MonoBehaviour
         {
             m_State = EnemyState.Damaged;
             print("Any State -> Damaged");
+
+            //피격 애니메이션 
+            anim.SetTrigger("Damaged");
+
             Damaged();
         }
         else
         {
             m_State = EnemyState.Die;
             print("Any State -> Die");
+            
+            //죽음 
+            anim.SetTrigger("Die");
             Die();
         }
     }
@@ -226,7 +250,7 @@ public class EnemyFSM : MonoBehaviour
     IEnumerator DamageProcess()
     {
         // 피격 모션 시간만큼 기다린다
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
 
         //현재 상태를 이동 상태로 전환 
         m_State = EnemyState.Move;

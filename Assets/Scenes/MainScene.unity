@@ -2982,7 +2982,7 @@ MonoBehaviour:
   bombFactory: {fileID: 6196338510051574825, guid: aa261959a213e4b1e84201f5484021d5, type: 3}
   throwPower: 15
   bulletEffect: {fileID: 4523778122280902697}
-  weaponPower: 5
+  weaponPower: 1
   ps: {fileID: 6019227859309122095}
 --- !u!4 &41817425117222517
 Transform:
@@ -20336,6 +20336,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5006512736766855594}
   - component: {fileID: 3166231814576645328}
+  - component: {fileID: 8296172667772599226}
   m_Layer: 0
   m_Name: Zombie1
   m_TagString: Untagged
@@ -20343,6 +20344,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &8296172667772599226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8296172667772599225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2f12cb7a2f15403ea96d5294484f731, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  efsm: {fileID: 947022982}
 --- !u!1 &8364456255627689371
 GameObject:
   m_ObjectHideFlags: 0

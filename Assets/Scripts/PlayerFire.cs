@@ -14,7 +14,7 @@ public class PlayerFire : MonoBehaviour
     
 
     //발사 무기 공격력
-    public int weaponPower = 5;
+    public int weaponPower = 1;
 
     public ParticleSystem ps;
     void Start ()
