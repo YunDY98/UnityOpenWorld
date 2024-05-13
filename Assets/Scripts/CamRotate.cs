@@ -6,22 +6,17 @@ public class CamRotate : MonoBehaviour
 {
     //회전 속도
     public float rotSpeed = 2000f;
-
     //회전 값 변수
     float mx = 0;
     float my = 0;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    
 
     // Update is called once per frame
     void Update()
     {
          // 게임 중일때만 동작 
-        if(Gamemanager.gm.gState != Gamemanager.GameState.Run)
+        if(GameManager.gm.gState != GameManager.GameState.Run)
         {
             return;
         }
@@ -41,9 +36,8 @@ public class CamRotate : MonoBehaviour
 
         //2.마우스 입력 값을 이용해 회전 방향 결정
 
-       transform.eulerAngles = new Vector3(-my,mx,0);
-
-
+        transform.eulerAngles = new Vector3(-my,mx,0);
+       
        
     }
 }

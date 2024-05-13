@@ -11,6 +11,8 @@ public class PlayerFire : MonoBehaviour
     public float throwPower = 15f;
 
     public GameObject bulletEffect;
+
+    Animator anim;
     
 
     //발사 무기 공격력
@@ -20,6 +22,8 @@ public class PlayerFire : MonoBehaviour
     void Start ()
     {
         //ps = bulletEffect.GetComponent<ParticleSystem>();
+
+        anim = GetComponentInChildren<Animator>();
     }
 
 
@@ -27,10 +31,21 @@ public class PlayerFire : MonoBehaviour
     void Update()
     {
          // 게임 중일때만 동작 
-        if(Gamemanager.gm.gState != Gamemanager.GameState.Run)
+        if(GameManager.gm.gState != GameManager.GameState.Run)
         {
             return;
         }
+
+        if(Input.GetMouseButtonDown(0))
+        {
+            if(anim.GetFloat("MoveMotion") == 0)
+            {
+                anim.SetTrigger("Attack");
+            }
+
+        }
+
+       
        
 
         if(Input.GetKeyUp(KeyCode.Alpha3))

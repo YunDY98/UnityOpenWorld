@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerRotate : MonoBehaviour
 {
     //회전 속도 변수
-    public float rotSpeed = 2000f;
+    public float rotSpeed = 20000f;
     //회전 값 변수
     float mx = 0;
     // Start is called before the first frame update
@@ -18,7 +18,7 @@ public class PlayerRotate : MonoBehaviour
     void Update()
     {
          // 게임 중일때만 동작 
-        if(Gamemanager.gm.gState != Gamemanager.GameState.Run)
+        if(GameManager.gm.gState != GameManager.GameState.Run)
         {
             return;
         }

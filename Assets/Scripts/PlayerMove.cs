@@ -4,11 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 public class PlayerMove : MonoBehaviour
 {
+    Animator anim;
     [Header("PlayerInfo")]
+   
     //이동 속도
     public float moveSpeed = 7;
     // 캐릭터 컨트롤러 변수
-    CharacterController cc;
+    CharacterController cc; 
     //중력 변수
     float gravity = -9f;
     float yVelocity = 0;
@@ -29,6 +31,7 @@ public class PlayerMove : MonoBehaviour
     void Start()
     {
         cc = GetComponent<CharacterController>();
+        anim = GetComponentInChildren<Animator>();
         
     }
 
@@ -36,10 +39,12 @@ public class PlayerMove : MonoBehaviour
     void Update()
     {
         // 게임 중일때만 동작 
-        if(Gamemanager.gm.gState != Gamemanager.GameState.Run)
+        if(GameManager.gm.gState != GameManager.GameState.Run)
         {
             return;
         }
+
+        
        
         float h = Input.GetAxisRaw("Horizontal"); // 미끄러짐 방지 GetAxisRaw  부드러운 움직임은   GetAxix()
         float v = Input.GetAxisRaw("Vertical");
@@ -63,6 +68,8 @@ public class PlayerMove : MonoBehaviour
         dir = cameraForward * v + Camera.main.transform.right *h;
         dir.Normalize();
 
+        //이동 블렌딩 트리를 호출하고 벡터의 크기 값을 넘겨준다 
+        anim.SetFloat("MoveMotion", dir.magnitude);
        
       
 
@@ -135,5 +142,22 @@ public class PlayerMove : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
 
         hitEffect.SetActive(false);
+    }
+
+    void PlayerRotate()
+    {
+        //float mouse_X = Input.GetAxis("Mouse X");
+
+        //  // 플레이어의 현재 회전값을 가져옴
+        // Vector3 currentRotation = transform.rotation.eulerAngles;
+
+        // // 마우스 이동량에 따라 플레이어의 y축 회전값을 변경
+        // currentRotation.y += mouse_X * 10;
+
+        // // 새로운 회전값을 적용
+        // transform.rotation = Quaternion.Euler(currentRotation);
+          // 1. 마우스 좌우 입력을 받는다.
+       
+
     }
 }

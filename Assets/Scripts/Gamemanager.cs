@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public class Gamemanager : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
     //게임 상태 상수
     public enum GameState
@@ -14,7 +14,7 @@ public class Gamemanager : MonoBehaviour
     }
 
     
-    public static Gamemanager gm;
+    public static GameManager gm;
     // Start is called before the first frame update
 
     // 게임 상태 ui 변수
@@ -26,6 +26,8 @@ public class Gamemanager : MonoBehaviour
     public GameObject aim;
     
     public PlayerMove player;
+
+    public float RotSpeed;
    
     
   
