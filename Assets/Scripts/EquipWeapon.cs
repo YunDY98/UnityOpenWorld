@@ -30,7 +30,7 @@ public class EquipWeapon : MonoBehaviour
                    // 무기를 캐릭터의 손에 위치시킵니다.
                     hitInfo.collider.transform.parent = equipWeapon.transform; // 캐릭터의 Transform으로 설정
                     hitInfo.collider.transform.localPosition = Vector3.zero; // 캐릭터의 손 위치로 이동
-                    hitInfo.collider.transform.localRotation = Quaternion.Euler(0.55f,0.32f,63.5f); // 회전을 초기화합니다.
+                    hitInfo.collider.transform.localRotation = Quaternion.Euler(0.55f,0.32f,74.5f); // 회전을 초기화합니다.
                     equipWeapon = hitInfo.collider.gameObject; // 장착된 무기를 저장합니다.
                     equipWeapon.GetComponent<Rigidbody>().isKinematic = true;
 

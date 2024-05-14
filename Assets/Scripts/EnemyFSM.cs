@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.AI;
 public class EnemyFSM : MonoBehaviour
 {
+    NavMeshAgent smith;
     enum EnemyState
     {
         Idle,
@@ -59,6 +60,8 @@ public class EnemyFSM : MonoBehaviour
         //자신의 초기 위치 
         originPos = transform.position;
         originRot = transform.rotation;
+
+        smith = GetComponent<NavMeshAgent>();
 
        // player = GameObject.Find("Player").transform;
 
@@ -123,14 +126,22 @@ public class EnemyFSM : MonoBehaviour
         // 플레이어와의 거리가 공격 범위 밖이라면 플레이러를 향해 이동
         else if(Vector3.Distance(transform.position,player.position) > attackDistance)
         {
-            //이동 방향 설정 
-            Vector3 dir = (player.position - transform.position).normalized;    
+            // //이동 방향 설정 
+            // Vector3 dir = (player.position - transform.position).normalized;    
 
-            //캐릭터 컨트롤러 이용하여 이동 
-            cc.Move(dir * moveSpeed * Time.deltaTime);
+            // //캐릭터 컨트롤러 이용하여 이동 
+            // cc.Move(dir * moveSpeed * Time.deltaTime);
 
-            //플레이어를 향해 방향 전환 
-            transform.forward = dir;
+            // //플레이어를 향해 방향 전환 
+            // transform.forward = dir;
+
+            RouteReset();
+
+            //내비게이션으로 접근하는 최소 거리를 공격 가능 거리로 설정
+            smith.stoppingDistance = attackDistance;
+
+            //내비게이션의 목적지를 플레이어의 위치로 설정
+            smith.destination = player.position;
 
 
 
@@ -192,18 +203,29 @@ public class EnemyFSM : MonoBehaviour
     {
         if(Vector3.Distance(transform.position,originPos) > 0.1f)
         {
-            Vector3 dir = (originPos - transform.position).normalized;
-            cc.Move(dir * moveSpeed * currentTime* Time.deltaTime);
+            // Vector3 dir = (originPos - transform.position).normalized;
+            // cc.Move(dir * moveSpeed * currentTime* Time.deltaTime);
 
-            //방향을 복귀 지점으로 
-            transform.forward = dir;
+            // //방향을 복귀 지점으로 
+            // transform.forward = dir;
+
+            //내비게이션의 목적지를 초기 저장된 위치로 설정한다.
+            smith.destination = originPos;
+
+            //내비게이션으로 접근하는 최소 거리를 '0'으로 설정
+            smith.stoppingDistance = 0;
 
         }
         else
         {
+            RouteReset();
+
             transform.position = originPos;
             transform.rotation = originRot;
+
+            //hp 다시 회복 
             hp = maxHp;
+
             m_State =  EnemyState.Idle;
             print("Return -> Idle");
 
@@ -214,12 +236,14 @@ public class EnemyFSM : MonoBehaviour
 
     public void HitEnemy(int hitPower)
     {
-        if(m_State == EnemyState.Damaged || m_State == EnemyState.Die || m_State == EnemyState.Return)
+        if(m_State == EnemyState.Damaged || m_State == EnemyState.Die)
         {
             return;
         }
         //플레이어의 공격력만큼 에너미 체력 감소 
         hp -= hitPower;
+        RouteReset();
+    
 
         //에너미의 체력이 0보다 크면 피격 상태
         if(hp > 0)
@@ -275,5 +299,13 @@ public class EnemyFSM : MonoBehaviour
         yield return new WaitForSeconds(2f);
         print("소멸");
         Destroy(gameObject);
+    }
+
+    void RouteReset()
+    {
+        //내비게이션 에이전트의 이동을 멈추고 경로를 초기화 
+        smith.isStopped = true; 
+        smith.ResetPath();
+
     }
 }

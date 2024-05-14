@@ -1,9 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using TMPro;
 public class PlayerFire : MonoBehaviour
 {
+    enum WeaponMode
+    {
+        None,
+        Rifle,
+        Sniper
+    }
+    WeaponMode wMode;
+
+    public GameObject[] muzzleFlash;
+
+    public TMP_Text WModeTxt;
+
+    bool ZoomMode = false;
     public GameObject firePosition;
 
     public GameObject bombFactory;
@@ -20,7 +33,9 @@ public class PlayerFire : MonoBehaviour
 
     public ParticleSystem ps;
     void Start ()
-    {
+    {   
+        wMode = WeaponMode.Rifle;
+        
         //ps = bulletEffect.GetComponent<ParticleSystem>();
 
         anim = GetComponentInChildren<Animator>();
@@ -38,11 +53,50 @@ public class PlayerFire : MonoBehaviour
 
         if(Input.GetMouseButtonDown(0))
         {
-            if(anim.GetFloat("MoveMotion") == 0)
-            {
-                anim.SetTrigger("Attack");
-            }
+            
+            anim.SetTrigger("Attack");
 
+            StartCoroutine(ShootEffectOn(0.05f));
+            
+
+        }
+
+        if(Input.GetMouseButtonDown(1))
+        {
+            switch(wMode)
+            {
+                case WeaponMode.None:
+                    break;
+                case WeaponMode.Sniper:
+                    if(!ZoomMode)
+                    {
+                        Camera.main.fieldOfView = 15f;
+                        ZoomMode = true;
+
+                       
+                    }
+                    else
+                    {
+                        Camera.main.fieldOfView = 60f;
+                        ZoomMode = false;
+                        
+
+                    }
+                    break;
+            }
+        }
+        if(Input.GetKeyUp(KeyCode.Alpha2))
+        {
+            wMode = WeaponMode.Rifle;
+            WModeTxt.text = "Rifle";
+            Camera.main.fieldOfView = 60f;
+
+        }
+        else if(Input.GetKeyUp(KeyCode.Alpha1))
+        {   
+            WModeTxt.text = "Sniper";
+            
+            wMode = WeaponMode.Sniper;
         }
 
        
@@ -69,6 +123,7 @@ public class PlayerFire : MonoBehaviour
             {
                 if(hitInfo.transform.gameObject.layer == LayerMask.NameToLayer("Enemy"))
                 {
+                    Debug.Log("hitEnemy");
                     EnemyFSM eFSM = hitInfo.transform.GetComponent<EnemyFSM>();
                     eFSM.HitEnemy(weaponPower);
                     
@@ -76,18 +131,29 @@ public class PlayerFire : MonoBehaviour
                 else
                 {
 
-                // hit 지점에서 이팩트 
-                bulletEffect.transform.position = hitInfo.point;
+                    // hit 지점에서 이팩트 
+                    bulletEffect.transform.position = hitInfo.point;
 
-                // 이펙트 로워드 방향을 레이가 부딪힌 지점의 법선 벡터와 일치 시캄
-                bulletEffect.transform.forward = hitInfo.normal;
+                    // 이펙트 로워드 방향을 레이가 부딪힌 지점의 법선 벡터와 일치 시캄
+                    bulletEffect.transform.forward = hitInfo.normal;
 
-                ps.Play();
+                    ps.Play();
 
                 }
 
             }
         }
         
+    }
+
+    IEnumerator ShootEffectOn(float duration)
+    {
+        int num = Random.Range(0,muzzleFlash.Length);
+
+        muzzleFlash[num].SetActive(true);
+
+        yield return new WaitForSeconds(duration);
+
+        muzzleFlash[num].SetActive(false);
     }
 }
