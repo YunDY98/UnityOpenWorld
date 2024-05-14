@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     //게임 상태 상수
@@ -95,4 +96,15 @@ public class GameManager : MonoBehaviour
                 
         }
     }
+
+
+    public void RestartGame()
+    {
+        Time.timeScale = 0;
+
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+        SceneManager.LoadScene(0);
+    }
+
 }
