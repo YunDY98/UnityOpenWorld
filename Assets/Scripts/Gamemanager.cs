@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviour
     public static GameManager gm;
     // Start is called before the first frame update
 
+    public float rotSpeed = 2000f;
+
     // 게임 상태 ui 변수
 
     public GameObject gameLabel;

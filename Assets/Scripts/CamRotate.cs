@@ -5,11 +5,15 @@ using UnityEngine;
 public class CamRotate : MonoBehaviour
 {
     //회전 속도
-    public float rotSpeed = 2000f;
+    public float rotSpeed;
     //회전 값 변수
     float mx = 0;
     float my = 0;
 
+    void Start()
+    {
+        rotSpeed = GameManager.gm.rotSpeed;
+    }
     
 
     // Update is called once per frame

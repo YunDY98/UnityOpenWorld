@@ -32,6 +32,7 @@ public class PlayerMove : MonoBehaviour
     {
         cc = GetComponent<CharacterController>();
         anim = GetComponentInChildren<Animator>();
+        rotSpeed = GameManager.gm.rotSpeed;
         
     }
 

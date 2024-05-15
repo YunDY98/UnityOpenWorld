@@ -5,13 +5,13 @@ using UnityEngine;
 public class PlayerRotate : MonoBehaviour
 {
     //회전 속도 변수
-    public float rotSpeed = 20000f;
+    public float rotSpeed;
     //회전 값 변수
     float mx = 0;
     // Start is called before the first frame update
     void Start()
     {
-        
+        rotSpeed = GameManager.gm.rotSpeed;
     }
 
     // Update is called once per frame
