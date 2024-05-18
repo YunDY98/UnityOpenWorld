@@ -28938,6 +28938,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aae53d58543b342b6addd76e8e993bb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotSpeed: 2000
   gameLabel: {fileID: 473962904}
   gameText: {fileID: 473962906}
   aim: {fileID: 1520083356}

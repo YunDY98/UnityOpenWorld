@@ -15,12 +15,14 @@ public class LodingNextScene : MonoBehaviour
     public Slider loadingBar;
 
     void Start()
-    {
+    {   
+        Debug.Log("Scene1Start");
         StartCoroutine(TransitionNextScene(sceneNumber));
     }
 
     IEnumerator TransitionNextScene(int num)
     {
+        Debug.Log("CoStart");
         AsyncOperation ao = SceneManager.LoadSceneAsync(num);
        
         //로드되는 씬 안보이게 

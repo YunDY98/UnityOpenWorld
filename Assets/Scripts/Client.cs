@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System.Collections;
+
 public class Client : MonoBehaviour
 {
     public string serverIP = "192.168.35.105";
@@ -18,6 +20,8 @@ public class Client : MonoBehaviour
     public GameObject loginFailedPanel;
     public GameObject joinSuccessPanel;
     public GameObject joinFailedPanel;
+
+    public GameObject connectingPanel;
     
 
 
@@ -25,6 +29,7 @@ public class Client : MonoBehaviour
     private NetworkStream stream;
     private Thread receiveThread;
     private bool running = true;
+
 
     public string receiveMessage;
     
@@ -35,6 +40,7 @@ public class Client : MonoBehaviour
         Join,
         
         JoinFail,
+        Connecting
 
     } 
 
@@ -46,7 +52,7 @@ public class Client : MonoBehaviour
     }
     void Start()
     {
-        
+       
     }
 
     void Update()
@@ -56,6 +62,8 @@ public class Client : MonoBehaviour
             Debug.Log("로그인 성공");
             //로그인 성공 
             SceneManager.LoadScene(1);
+            receiveMessage = "";
+            
             
         }
         if(receiveMessage == EnumToString(State.Join))
@@ -74,7 +82,12 @@ public class Client : MonoBehaviour
         {
             //가입 실패 
             JoinFailedPanel();
-        }     
+        }
+        if(receiveMessage == EnumToString(State.Connecting))
+        {
+            //접속중
+            ConnectingPanel();
+        }
 
 
 
@@ -82,14 +95,22 @@ public class Client : MonoBehaviour
         
     }
 
+  
+
     void OnEnable()
     {
         ConnectToServer();
-         // 수신 작업 시작
+        // 수신 작업 시작
         receiveThread = new Thread(new ThreadStart(ReceiveMessages));
         receiveThread.Start();
+        
 
     }
+
+ 
+
+   
+    
 
     void ConnectToServer()
     {
@@ -202,6 +223,14 @@ public class Client : MonoBehaviour
         loginFailedPanel.SetActive(!loginFailedPanel.activeSelf);
         receiveMessage = "";
     }
+
+    public void ConnectingPanel()
+    {
+        connectingPanel.SetActive(!connectingPanel.activeSelf);
+        receiveMessage = "";
+    }
+
+    
 
     
     
