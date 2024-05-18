@@ -106,7 +106,7 @@ public class GameManager : MonoBehaviour
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
     }
 
 }
