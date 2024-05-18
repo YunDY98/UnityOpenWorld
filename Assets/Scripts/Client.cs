@@ -39,7 +39,11 @@ public class Client : MonoBehaviour
     } 
 
     private int state;
-
+    void Awake()
+    {
+        // 해당 오브젝트를 파괴하지 않음
+        DontDestroyOnLoad(this.gameObject);
+    }
     void Start()
     {
         
@@ -72,7 +76,7 @@ public class Client : MonoBehaviour
             JoinFailedPanel();
         }     
 
-       
+
 
              
         
