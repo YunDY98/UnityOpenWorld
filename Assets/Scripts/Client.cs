@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using TMPro;
+using UnityEngine.SceneManagement;
 public class Client : MonoBehaviour
 {
     public string serverIP = "192.168.35.105";
@@ -14,7 +15,10 @@ public class Client : MonoBehaviour
     public TMP_InputField id;
     public TMP_InputField pwd;
 
-
+    public GameObject loginFailedPanel;
+    public GameObject joinSuccessPanel;
+    public GameObject joinFailedPanel;
+    
 
 
     private TcpClient client;
@@ -34,8 +38,43 @@ public class Client : MonoBehaviour
 
     } 
 
+    private int state;
+
     void Start()
     {
+        
+    }
+
+    void Update()
+    {
+        if(receiveMessage == EnumToString(State.Login))
+        {
+            Debug.Log("로그인 성공");
+            //로그인 성공 
+            SceneManager.LoadScene(1);
+            
+        }
+        if(receiveMessage == EnumToString(State.Join))
+        {
+            //회원 가입 성공 
+            JoinSuccessPanel();
+        }
+        if(receiveMessage == EnumToString(State.LoginFail))
+        {
+            //로그인 실패
+            LoginFailedPanel();
+            
+            Debug.Log("로그인 실패");
+        } 
+        if(receiveMessage == EnumToString(State.JoinFail))
+        {
+            //가입 실패 
+            JoinFailedPanel();
+        }     
+
+       
+
+             
         
     }
 
@@ -77,22 +116,8 @@ public class Client : MonoBehaviour
                 {
                     string message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
                     Debug.Log("Received message: " + message);
-                    if(message == State.Login.ToString())
-                    {
-                        //로그인 성공 
-                    }
-                    if(message == State.Join.ToString())
-                    {
-                        //회원 가입 성공 
-                    }
-                    if(message == State.LoginFail.ToString())
-                    {
-                        //로그인 실패
-                    } 
-                    if(message == State.JoinFail.ToString())
-                    {
-                        //가입 실패 
-                    }                   
+                    receiveMessage = message;
+                    
 
 
                 }
@@ -109,16 +134,29 @@ public class Client : MonoBehaviour
 
     public void Login()
     {
-        
-        IdPwd(State.Login.ToString());
+        // 로그인 
+        IdPwd(EnumToString(State.Login));
+
     }
 
-     public void Join()
+    public void Join()
     {
-        IdPwd(State.Join.ToString());
+        //회원가입 
+       
+        IdPwd(EnumToString(State.Join));
        
         
     }
+
+    private string EnumToString(State _state)
+    {
+        // enum -> int -> string
+        // 123 -> "123"
+        state = (int)_state;
+        
+        return state.ToString();
+    }
+
 
     private void IdPwd(string _action)
     {
@@ -141,29 +179,24 @@ public class Client : MonoBehaviour
         
     }
 
-    private void Testa(string _action)
+   
+    public void JoinFailedPanel()
     {
-        
-        string _id = id.text;
-        string _pwd = pwd.text;
-        
-        Debug.Log(_id);
-
-        byte[] _idbuffer = Encoding.UTF8.GetBytes(_id);
-        byte[] _pwdbuffer = Encoding.UTF8.GetBytes(_pwd);
-      
-
-
-        
-        stream.Write(_idbuffer, 0, _idbuffer.Length);
-        
-        stream.Write(_pwdbuffer, 0, _pwdbuffer.Length);
+        joinFailedPanel.SetActive(!joinFailedPanel.activeSelf);
+        receiveMessage = "";      
        
-        //stream.Flush();
+    }
 
-        id.text = "";
-        pwd.text = "";
+    public void JoinSuccessPanel()
+    {
+        joinSuccessPanel.SetActive(!joinSuccessPanel.activeSelf);
+        receiveMessage = "";
+    }
 
+    public void LoginFailedPanel()
+    {
+        loginFailedPanel.SetActive(!loginFailedPanel.activeSelf);
+        receiveMessage = "";
     }
 
     
