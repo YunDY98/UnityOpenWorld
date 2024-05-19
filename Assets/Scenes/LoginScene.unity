@@ -2938,7 +2938,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Alreay Connecting!
+  m_text: Already Connecting!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3590,7 +3590,7 @@ MonoBehaviour:
   loginFailedPanel: {fileID: 390397159}
   joinSuccessPanel: {fileID: 520163833}
   joinFailedPanel: {fileID: 294338454}
-  connectingPanel: {fileID: 0}
+  connectingPanel: {fileID: 810565699}
   receiveMessage: 
 --- !u!4 &1630961085
 Transform:

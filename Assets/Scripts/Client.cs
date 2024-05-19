@@ -204,6 +204,11 @@ public class Client : MonoBehaviour
         
     }
 
+    public void UserStats()
+    {
+        
+    }
+
    
     public void JoinFailedPanel()
     {

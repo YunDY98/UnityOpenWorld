@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.AI;
+using UnityEngine.PlayerLoop;
 public class EnemyFSM : MonoBehaviour
 {
     NavMeshAgent smith;
@@ -28,6 +29,8 @@ public class EnemyFSM : MonoBehaviour
     public Slider hpSlider;
     public int attackPower = 20;
 
+    public GameObject mag;
+
     //초기 위치 
     Vector3 originPos;
     Quaternion originRot;
@@ -36,14 +39,14 @@ public class EnemyFSM : MonoBehaviour
     public float moveDistance = 20f;
 
 
-    public CharacterController cc;
+    //public CharacterController cc;
 
     public PlayerMove pm;
 
     public Animator anim;
     //누적 시간 
-    public float currentTime = 0;
-    public float attackDelay = 2f;
+    private float currentTime = 0;
+    private float attackDelay = 2f;
     // 에너미 상태 변수
     EnemyState m_State;
 
@@ -288,12 +291,18 @@ public class EnemyFSM : MonoBehaviour
 
         //죽음 상태 처리
         StartCoroutine(DieProcess());
-    }
+         // 현재 위치에 아이템을 소환
+        if (mag != null)
+        {
+            Instantiate(mag, transform.position, transform.rotation);
+        }
 
+        
+    }
     IEnumerator DieProcess()
     {
         //캐릭터컨트롤러 비활성화
-        cc.enabled = false;
+       // cc.enabled = false;
 
         //2초후 제거
         yield return new WaitForSeconds(2f);
