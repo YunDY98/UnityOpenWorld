@@ -17,6 +17,7 @@ public class PlayerFire : MonoBehaviour
     public PlayerStats playerStats;
 
     private int useBullets;
+    private int useBomb;
 
     public TMP_Text WModeTxt;
 
@@ -40,6 +41,7 @@ public class PlayerFire : MonoBehaviour
     {   
         wMode = WeaponMode.Rifle;
         useBullets = 1;
+        useBomb = 10;
         //ps = bulletEffect.GetComponent<ParticleSystem>();
 
         anim = GetComponentInChildren<Animator>();
@@ -118,16 +120,22 @@ public class PlayerFire : MonoBehaviour
 
        
        
-
-        if(Input.GetKeyUp(KeyCode.Alpha3))
+        if(playerStats.mag - useBomb >= 0)
         {
-            GameObject bomb = Instantiate(bombFactory);
-            bomb.transform.position = firePosition.transform.position;
+            if(Input.GetKeyUp(KeyCode.Alpha3))
+            {
+                playerStats.mag -= useBomb;
 
-            Rigidbody rb = bomb.GetComponent<Rigidbody>();
+                GameObject bomb = Instantiate(bombFactory);
+                bomb.transform.position = firePosition.transform.position;
 
-            rb.AddForce(Camera.main.transform.forward * throwPower, ForceMode.Impulse);
+                Rigidbody rb = bomb.GetComponent<Rigidbody>();
+
+                rb.AddForce(Camera.main.transform.forward * throwPower, ForceMode.Impulse);
+            }
+           
         }
+        
 
         
         
