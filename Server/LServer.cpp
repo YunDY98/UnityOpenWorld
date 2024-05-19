@@ -54,7 +54,9 @@ enum State
 	LoginFail,
 	Join,
 	JoinFail,
-	Connecting
+	Connecting,
+	UserStats,
+	KeepAlive,
 };
 
 unsigned WINAPI Chatting(void* arg)
@@ -70,6 +72,8 @@ unsigned WINAPI Chatting(void* arg)
 	
 
 	int RecvUserInfoBytes = 0;
+	int timeout = 5000; // 5 seconds
+	setsockopt(ClientSocket, SOL_SOCKET, SO_RCVTIMEO, (const char*)&timeout, sizeof(timeout));
 
 	
 	string _sAction, _sID, _sPWD;
