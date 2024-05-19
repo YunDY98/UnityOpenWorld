@@ -124,7 +124,7 @@ public class PlayerFire : MonoBehaviour
         {
             if(Input.GetKeyUp(KeyCode.Alpha3))
             {
-                playerStats.mag -= useBomb;
+                playerStats.UseMag(useBomb);
 
                 GameObject bomb = Instantiate(bombFactory);
                 bomb.transform.position = firePosition.transform.position;

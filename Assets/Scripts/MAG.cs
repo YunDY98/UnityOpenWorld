@@ -12,7 +12,7 @@ public class MAG : MonoBehaviour
     private float attractionDuration = 0.2f; // 아이템이 캐릭터에게 이동하는 시간
     
     
-
+    public int exp = 100;
     private Tween moveTween;
     void Start()
     {
@@ -37,6 +37,7 @@ public class MAG : MonoBehaviour
         if(other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
             playerStats.AddMag();
+            playerStats.AddExp(exp);
             Destroy(gameObject);
         }
     }
