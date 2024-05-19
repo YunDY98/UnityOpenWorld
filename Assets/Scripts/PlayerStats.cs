@@ -28,7 +28,7 @@ public class PlayerStats : MonoBehaviour
     {
         level = 1;
         textLevel.text = level.ToString();
-        mag = 10;
+        mag = 1000;
         textMag.text = mag.ToString();
         exp = 100;
         maxExp = maxExp + (level*1000);

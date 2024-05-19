@@ -17,7 +17,7 @@ public class EnemyFSM : MonoBehaviour
         Die
     }
     [Header("EnemyInfo")]
-    public float attackDistance = 2f;
+    public float attackDistance = 1f;
     public float moveSpeed = 5f;
 
     // 플레이어 발견 범위
@@ -27,7 +27,7 @@ public class EnemyFSM : MonoBehaviour
     int maxHp = 15;
 
     public Slider hpSlider;
-    public int attackPower = 20;
+    public int attackPower = 0;
 
     public GameObject mag;
 
@@ -70,6 +70,11 @@ public class EnemyFSM : MonoBehaviour
 
        //anim = transform.GetComponentInchildren<Animator>();
     }
+    void OnEnable()
+    {
+       
+
+    }
     // Update is called once per frame
     void Update()
     {
@@ -87,7 +92,7 @@ public class EnemyFSM : MonoBehaviour
                 Attack();
                 break;
             case EnemyState.Return:
-                 Return();
+                Return();
                 break;
             case EnemyState.Damaged:
                 Damaged();
@@ -239,7 +244,7 @@ public class EnemyFSM : MonoBehaviour
 
     public void HitEnemy(int hitPower)
     {
-        if(m_State == EnemyState.Damaged || m_State == EnemyState.Die)
+        if(m_State == EnemyState.Die)
         {
             return;
         }
@@ -299,6 +304,7 @@ public class EnemyFSM : MonoBehaviour
 
         
     }
+
     IEnumerator DieProcess()
     {
         //캐릭터컨트롤러 비활성화
@@ -307,8 +313,23 @@ public class EnemyFSM : MonoBehaviour
         //2초후 제거
         yield return new WaitForSeconds(2f);
         print("소멸");
-        Destroy(gameObject);
+       // Destroy(gameObject);
+       Respawn();
     }
+
+    void Respawn()
+    {
+        // 적을 초기 위치로 이동시키고 체력을 회복하며 다시 활성화
+        transform.position = originPos;
+        transform.rotation = originRot;
+        hp = maxHp;
+        m_State = EnemyState.Idle;
+        anim.SetTrigger("DieToIdle");
+        gameObject.SetActive(true);
+        print("Respawn");
+    }
+
+
 
     void RouteReset()
     {
