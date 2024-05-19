@@ -6,9 +6,29 @@ using System.Threading;
 using TMPro;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 
 public class Client : MonoBehaviour
 {
+    private static Client _instance;
+
+    public static Client client
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                // 씬에 Client 객체가 없다면 새로 생성합니다.
+                GameObject singletonObject = new GameObject();
+                _instance = singletonObject.AddComponent<Client>();
+                singletonObject.name = "Client";
+
+                // Client가 씬 전환에서 파괴되지 않도록 설정합니다.
+                DontDestroyOnLoad(singletonObject);
+            }
+            return _instance;
+        }
+    }
     public string serverIP = "192.168.35.105";
 
     public int serverPort = 8888;
@@ -25,7 +45,7 @@ public class Client : MonoBehaviour
     
 
 
-    private TcpClient client;
+    private TcpClient tcpClient;
     private NetworkStream stream;
     private Thread receiveThread;
     private bool running = true;
@@ -35,20 +55,37 @@ public class Client : MonoBehaviour
     
     enum State
     {
-        Login,
-        LoginFail,
-        Join,
+        Login, //로그인 성공시 
+        LoginFail, // 로그인 실패시 
+        Join, // 회원가입 성공시 
         
-        JoinFail,
-        Connecting
+        JoinFail,// 회원 가입 실패 
+        Connecting, //현재 아이디가 접속중인지 
+        UserStats, // 경험치 레벨 등 업데이트 
+        KeepAlive, // 인터넷 연결 상태 확인
 
-    } 
+
+    }
+
+    private float time;
+    private float keepTime = 1f;
+    
+
+   
 
     private int state;
     void Awake()
-    {
-        // 해당 오브젝트를 파괴하지 않음
-        DontDestroyOnLoad(this.gameObject);
+    {   
+        // 이미 인스턴스가 존재한다면 파괴합니다.
+        if (_instance != null && _instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            _instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
     }
     void Start()
     {
@@ -89,6 +126,20 @@ public class Client : MonoBehaviour
             ConnectingPanel();
         }
 
+        if(receiveMessage != EnumToString(State.UserStats))
+        {
+            UserStats(EnumToString(State.UserStats));
+        }
+       
+        time += Time.deltaTime;
+        if(keepTime < time)
+        {
+            time = 0;
+           
+            KeepAlive(EnumToString(State.KeepAlive));
+            Debug.Log("Keepp");
+        }
+
 
 
              
@@ -116,8 +167,8 @@ public class Client : MonoBehaviour
     {
         try
         {
-            client = new TcpClient(serverIP, serverPort);
-            stream = client.GetStream();
+            tcpClient = new TcpClient(serverIP, serverPort);
+            stream = tcpClient.GetStream();
             receiveThread = new Thread(new ThreadStart(ReceiveMessages));
             receiveThread.Start();
             Debug.Log("Connected to server.");
@@ -204,9 +255,19 @@ public class Client : MonoBehaviour
         
     }
 
-    public void UserStats()
+    public void KeepAlive(string _action)
     {
-        
+        byte[] _userinfo = Encoding.UTF8.GetBytes(_action.PadRight(2,'\0'));
+       
+      
+        stream.Write(_userinfo,0, _userinfo.Length);
+
+    }
+
+    public void UserStats(string _action)
+    {
+
+
     }
 
    
@@ -253,9 +314,9 @@ public class Client : MonoBehaviour
         {
             stream.Close();
         }
-        if (client != null)
+        if (tcpClient != null)
         {
-            client.Close();
+            tcpClient.Close();
         }
     }
 }
