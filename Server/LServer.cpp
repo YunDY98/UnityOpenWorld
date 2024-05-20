@@ -23,11 +23,17 @@ using namespace std;
 //
 #define SERVER_IPV4 "0.0.0.0"
 #define SERVER_PORT 8888
-#define PACKET_SIZE 100
+#define PACKET_SIZE 200
 #define PACKET_ID 20
 #define PACKET_PWD 20
 #define ACTION_INFO 2
 #define ASCII_INT 48
+#define PACKET_EXP 33
+#define PACKET_LEVEL 33
+#define PACKET_SCENENUM 2
+#define PACKET_MAG 33
+
+
 
 
 //
@@ -57,16 +63,37 @@ enum State
 	Join,
 	JoinFail,
 	Connecting,
-	UserStats,
 	KeepAlive,
+	UserStats,
+	MagStat,
+	SceneNum,
+	LevelStat,
+	ExpStat,
+};
+struct UserStatsStruct
+{
+	string level;
+	string exp;
+	string mag;
+	string sceneNum;
+
 };
 
+string PadRight(const string& str, size_t totalWidth, char paddingChar = ' ') {
+	if (str.length() >= totalWidth) {
+		// 이미 주어진 길이보다 길면 원래 문자열을 반환합니다.
+		return str;
+	}
+	else {
+		// 문자열의 오른쪽에 필요한 만큼의 패딩 문자를 채워 반환합니다.
+		return str + string(totalWidth - str.length(), paddingChar);
+	}
+}
 
 
 unsigned WINAPI Chatting(void* arg)
 {
-
-	
+	UserStatsStruct uss;
 	
 
 	SOCKET ClientSocket = *(SOCKET*)arg;
@@ -90,7 +117,8 @@ unsigned WINAPI Chatting(void* arg)
 	while (true)
 	{
 		char _state;
-		cout << "test";
+		
+		
 
 		//auto ChronoEnd = chrono::steady_clock::now();
 		//auto ChronoDuration = chrono::duration_cast<chrono::seconds>(ChronoEnd - ChronoStart);
@@ -113,19 +141,20 @@ unsigned WINAPI Chatting(void* arg)
 
 
 		//}
-	
-		
-		
+
+
+
 		RecvUserInfoBytes = recv(ClientSocket, RecvUserInfo, sizeof(RecvUserInfo), 0);
-		
+
 		if (RecvUserInfoBytes > 0)
 		{
 			char _Action[ACTION_INFO];
 			memcpy(_Action, RecvUserInfo, ACTION_INFO);
-			
-			
+
+
 			_sAction = _Action;
 
+			
 			if (_sAction == to_string(State::Login) || _sAction == to_string(State::Join))
 			{
 				char _ID[PACKET_ID];
@@ -137,51 +166,27 @@ unsigned WINAPI Chatting(void* arg)
 				_sID = _ID, _sPWD = _PWD;
 
 			}
-		}
-		
-		if (RecvUserInfoBytes > 0)
-		{
+
+			//keppalive 
 			if (_sAction == to_string(State::KeepAlive))
 			{
 				ChronoStart = chrono::steady_clock::now();
 				_state = State::KeepAlive + ASCII_INT;
 				isConnecting = true;
-				send(ClientSocket, &_state, 1, 0);
+				send(ClientSocket, &_state,  1, 0);
+				
+				cout << "Server -> Client" << endl;
+				_sAction = "";
 			}
 
-		}
-		
-		//
-		if (RecvUserInfoBytes <= 0)
-		{
-			////접속 종료 
-			//
-			//// 위치 , 경험치 , 레벨, 보유 아이템 이떄 업데이트  
-			cout << "접속 종료!!!!" << endl;
-
-			pstmt = con->prepareStatement("UPDATE Users SET Connecting = (?) WHERE ID = ?");
-			pstmt->setString(2, _sID);
-			pstmt->setBoolean(1, false);
-			pstmt->execute();
-
-			break;
-			
-		}
-		
-		
-
-		if (RecvUserInfoBytes > 0)
-		{
-			
-			
 			if (_sAction == to_string(State::Login))
 			{
-				
+
 				bool _checkLogin;
 
 				pstmt = con->prepareStatement("SELECT Connecting from Users Where ID = ?");
 				pstmt->setString(1, _sID);
-				
+
 				sql::ResultSet* RS = pstmt->executeQuery();
 				if (RS->next())
 				{
@@ -191,8 +196,8 @@ unsigned WINAPI Chatting(void* arg)
 						_state = State::Connecting + ASCII_INT;
 						cout << "이미 접속중" << endl;
 						send(ClientSocket, &_state, 1, 0);
-						
-						
+
+
 					}
 					else
 					{
@@ -201,49 +206,87 @@ unsigned WINAPI Chatting(void* arg)
 						pstmt->setString(2, _sPWD);
 						pstmt->execute();
 
-					
+
 						RS = pstmt->executeQuery();
 
 						if (RS->rowsCount() > 0)
 						{
-
+							int init_level;
+							int init_exp;
+							int init_mag;
+							int init_sceneNum;
 							cout << "로그인 성공" << endl;
 							_state = State::Login + ASCII_INT;
 
-
-
+							
 							pstmt = con->prepareStatement("UPDATE Users SET Connecting = (?) WHERE ID = ?");
 							pstmt->setBoolean(1, true);
 							pstmt->setString(2, _sID);
 							pstmt->execute();
-							
+
 							
 							send(ClientSocket, &_state, 1, 0);
+							
+
+							_state = State::UserStats + ASCII_INT;
+							pstmt = con->prepareStatement("select level,exp,mag,scenenum from users where id = ?");
+							pstmt->setString(1, _sID);
+							RS = pstmt->executeQuery();
+							while (RS->next())
+							{
+								init_level = RS->getInt("level");
+								init_exp = RS->getInt("exp");
+								init_mag = RS->getInt("mag");
+								init_sceneNum = RS->getInt("scenenum");
+
+								/*uss.level = to_string(init_level);
+								uss.exp = to_string(init_exp);
+								uss.mag = to_string(init_mag);
+								uss.sceneNum = to_string(init_sceneNum);*/
+								
+								
+
+
+
+							}
+							uss.level = PadRight(to_string(init_level), PACKET_LEVEL, '\0');
+							uss.exp = PadRight(to_string(init_exp), PACKET_EXP, '\0');
+							uss.mag = PadRight(to_string(init_mag), PACKET_MAG, '\0');
+							uss.sceneNum = PadRight(to_string(init_sceneNum), PACKET_SCENENUM, '\0');
+							string packet = uss.level + uss.exp + uss.mag + uss.sceneNum;
+							
+
+							send(ClientSocket,packet.c_str(), packet.size() + 1, 0);
+
+
+
 						}
 						else
 						{
 							_state = State::LoginFail + ASCII_INT;
 							cout << "아이디 또는 비밀번호 틀림" << endl;
+							
 							send(ClientSocket, &_state, 1, 0);
+							
 						}
 						RS->close();
 					}
 
 
 
-					
+
 				}
-				
-				
-				
-			
-				
+
+
+
+
+
 			}
 
 			if (_sAction == to_string(State::Join))
 			{
 
-				
+
 				pstmt = con->prepareStatement("select * from Users where ID = ?");
 				pstmt->setString(1, _sID);
 				pstmt->execute();
@@ -252,13 +295,13 @@ unsigned WINAPI Chatting(void* arg)
 				{
 					_state = State::JoinFail + ASCII_INT;
 					cout << "중복된 아이디입니다" << endl;
-					send(ClientSocket, &_state, 1, 0);
+					send(ClientSocket,&_state, 1, 0);
 
 				}
 				else
 				{
 					_state = State::Join + ASCII_INT;
-					
+
 					pstmt = con->prepareStatement("insert into Users (ID,PWD) values(?,sha2(?,256))");
 					pstmt->setString(1, _sID);
 					pstmt->setString(2, _sPWD);
@@ -272,14 +315,41 @@ unsigned WINAPI Chatting(void* arg)
 			}
 
 			memset(RecvUserInfo, NULL, PACKET_SIZE);
-			
+
 		}
 
 
+
+
+		//
+		if (RecvUserInfoBytes <= 0)
+		{
+			////접속 종료 
+			//
+			//// 위치 , 경험치 , 레벨, 보유 아이템 이떄 업데이트  
+			cout << "접속 종료!!!!" << endl;
+
+			pstmt = con->prepareStatement("UPDATE Users SET Connecting = (?) WHERE ID = ?");
+			pstmt->setString(2, _sID);
+			pstmt->setBoolean(1, false);
+			pstmt->execute();
+			break;
+
+
+		}
+
+
+
+
+
+
+
+
+
+
+
+
 	}
-	
-	
-	cout << "연결 끊김 ";
 	
 	
 	EnterCriticalSection(&ServerCS);
@@ -324,20 +394,20 @@ int main(int argc, char* argv[])
 
 
 
-	while (rs->next()) {
+	/*while (rs->next()) {
 		cout << "ID: " << rs->getInt("Num");
 		cout << ", Username: " << rs->getString("ID");
 		cout << ", Password: " << rs->getString("PWD") << endl;
-	}
+	}*/
 
-	/*pstmt = con->prepareStatement("UPDATE Users SET Connecting = (?) WHERE ID = ?");
+	pstmt = con->prepareStatement("UPDATE Users SET Connecting = (?) WHERE ID = ?");
 	pstmt->setString(2, "yun");
 	pstmt->setBoolean(1, false);
 	pstmt->execute();
 	pstmt = con->prepareStatement("UPDATE Users SET Connecting = (?) WHERE ID = ?");
 	pstmt->setString(2, "yunsid");
 	pstmt->setBoolean(1, false);
-	pstmt->execute();*/
+	pstmt->execute();
 
 
 
