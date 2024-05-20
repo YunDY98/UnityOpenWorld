@@ -9,6 +9,7 @@
 #include <memory>
 #include <format>
 #include <chrono>
+#include <cstdlib>
 
 ///Users/user/source/repos/Server/mysql840debug/include/jdbc
 #include "mysql_connection.h"
@@ -108,7 +109,9 @@ unsigned WINAPI Chatting(void* arg)
 	setsockopt(ClientSocket, SOL_SOCKET, SO_RCVTIMEO, (const char*)&timeout, sizeof(timeout));
 	bool isConnecting = true;
 	
-	
+	int level= 2;
+	int mag = 2;
+	int exp = 2;
 	
 	auto ChronoStart = chrono::steady_clock::now();
 	string _sAction, _sID, _sPWD;
@@ -166,6 +169,34 @@ unsigned WINAPI Chatting(void* arg)
 				_sID = _ID, _sPWD = _PWD;
 
 			}
+			/*if (_sAction == to_string(State::ExpStat))
+			{
+				char _exp[33];
+				memcpy(_exp, RecvUserInfo + ACTION_INFO, PACKET_EXP);
+				exp = atoi(_exp);
+				cout << "exp" << exp << endl;
+
+			}
+			if (_sAction == to_string(State::LevelStat))
+			{
+				char _level[33];
+				memcpy(_level, RecvUserInfo + ACTION_INFO, PACKET_LEVEL);
+				level = atoi(_level);
+				cout << "level" << level << endl;
+
+			}*/
+			if (_sAction == to_string(State::UserStats))
+			{
+				char _level[33];
+				memcpy(_level, RecvUserInfo + ACTION_INFO, PACKET_LEVEL);
+				char _exp[33];
+				memcpy(_exp, RecvUserInfo + ACTION_INFO + PACKET_LEVEL, PACKET_EXP);
+				char _mag[33];
+				memcpy(_mag, RecvUserInfo + ACTION_INFO + PACKET_LEVEL + PACKET_EXP, PACKET_MAG);
+				mag = atoi(_mag);
+				level = atoi(_level);
+				exp = atoi(_exp);
+			}
 
 			//keppalive 
 			if (_sAction == to_string(State::KeepAlive))
@@ -211,10 +242,10 @@ unsigned WINAPI Chatting(void* arg)
 
 						if (RS->rowsCount() > 0)
 						{
-							int init_level;
-							int init_exp;
-							int init_mag;
-							int init_sceneNum;
+							int init_level = 0;
+							int init_exp = 0;
+							int init_mag = 0;
+							int init_sceneNum = 2;
 							cout << "로그인 성공" << endl;
 							_state = State::Login + ASCII_INT;
 
@@ -254,11 +285,13 @@ unsigned WINAPI Chatting(void* arg)
 							uss.mag = PadRight(to_string(init_mag), PACKET_MAG, '\0');
 							uss.sceneNum = PadRight(to_string(init_sceneNum), PACKET_SCENENUM, '\0');
 							string packet = uss.level + uss.exp + uss.mag + uss.sceneNum;
-							
+							exp = stoi(uss.exp);
+							level = stoi(uss.level);
+							mag = stoi(uss.mag);
+
+
 
 							send(ClientSocket,packet.c_str(), packet.size() + 1, 0);
-
-
 
 						}
 						else
@@ -272,14 +305,7 @@ unsigned WINAPI Chatting(void* arg)
 						RS->close();
 					}
 
-
-
-
 				}
-
-
-
-
 
 			}
 
@@ -318,9 +344,6 @@ unsigned WINAPI Chatting(void* arg)
 
 		}
 
-
-
-
 		//
 		if (RecvUserInfoBytes <= 0)
 		{
@@ -333,20 +356,19 @@ unsigned WINAPI Chatting(void* arg)
 			pstmt->setString(2, _sID);
 			pstmt->setBoolean(1, false);
 			pstmt->execute();
+
+
+			pstmt = con->prepareStatement("update users set level = (?),mag = (?),exp = (?) where id = ?");
+			pstmt->setInt(1, level);
+			pstmt->setInt(2, mag);
+			pstmt->setInt(3, exp);
+			pstmt->setString(4, _sID);
+			pstmt->execute();
+			
 			break;
 
 
 		}
-
-
-
-
-
-
-
-
-
-
 
 
 	}
