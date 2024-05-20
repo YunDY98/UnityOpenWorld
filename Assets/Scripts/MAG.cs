@@ -38,6 +38,7 @@ public class MAG : MonoBehaviour
         {
             playerStats.AddMag();
             playerStats.AddExp(exp);
+            
             Destroy(gameObject);
         }
     }

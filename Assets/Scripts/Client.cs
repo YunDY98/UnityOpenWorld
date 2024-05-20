@@ -136,7 +136,7 @@ public class Client : MonoBehaviour
             exp = int.Parse(parts[1]);
             mag = int.Parse(parts[2]);
             sceneNumber = int.Parse(parts[3]);
-            Debug.Log("parse3" + int.Parse(parts[3]));
+           
             receiveMessage = "";
             //1 0 30 2
         }
@@ -342,64 +342,41 @@ public class Client : MonoBehaviour
         Debug.Log("Client -> Server");
     }
 
-    public void ExpStat(int _exp)
-    {
-        string _action = "ExpStat";
-       
-        string _sExp = _exp.ToString();
-       
-
-        byte[] _userinfo = Encoding.UTF8.GetBytes
-        (
-            _action.PadRight(statePacketSize,'\0')+
-            _sExp.PadRight(expPacketSize,'\0')
-            
-        );
-
-        stream.Write(_userinfo,0, _userinfo.Length);
-
-    }
-
-    public void LevelStat(int _level)
-    {
-        string _action = "LevelStat";
-        string _sLevel = _level.ToString();
-         byte[] _userinfo = Encoding.UTF8.GetBytes
-        (
-            _action.PadRight(statePacketSize,'\0')+
-            _sLevel.PadRight(levelPacketSize,'\0')
-           
-            
-        );
-
-        
-
-    }
+    
     public void SceneStat()
     {
-        string _stat = "SceneNum";
+        string _action = EnumToString(State.SceneNum);
 
         int _sceneNum = SceneManager.GetActiveScene().buildIndex;
         string _sSceneNum = _sceneNum.ToString();
 
         byte[] _userinfo = Encoding.UTF8.GetBytes(
-            _stat.PadRight(statePacketSize,'\0')+
+            _action.PadRight(statePacketSize,'\0')+
             _sSceneNum.PadRight(magPacketSize,'\0'));
 
-        stream.Write(_userinfo,0, _userinfo.Length);
+        //stream.Write(_userinfo,0, _userinfo.Length);
     }
 
-    public void MagStat(int _mag)
+    public void UserStats(int _level,int _mag,int _exp)
     {
-        string _action = "MagStat";
+        string _action = EnumToString(State.UserStats);
         string _sMag = _mag.ToString();
-        byte[] _userinfo = Encoding.UTF8.GetBytes(
-            _action.PadRight(statePacketSize,'\0')+
-            _sMag.PadRight(magPacketSize,'\0'));
+        string _sLevel = _level.ToString();
+        string _sExp = _exp.ToString();
+
+        byte[] _userinfo = Encoding.UTF8.GetBytes
+        (
+           _action.PadRight(statePacketSize,'\0')+
+           _sLevel.PadRight(levelPacketSize,'\0')+
+           _sExp.PadRight(expPacketSize,'\0')+
+           _sMag.PadRight(magPacketSize,'\0')
+           
+        );
         stream.Write(_userinfo,0, _userinfo.Length);
 
     }
 
+   
     public void QuitGame()
     {
         Application.Quit();

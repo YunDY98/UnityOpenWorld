@@ -35,7 +35,7 @@ public class PlayerStats : MonoBehaviour
         SetLevel(Client.client.level);
         SetExp(Client.client.exp); 
         SetMag(Client.client.mag);
-        
+
     }
 
     public void SetLevel(int _level)
@@ -72,7 +72,7 @@ public class PlayerStats : MonoBehaviour
     public void AddMag()
     {
         mag += 30;
-        Client.client.MagStat(mag);
+         Client.client.UserStats(level,mag,exp);
         textMag.text = mag.ToString();
     }
 
@@ -83,14 +83,15 @@ public class PlayerStats : MonoBehaviour
 
         mag -= _use;
         textMag.text = mag.ToString();
-        Client.client.MagStat(mag);
+        Client.client.UserStats(level,mag,exp);
     }
 
     public void AddExp(int _exp)
     {
         exp += _exp;
         
-        Client.client.ExpStat(exp);
+         Client.client.UserStats(level,mag,exp);
+
         expSlider.value = (float)exp/(float)maxExp;
 
     }
@@ -104,7 +105,7 @@ public class PlayerStats : MonoBehaviour
             exp -= maxExp;
             level++;
 
-            Client.client.LevelStat(level);
+             Client.client.UserStats(level,mag,exp);
 
             maxExp += level*1000;
             textLevel.text = level.ToString();
