@@ -76,7 +76,7 @@ unsigned WINAPI Chatting(void* arg)
 	
 
 	int RecvUserInfoBytes = 0;
-	int timeout = 15000; // 15 seconds
+	int timeout = 30000; // 30 seconds
 	setsockopt(ClientSocket, SOL_SOCKET, SO_RCVTIMEO, (const char*)&timeout, sizeof(timeout));
 	
 	
@@ -93,7 +93,7 @@ unsigned WINAPI Chatting(void* arg)
 		auto ChronoEnd = chrono::steady_clock::now();
 		auto ChronoDuration = chrono::duration_cast<chrono::seconds>(ChronoEnd - ChronoStart);
 
-		if (ChronoDuration.count() > 3)
+		if (ChronoDuration.count() > 15)
 		{
 			ChronoStart = chrono::steady_clock::now();
 			_state = State::KeepAlive + ASCII_INT;
@@ -122,11 +122,11 @@ unsigned WINAPI Chatting(void* arg)
 		
 		
 	
-		/*pstmt = con->prepareStatement("UPDATE Users SET Connecting = (?) WHERE ID = ?");
-		pstmt->setString(2, _sID);
-		pstmt->setBoolean(1, false);
-		pstmt->execute();*/
-		
+		//pstmt = con->prepareStatement("UPDATE Users SET Connecting = (?) WHERE ID = ?");
+		//pstmt->setString(2, _sID);
+		//pstmt->setBoolean(1, false);
+		//pstmt->execute();
+		//
 		if (RecvUserInfoBytes <= 0)
 		{
 			//접속 종료 
