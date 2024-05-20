@@ -6,18 +6,28 @@ using UnityEngine.SceneManagement;
 
 public class LodingNextScene : MonoBehaviour
 {
-    //진행할 씬 넘버
-    public int sceneNumber = 2;
+    
 
 
 
     //로딩 바
     public Slider loadingBar;
 
+    public bool loadingStart = true;
+
     void Start()
     {   
-        Debug.Log("Scene1Start");
-        StartCoroutine(TransitionNextScene(sceneNumber));
+      
+       
+    }
+    void Update()
+    {
+        if(Client.client.sceneNumber > 0 && loadingStart)
+        {
+            loadingStart = false;
+            StartCoroutine(TransitionNextScene(Client.client.sceneNumber));
+
+        }
     }
 
     IEnumerator TransitionNextScene(int num)

@@ -14,8 +14,8 @@ public class PlayerFire : MonoBehaviour
 
     public GameObject[] muzzleFlash;
 
+ 
     public PlayerStats playerStats;
-
     private int useBullets;
     private int useBomb;
 

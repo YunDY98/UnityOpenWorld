@@ -3,12 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using Unity.VisualScripting;
 
 public class PlayerStats : MonoBehaviour
 {
+    
     public int level;
     public int exp;
     public int mag;
+
+   
+
+    public int sceneNumber;
 
     public Slider expSlider;
 
@@ -26,14 +32,35 @@ public class PlayerStats : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        level = 1;
+        SetLevel(Client.client.level);
+        SetExp(Client.client.exp); 
+        SetMag(Client.client.mag);
+        
+    }
+
+    public void SetLevel(int _level)
+    {
+        level = _level;
         textLevel.text = level.ToString();
-        mag = 1000;
-        textMag.text = mag.ToString();
-        exp = 100;
         maxExp = maxExp + (level*1000);
-        Debug.Log(maxExp);
+    }
+
+    public void SetMag(int _mag)
+    {
+        mag = _mag;
+        textMag.text = mag.ToString();
+    }
+
+    public void SetExp(int _exp)
+    {
+        exp = _exp;
         expSlider.value = (float)exp/(float)maxExp;
+    }
+
+    public void SetSceneNumber(int _sceneNumber)
+    {
+        sceneNumber = _sceneNumber;
+
     }
 
     // Update is called once per frame
@@ -45,6 +72,7 @@ public class PlayerStats : MonoBehaviour
     public void AddMag()
     {
         mag += 30;
+        Client.client.MagStat(mag);
         textMag.text = mag.ToString();
     }
 
@@ -55,13 +83,14 @@ public class PlayerStats : MonoBehaviour
 
         mag -= _use;
         textMag.text = mag.ToString();
+        Client.client.MagStat(mag);
     }
 
     public void AddExp(int _exp)
     {
         exp += _exp;
-
-
+        
+        Client.client.ExpStat(exp);
         expSlider.value = (float)exp/(float)maxExp;
 
     }
@@ -74,6 +103,8 @@ public class PlayerStats : MonoBehaviour
             
             exp -= maxExp;
             level++;
+
+            Client.client.LevelStat(level);
 
             maxExp += level*1000;
             textLevel.text = level.ToString();
