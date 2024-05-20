@@ -74,7 +74,7 @@ public class Client : MonoBehaviour
     private float serverTime;
     private float clientTime;
     private float reciveTime = 20f;
-    private float sendTime = 10f;
+    private float sendTime = 5f;
     
     private bool isConnected = true;
 
@@ -115,6 +115,7 @@ public class Client : MonoBehaviour
         if(receiveMessage == EnumToString(State.KeepAlive))
         {
             Debug.Log("serverKeep");
+            //KeepAlive(EnumToString(State.KeepAlive));
             serverTime = 0;
             receiveMessage = "";
         }
