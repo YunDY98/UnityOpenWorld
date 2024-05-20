@@ -8,6 +8,7 @@
 #include <process.h>
 #include <memory>
 #include <format>
+#include <chrono>
 
 ///Users/user/source/repos/Server/mysql840debug/include/jdbc
 #include "mysql_connection.h"
@@ -47,7 +48,7 @@ sql::ResultSet* rs = nullptr;
 
 bool bProgramRunning = true;
 bool bNetworkConnected = false;
-
+vector<bool> stop;
 enum State
 {
 	Login,
@@ -59,9 +60,12 @@ enum State
 	KeepAlive,
 };
 
+
+
 unsigned WINAPI Chatting(void* arg)
 {
 
+	
 	
 
 	SOCKET ClientSocket = *(SOCKET*)arg;
@@ -72,16 +76,33 @@ unsigned WINAPI Chatting(void* arg)
 	
 
 	int RecvUserInfoBytes = 0;
-	int timeout = 5000; // 5 seconds
+	int timeout = 15000; // 15 seconds
 	setsockopt(ClientSocket, SOL_SOCKET, SO_RCVTIMEO, (const char*)&timeout, sizeof(timeout));
-
+	
+	
+	auto ChronoStart = chrono::steady_clock::now();
 	
 	string _sAction, _sID, _sPWD;
 	SOCKET LogoutSocket;
 	//로그인
 	while (true)
 	{
-	
+		char _state;
+		cout << "test";
+
+		auto ChronoEnd = chrono::steady_clock::now();
+		auto ChronoDuration = chrono::duration_cast<chrono::seconds>(ChronoEnd - ChronoStart);
+
+		if (ChronoDuration.count() > 3)
+		{
+			ChronoStart = chrono::steady_clock::now();
+			_state = State::KeepAlive + ASCII_INT;
+			cout << "keep" << endl;
+			send(ClientSocket, &_state, 1, 0);
+
+
+		}
+		
 		
 		RecvUserInfoBytes = recv(ClientSocket, RecvUserInfo, sizeof(RecvUserInfo), 0);
 		
@@ -99,8 +120,7 @@ unsigned WINAPI Chatting(void* arg)
 		}
 		
 		
-		char _state;
-
+		
 	
 		/*pstmt = con->prepareStatement("UPDATE Users SET Connecting = (?) WHERE ID = ?");
 		pstmt->setString(2, _sID);
@@ -130,6 +150,7 @@ unsigned WINAPI Chatting(void* arg)
 			
 			if (_sAction == to_string(State::Login))
 			{
+				cout << "MainThread Login";
 				bool _checkLogin;
 
 				pstmt = con->prepareStatement("SELECT Connecting from Users Where ID = ?");
@@ -318,12 +339,14 @@ int main(int argc, char* argv[])
 		{
 			// 클라 접속 완료
 			cout << "클라이언트 접속완료!!!" << endl;
-
+			
 			cout << "connect : " << ClientSocket << endl;
-			EnterCriticalSection(&ServerCS);
+			//EnterCriticalSection(&ServerCS);
 			//userlist.push_back(ClientSocket);
-			LeaveCriticalSection(&ServerCS);
+			//LeaveCriticalSection(&ServerCS);
 			HANDLE ThreadHandle = (HANDLE)_beginthreadex(nullptr, 0, Chatting, (void*)&ClientSocket, 0, nullptr);
+			//HANDLE ThreadHandle2 = (HANDLE)_beginthreadex(nullptr, 0, KeepAliveThread, (void*)&ClientSocket, 0, nullptr);
+
 		}
 	}
 
