@@ -15,6 +15,7 @@
 #include "cppconn/driver.h"
 #include "cppconn/exception.h"
 #include "cppconn/prepared_statement.h"
+#include "cppconn/exception.h"
 //
 using namespace std;
 #pragma comment (lib, "WS2_32.lib")
@@ -78,10 +79,11 @@ unsigned WINAPI Chatting(void* arg)
 	int RecvUserInfoBytes = 0;
 	int timeout = 30000; // 30 seconds
 	setsockopt(ClientSocket, SOL_SOCKET, SO_RCVTIMEO, (const char*)&timeout, sizeof(timeout));
+	bool isConnecting = true;
+	
 	
 	
 	auto ChronoStart = chrono::steady_clock::now();
-	
 	string _sAction, _sID, _sPWD;
 	SOCKET LogoutSocket;
 	//로그인
@@ -90,18 +92,28 @@ unsigned WINAPI Chatting(void* arg)
 		char _state;
 		cout << "test";
 
-		auto ChronoEnd = chrono::steady_clock::now();
-		auto ChronoDuration = chrono::duration_cast<chrono::seconds>(ChronoEnd - ChronoStart);
+		//auto ChronoEnd = chrono::steady_clock::now();
+		//auto ChronoDuration = chrono::duration_cast<chrono::seconds>(ChronoEnd - ChronoStart);
 
-		if (ChronoDuration.count() > 15)
-		{
-			ChronoStart = chrono::steady_clock::now();
-			_state = State::KeepAlive + ASCII_INT;
-			cout << "keep" << endl;
-			send(ClientSocket, &_state, 1, 0);
+		//if (ChronoDuration.count() > 30)
+		//{
+		//	//접속 종료 
+
+		//	// 위치 , 경험치 , 레벨, 보유 아이템 이떄 업데이트  
+		//	cout << "접속 종료" << endl;
+
+		//	pstmt = con->prepareStatement("UPDATE Users SET Connecting = (?) WHERE ID = ?");
+		//	pstmt->setString(2, _sID);
+		//	pstmt->setBoolean(1, false);
+		//	pstmt->execute();
+
+		//	break;
+		//	
+		//	
 
 
-		}
+		//}
+	
 		
 		
 		RecvUserInfoBytes = recv(ClientSocket, RecvUserInfo, sizeof(RecvUserInfo), 0);
@@ -110,29 +122,42 @@ unsigned WINAPI Chatting(void* arg)
 		{
 			char _Action[ACTION_INFO];
 			memcpy(_Action, RecvUserInfo, ACTION_INFO);
-			char _ID[PACKET_ID];
+			
+			
+			_sAction = _Action;
 
-			//if(_Action == 유저의 레벨 경험치 위치를 가져오는 경우)
-			memcpy(_ID, RecvUserInfo + ACTION_INFO, PACKET_ID);
-			char _PWD[PACKET_PWD];
-			memcpy(_PWD, RecvUserInfo + ACTION_INFO + PACKET_ID, PACKET_PWD);
-			_sAction = _Action, _sID = _ID, _sPWD = _PWD;
+			if (_sAction == to_string(State::Login) || _sAction == to_string(State::Join))
+			{
+				char _ID[PACKET_ID];
+
+				//if(_Action == 유저의 레벨 경험치 위치를 가져오는 경우)
+				memcpy(_ID, RecvUserInfo + ACTION_INFO, PACKET_ID);
+				char _PWD[PACKET_PWD];
+				memcpy(_PWD, RecvUserInfo + ACTION_INFO + PACKET_ID, PACKET_PWD);
+				_sID = _ID, _sPWD = _PWD;
+
+			}
 		}
 		
+		if (RecvUserInfoBytes > 0)
+		{
+			if (_sAction == to_string(State::KeepAlive))
+			{
+				ChronoStart = chrono::steady_clock::now();
+				_state = State::KeepAlive + ASCII_INT;
+				isConnecting = true;
+				send(ClientSocket, &_state, 1, 0);
+			}
+
+		}
 		
-		
-	
-		//pstmt = con->prepareStatement("UPDATE Users SET Connecting = (?) WHERE ID = ?");
-		//pstmt->setString(2, _sID);
-		//pstmt->setBoolean(1, false);
-		//pstmt->execute();
 		//
 		if (RecvUserInfoBytes <= 0)
 		{
-			//접속 종료 
-			
-			// 위치 , 경험치 , 레벨, 보유 아이템 이떄 업데이트  
-			cout << "접속 종료" << endl;
+			////접속 종료 
+			//
+			//// 위치 , 경험치 , 레벨, 보유 아이템 이떄 업데이트  
+			cout << "접속 종료!!!!" << endl;
 
 			pstmt = con->prepareStatement("UPDATE Users SET Connecting = (?) WHERE ID = ?");
 			pstmt->setString(2, _sID);
@@ -148,9 +173,10 @@ unsigned WINAPI Chatting(void* arg)
 		if (RecvUserInfoBytes > 0)
 		{
 			
+			
 			if (_sAction == to_string(State::Login))
 			{
-				cout << "MainThread Login";
+				
 				bool _checkLogin;
 
 				pstmt = con->prepareStatement("SELECT Connecting from Users Where ID = ?");
@@ -175,8 +201,7 @@ unsigned WINAPI Chatting(void* arg)
 						pstmt->setString(2, _sPWD);
 						pstmt->execute();
 
-
-
+					
 						RS = pstmt->executeQuery();
 
 						if (RS->rowsCount() > 0)
@@ -186,10 +211,13 @@ unsigned WINAPI Chatting(void* arg)
 							_state = State::Login + ASCII_INT;
 
 
+
 							pstmt = con->prepareStatement("UPDATE Users SET Connecting = (?) WHERE ID = ?");
 							pstmt->setBoolean(1, true);
 							pstmt->setString(2, _sID);
 							pstmt->execute();
+							
+							
 							send(ClientSocket, &_state, 1, 0);
 						}
 						else
@@ -249,7 +277,11 @@ unsigned WINAPI Chatting(void* arg)
 
 
 	}
-
+	
+	
+	cout << "연결 끊김 ";
+	
+	
 	EnterCriticalSection(&ServerCS);
 	//userlist.erase(find(userlist.begin(), userlist.end(), LogoutSocket));
 	closesocket(ClientSocket);
@@ -298,7 +330,14 @@ int main(int argc, char* argv[])
 		cout << ", Password: " << rs->getString("PWD") << endl;
 	}
 
-
+	/*pstmt = con->prepareStatement("UPDATE Users SET Connecting = (?) WHERE ID = ?");
+	pstmt->setString(2, "yun");
+	pstmt->setBoolean(1, false);
+	pstmt->execute();
+	pstmt = con->prepareStatement("UPDATE Users SET Connecting = (?) WHERE ID = ?");
+	pstmt->setString(2, "yunsid");
+	pstmt->setBoolean(1, false);
+	pstmt->execute();*/
 
 
 
@@ -345,6 +384,7 @@ int main(int argc, char* argv[])
 			//userlist.push_back(ClientSocket);
 			//LeaveCriticalSection(&ServerCS);
 			HANDLE ThreadHandle = (HANDLE)_beginthreadex(nullptr, 0, Chatting, (void*)&ClientSocket, 0, nullptr);
+
 			//HANDLE ThreadHandle2 = (HANDLE)_beginthreadex(nullptr, 0, KeepAliveThread, (void*)&ClientSocket, 0, nullptr);
 
 		}
