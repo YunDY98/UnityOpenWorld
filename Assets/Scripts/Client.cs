@@ -41,7 +41,11 @@ public class Client : MonoBehaviour
     public GameObject joinSuccessPanel;
     public GameObject joinFailedPanel;
 
-    public GameObject connectingPanel;
+    public GameObject alreadyLoginPanel;
+
+    public GameObject notConnectedPanel;
+
+
     
 
 
@@ -69,9 +73,10 @@ public class Client : MonoBehaviour
 
     private float serverTime;
     private float clientTime;
-    private float reciveTime = 10f;
-    private float sendTime = 3f;
+    private float reciveTime = 20f;
+    private float sendTime = 10f;
     
+    private bool isConnected = true;
 
    
 
@@ -97,10 +102,14 @@ public class Client : MonoBehaviour
     void Update()
     {
         serverTime += Time.deltaTime;
-        if(serverTime > reciveTime)
+        if(serverTime > reciveTime && isConnected)
         {
-           
+
+            Time.timeScale = 0f;
+            NotConnectedPanel();
             Debug.Log("서버와 연결 끊김");
+            isConnected = false;
+            
         }
 
         if(receiveMessage == EnumToString(State.KeepAlive))
@@ -138,7 +147,7 @@ public class Client : MonoBehaviour
         if(receiveMessage == EnumToString(State.Connecting))
         {
             //접속중
-            ConnectingPanel();
+            AlreadyLoginPanel();
         }
 
         if(receiveMessage != EnumToString(State.UserStats))
@@ -285,6 +294,11 @@ public class Client : MonoBehaviour
 
     }
 
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
    
     public void JoinFailedPanel()
     {
@@ -305,10 +319,16 @@ public class Client : MonoBehaviour
         receiveMessage = "";
     }
 
-    public void ConnectingPanel()
+    public void AlreadyLoginPanel()
     {
-        connectingPanel.SetActive(!connectingPanel.activeSelf);
+        alreadyLoginPanel.SetActive(!alreadyLoginPanel.activeSelf);
         receiveMessage = "";
+    }
+
+    public void NotConnectedPanel()
+    {
+        notConnectedPanel.SetActive(!notConnectedPanel.activeSelf);
+
     }
 
     
