@@ -67,8 +67,10 @@ public class Client : MonoBehaviour
 
     }
 
-    private float time;
-    private float keepTime = 1f;
+    private float serverTime;
+    private float clientTime;
+    private float reciveTime = 10f;
+    private float sendTime = 3f;
     
 
    
@@ -94,6 +96,19 @@ public class Client : MonoBehaviour
 
     void Update()
     {
+        serverTime += Time.deltaTime;
+        if(serverTime > reciveTime)
+        {
+           
+            Debug.Log("서버와 연결 끊김");
+        }
+
+        if(receiveMessage == EnumToString(State.KeepAlive))
+        {
+            Debug.Log("serverKeep");
+            serverTime = 0;
+            receiveMessage = "";
+        }
         if(receiveMessage == EnumToString(State.Login))
         {
             Debug.Log("로그인 성공");
@@ -131,15 +146,15 @@ public class Client : MonoBehaviour
             UserStats(EnumToString(State.UserStats));
         }
        
-        time += Time.deltaTime;
-        if(keepTime < time)
+        clientTime += Time.deltaTime;
+        if(sendTime < clientTime)
         {
-            time = 0;
+            clientTime = 0;
            
             KeepAlive(EnumToString(State.KeepAlive));
-            Debug.Log("Keepp");
+            Debug.Log("Keep");
         }
-
+        
 
 
              
