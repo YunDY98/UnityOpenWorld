@@ -21,7 +21,9 @@ public class SoliderFire : MonoBehaviour
 
     public TMP_Text WModeTxt;
 
-    bool ZoomMode = false;
+    bool zoomMode = false;
+
+    bool canShoot;
     public GameObject firePosition;
 
     public GameObject bombFactory;
@@ -46,7 +48,7 @@ public class SoliderFire : MonoBehaviour
 
         //ps = bulletEffect.GetComponent<ParticleSystem>();
 
-        
+        canShoot = true;
     }
 
   
@@ -56,7 +58,7 @@ public class SoliderFire : MonoBehaviour
     void Update()
     {
        
-         // 게임 중일때만 동작 
+        // 게임 중일때만 동작 
         if((GameManager.gameManager.gState != GameManager.GameState.Run) || (PlayerStats.playerStats.selectCharacter != PlayerStats.SelectCharacter.Solider))
         {
            
@@ -66,11 +68,17 @@ public class SoliderFire : MonoBehaviour
         
         if(Input.GetMouseButtonDown(0))
         {
-            if(PlayerStats.playerStats.UseGold(useBullets))
+            if(PlayerStats.playerStats.UseGold(useBullets) && canShoot)
             {
+               
+
                 anim.SetTrigger("Attack");
-            
-                Shoot();
+
+                if(WeaponMode.Sniper == wMode)
+                    StartCoroutine(Shoot(3f));
+                else
+                    StartCoroutine(Shoot(0f));
+
 
             }
            
@@ -86,11 +94,11 @@ public class SoliderFire : MonoBehaviour
             {
                 
                 case WeaponMode.Sniper:
-                    if(!ZoomMode)
+                    if(!zoomMode)
                     {
                         weaponPower = 10;
                         Camera.main.fieldOfView = 15f;
-                        ZoomMode = true;
+                        zoomMode = true;
                        
                        
                     }
@@ -98,7 +106,7 @@ public class SoliderFire : MonoBehaviour
                     {
                         weaponPower = 5;
                         Camera.main.fieldOfView = 60f;
-                        ZoomMode = false;
+                        zoomMode = false;
                         
 
                     }
@@ -125,28 +133,27 @@ public class SoliderFire : MonoBehaviour
 
        
        
-        if(PlayerStats.playerStats.gold - useBomb >= 0)
+        
+        if(Input.GetKeyUp(KeyCode.Alpha3))
         {
-            if(Input.GetKeyUp(KeyCode.Alpha3))
+            if(PlayerStats.playerStats.UseGold(useBomb))
             {
-                PlayerStats.playerStats.UseGold(useBomb);
-
                 GameObject bomb = Instantiate(bombFactory);
                 bomb.transform.position = firePosition.transform.position;
-
                 Rigidbody rb = bomb.GetComponent<Rigidbody>();
-
                 rb.AddForce(Camera.main.transform.forward * throwPower, ForceMode.Impulse);
             }
            
         }
+        
+        
         
 
         
         
     }
 
-    private void Shoot()
+    IEnumerator Shoot(float _delay)
     {
         // 레이 시작점 과 방향 
         Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
@@ -171,6 +178,14 @@ public class SoliderFire : MonoBehaviour
         }
 
         StartCoroutine(ShootEffectOn(0.05f));
+
+        canShoot = false;
+        yield return new WaitForSeconds(_delay);
+        canShoot = true;
+
+        
+
+      
 
     }
    
