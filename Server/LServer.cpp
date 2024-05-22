@@ -32,7 +32,7 @@ using namespace std;
 #define PACKET_EXP 33
 #define PACKET_LEVEL 33
 #define PACKET_SCENENUM 2
-#define PACKET_MAG 33
+#define PACKET_GOLD 33
 
 
 
@@ -66,7 +66,7 @@ enum State
 	Connecting,
 	KeepAlive,
 	UserStats,
-	MagStat,
+	GoldStat,
 	SceneNum,
 	LevelStat,
 	ExpStat,
@@ -75,7 +75,7 @@ struct UserStatsStruct
 {
 	string level;
 	string exp;
-	string mag;
+	string gold;
 	string sceneNum;
 
 };
@@ -110,7 +110,7 @@ unsigned WINAPI Chatting(void* arg)
 	bool isConnecting = true;
 	
 	int level= 2;
-	int mag = 2;
+	int gold = 2;
 	int exp = 2;
 	
 	auto ChronoStart = chrono::steady_clock::now();
@@ -191,9 +191,9 @@ unsigned WINAPI Chatting(void* arg)
 				memcpy(_level, RecvUserInfo + ACTION_INFO, PACKET_LEVEL);
 				char _exp[33];
 				memcpy(_exp, RecvUserInfo + ACTION_INFO + PACKET_LEVEL, PACKET_EXP);
-				char _mag[33];
-				memcpy(_mag, RecvUserInfo + ACTION_INFO + PACKET_LEVEL + PACKET_EXP, PACKET_MAG);
-				mag = atoi(_mag);
+				char _gold[33];
+				memcpy(_gold, RecvUserInfo + ACTION_INFO + PACKET_LEVEL + PACKET_EXP, PACKET_GOLD);
+				gold = atoi(_gold);
 				level = atoi(_level);
 				exp = atoi(_exp);
 			}
@@ -244,7 +244,7 @@ unsigned WINAPI Chatting(void* arg)
 						{
 							int init_level = 0;
 							int init_exp = 0;
-							int init_mag = 0;
+							int init_gold = 0;
 							int init_sceneNum = 2;
 							cout << "로그인 성공" << endl;
 							_state = State::Login + ASCII_INT;
@@ -260,14 +260,14 @@ unsigned WINAPI Chatting(void* arg)
 							
 
 							_state = State::UserStats + ASCII_INT;
-							pstmt = con->prepareStatement("select level,exp,mag,scenenum from users where id = ?");
+							pstmt = con->prepareStatement("select level,exp,gold,scenenum from users where id = ?");
 							pstmt->setString(1, _sID);
 							RS = pstmt->executeQuery();
 							while (RS->next())
 							{
 								init_level = RS->getInt("level");
 								init_exp = RS->getInt("exp");
-								init_mag = RS->getInt("mag");
+								init_gold = RS->getInt("gold");
 								init_sceneNum = RS->getInt("scenenum");
 
 								/*uss.level = to_string(init_level);
@@ -282,12 +282,12 @@ unsigned WINAPI Chatting(void* arg)
 							}
 							uss.level = PadRight(to_string(init_level), PACKET_LEVEL, '\0');
 							uss.exp = PadRight(to_string(init_exp), PACKET_EXP, '\0');
-							uss.mag = PadRight(to_string(init_mag), PACKET_MAG, '\0');
+							uss.gold = PadRight(to_string(init_gold), PACKET_GOLD, '\0');
 							uss.sceneNum = PadRight(to_string(init_sceneNum), PACKET_SCENENUM, '\0');
-							string packet = uss.level + uss.exp + uss.mag + uss.sceneNum;
+							string packet = uss.level + uss.exp + uss.gold + uss.sceneNum;
 							exp = stoi(uss.exp);
 							level = stoi(uss.level);
-							mag = stoi(uss.mag);
+							gold = stoi(uss.gold);
 
 
 
@@ -358,9 +358,9 @@ unsigned WINAPI Chatting(void* arg)
 			pstmt->execute();
 
 
-			pstmt = con->prepareStatement("update users set level = (?),mag = (?),exp = (?) where id = ?");
+			pstmt = con->prepareStatement("update users set level = (?),gold = (?),exp = (?) where id = ?");
 			pstmt->setInt(1, level);
-			pstmt->setInt(2, mag);
+			pstmt->setInt(2, gold);
 			pstmt->setInt(3, exp);
 			pstmt->setString(4, _sID);
 			pstmt->execute();
