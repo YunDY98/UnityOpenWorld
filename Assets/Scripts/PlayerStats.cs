@@ -26,6 +26,8 @@ public class PlayerStats : MonoBehaviour
     }
 
     public SelectCharacter selectCharacter;
+
+    public PlayerMove playerMove;
     
     public int level;
     public int exp;
@@ -71,6 +73,7 @@ public class PlayerStats : MonoBehaviour
     void Start()
     {
         selectedIndex = 0;
+        
         SetActiveCharacter((int)selectCharacter);
         if(Client.client != null)
         {
@@ -122,6 +125,8 @@ public class PlayerStats : MonoBehaviour
             selectCharacter = SelectCharacter.Solider;
             SetActiveCharacter((int)selectCharacter);
             camPos.localPosition = new Vector3(0.05f,0.5f,0.3f);
+            playerMove.CharacterReset();
+          
            
         }
         if(Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.Alpha2))
@@ -129,6 +134,8 @@ public class PlayerStats : MonoBehaviour
             selectCharacter = SelectCharacter.MasaSchool;
             SetActiveCharacter((int)selectCharacter);
             camPos.localPosition = new Vector3(-0.03f,0.45f,-0.8f);
+            playerMove.CharacterReset();
+            
             
         }
 
@@ -194,6 +201,7 @@ public class PlayerStats : MonoBehaviour
         for (int i = 0; i < characterMode.Length; i++)
         {
             characterMode[i].SetActive(false);
+           
         }
 
         // 선택된 인덱스가 유효한 경우 해당 오브젝트를 활성화합니다.
@@ -201,6 +209,7 @@ public class PlayerStats : MonoBehaviour
         {
             characterMode[index].SetActive(true);
             selectedIndex = index;
+            
         }
     }
 

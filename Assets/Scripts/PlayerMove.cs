@@ -145,6 +145,13 @@ public class PlayerMove : MonoBehaviour
         hitEffect.SetActive(false);
     }
 
+    public void CharacterReset()
+    {
+        cc = GetComponent<CharacterController>();
+        anim = GetComponentInChildren<Animator>();
+
+    }
+
     void PlayerRotate()
     {
         //float mouse_X = Input.GetAxis("Mouse X");
