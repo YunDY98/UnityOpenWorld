@@ -57,7 +57,7 @@ public class MasaSchool : MonoBehaviour
 
     public void IsMove()
     {
-        //GameManager.gameManager.isMove = !GameManager.gameManager.isMove;
+        GameManager.gameManager.isMove = !GameManager.gameManager.isMove;
     }
 
     // IEnumerator Emotion(float _delay,string _emo)

@@ -88,7 +88,7 @@ public class PlayerStats : MonoBehaviour
         {
             SetLevel(1);
             SetExp(1);
-            SetGold(10);
+            SetGold(1000);
         }
        
     }
@@ -164,7 +164,7 @@ public class PlayerStats : MonoBehaviour
         textgold.text = gold.ToString();
         if(Client.client != null)
             Client.client.UserStats(level,gold,exp);
-            
+
         return true;
     }
 
