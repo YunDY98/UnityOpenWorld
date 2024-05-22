@@ -3967,7 +3967,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1630961083}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6dbab149d37db4188a8f32fd3dc034fc, type: 3}
   m_Name: 
@@ -3982,6 +3982,10 @@ MonoBehaviour:
   alreadyLoginPanel: {fileID: 810565699}
   notConnectedPanel: {fileID: 806098397}
   receiveMessage: 
+  level: 0
+  exp: 0
+  mag: 0
+  sceneNumber: 0
 --- !u!4 &1630961085
 Transform:
   m_ObjectHideFlags: 0

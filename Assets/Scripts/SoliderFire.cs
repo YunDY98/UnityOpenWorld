@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-public class PlayerFire : MonoBehaviour
+public class SoliderFire : MonoBehaviour
 {
     enum WeaponMode
     {
@@ -15,7 +15,7 @@ public class PlayerFire : MonoBehaviour
     public GameObject[] muzzleFlash;
 
  
-    public PlayerStats playerStats;
+    //public PlayerStats playerStats;
     private int useBullets;
     private int useBomb;
 
@@ -51,19 +51,21 @@ public class PlayerFire : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+       
          // 게임 중일때만 동작 
-        if(GameManager.gm.gState != GameManager.GameState.Run)
+        if(GameManager.gm.gState != GameManager.GameState.Run || PlayerStats.playerStats.selectCharacter != PlayerStats.SelectCharacter.Solider)
         {
+           
             return;
         }
 
-        if(playerStats.mag - useBullets >= 0)
+        if(PlayerStats.playerStats.mag - useBullets >= 0)
         {
             if(Input.GetMouseButtonDown(0))
             {
 
                 anim.SetTrigger("Attack");
-                playerStats.UseMag(useBullets);
+                PlayerStats.playerStats.UseMag(useBullets);
 
                 Shoot();
 
@@ -120,11 +122,11 @@ public class PlayerFire : MonoBehaviour
 
        
        
-        if(playerStats.mag - useBomb >= 0)
+        if(PlayerStats.playerStats.mag - useBomb >= 0)
         {
             if(Input.GetKeyUp(KeyCode.Alpha3))
             {
-                playerStats.UseMag(useBomb);
+                PlayerStats.playerStats.UseMag(useBomb);
 
                 GameObject bomb = Instantiate(bombFactory);
                 bomb.transform.position = firePosition.transform.position;

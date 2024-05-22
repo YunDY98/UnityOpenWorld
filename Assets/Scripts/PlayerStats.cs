@@ -4,16 +4,38 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using Unity.VisualScripting;
+using Palmmedia.ReportGenerator.Core;
 
 public class PlayerStats : MonoBehaviour
 {
+    private static PlayerStats _instance;
+
+    public static PlayerStats playerStats
+    {
+        get
+        {
+
+            return _instance;
+        }
+    }
+    public enum SelectCharacter
+    {
+        Solider,
+        MasaSchool,
+
+    }
+
+    public SelectCharacter selectCharacter;
     
     public int level;
     public int exp;
     public int mag;
 
-   
+    public GameObject[] characterMode;
 
+    private int selectedIndex;
+
+    
     public int sceneNumber;
 
     public Slider expSlider;
@@ -27,15 +49,42 @@ public class PlayerStats : MonoBehaviour
     public TextMeshProUGUI textLevel;
 
 
+    void Awake()
+    {   
+        // 이미 인스턴스가 존재한다면 파괴합니다.
+        if (_instance != null && _instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            _instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+    }
+
 
 
     // Start is called before the first frame update
     void Start()
     {
-        SetLevel(Client.client.level);
-        SetExp(Client.client.exp); 
-        SetMag(Client.client.mag);
+        selectedIndex = 0;
+        SetActiveCharacter((int)selectCharacter);
+        if(Client.client != null)
+        {
+            SetLevel(Client.client.level);
+            SetExp(Client.client.exp); 
+            SetMag(Client.client.mag);
 
+
+        }
+        else
+        {
+            SetLevel(1);
+            SetExp(1);
+            SetMag(100000);
+        }
+       
     }
 
     public void SetLevel(int _level)
@@ -66,13 +115,29 @@ public class PlayerStats : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        LevelUp();
+        if(Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            selectCharacter = SelectCharacter.Solider;
+            SetActiveCharacter((int)selectCharacter);
+           
+        }
+        if(Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            selectCharacter = SelectCharacter.MasaSchool;
+            SetActiveCharacter((int)selectCharacter);
+            
+        }
+
+
        
     }
+
+    
     public void AddMag()
     {
         mag += 30;
-         Client.client.UserStats(level,mag,exp);
+        if(Client.client != null)
+            Client.client.UserStats(level,mag,exp);
         textMag.text = mag.ToString();
     }
 
@@ -83,14 +148,17 @@ public class PlayerStats : MonoBehaviour
 
         mag -= _use;
         textMag.text = mag.ToString();
-        Client.client.UserStats(level,mag,exp);
+        if(Client.client != null)
+            Client.client.UserStats(level,mag,exp);
     }
 
     public void AddExp(int _exp)
     {
         exp += _exp;
-        
-         Client.client.UserStats(level,mag,exp);
+        if(Client.client != null)
+            Client.client.UserStats(level,mag,exp);
+
+        LevelUp();
 
         expSlider.value = (float)exp/(float)maxExp;
 
@@ -105,13 +173,30 @@ public class PlayerStats : MonoBehaviour
             exp -= maxExp;
             level++;
 
-             Client.client.UserStats(level,mag,exp);
+            if(Client.client != null)
+                Client.client.UserStats(level,mag,exp);
 
             maxExp += level*1000;
             textLevel.text = level.ToString();
             expSlider.value = (float)exp/(float)maxExp;
 
 
+        }
+    }
+
+    public void SetActiveCharacter(int index)
+    {
+        // 배열에 있는 모든 오브젝트를 비활성화합니다.
+        for (int i = 0; i < characterMode.Length; i++)
+        {
+            characterMode[i].SetActive(false);
+        }
+
+        // 선택된 인덱스가 유효한 경우 해당 오브젝트를 활성화합니다.
+        if (index >= 0 && index < characterMode.Length)
+        {
+            characterMode[index].SetActive(true);
+            selectedIndex = index;
         }
     }
 

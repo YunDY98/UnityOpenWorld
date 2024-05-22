@@ -18,13 +18,8 @@ public class Client : MonoBehaviour
         {
             if (_instance == null)
             {
-                // 씬에 Client 객체가 없다면 새로 생성합니다.
-                GameObject singletonObject = new GameObject();
-                _instance = singletonObject.AddComponent<Client>();
-                singletonObject.name = "Client";
-
-                // Client가 씬 전환에서 파괴되지 않도록 설정합니다.
-                DontDestroyOnLoad(singletonObject);
+             
+                return null;
             }
             return _instance;
         }

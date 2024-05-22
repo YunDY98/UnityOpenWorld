@@ -6,7 +6,7 @@ using TMPro;
 
 public class MAG : MonoBehaviour
 {
-    private PlayerStats playerStats;
+   // private PlayerStats playerStats;
     private GameObject character; // 캐릭터의 Transform
     public float attractionDistance = 10f; // 아이템이 캐릭터에게 끌려오는 거리
     private float attractionDuration = 0.2f; // 아이템이 캐릭터에게 이동하는 시간
@@ -17,7 +17,8 @@ public class MAG : MonoBehaviour
     void Start()
     {
         character = GameObject.Find("Player");
-        playerStats = character.GetComponent<PlayerStats>();
+       // playerStats = character.GetComponent<PlayerStats>();
+      
     }
   
     void Update()
@@ -36,8 +37,8 @@ public class MAG : MonoBehaviour
     {
         if(other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            playerStats.AddMag();
-            playerStats.AddExp(exp);
+            PlayerStats.playerStats.AddMag();
+            PlayerStats.playerStats.AddExp(exp);
             
             Destroy(gameObject);
         }
