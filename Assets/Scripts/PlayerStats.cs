@@ -33,6 +33,8 @@ public class PlayerStats : MonoBehaviour
 
     public GameObject[] characterMode;
 
+    public Transform camPos;
+
     private int selectedIndex;
 
     
@@ -119,12 +121,14 @@ public class PlayerStats : MonoBehaviour
         {
             selectCharacter = SelectCharacter.Solider;
             SetActiveCharacter((int)selectCharacter);
+            camPos.localPosition = new Vector3(0.05f,0.5f,0.3f);
            
         }
         if(Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.Alpha2))
         {
             selectCharacter = SelectCharacter.MasaSchool;
             SetActiveCharacter((int)selectCharacter);
+            camPos.localPosition = new Vector3(-0.03f,0.45f,-0.8f);
             
         }
 
