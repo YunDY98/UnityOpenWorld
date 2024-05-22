@@ -4,7 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 using TMPro;
 
-public class MAG : MonoBehaviour
+public class Gold : MonoBehaviour
 {
    // private PlayerStats playerStats;
     private GameObject character; // 캐릭터의 Transform
@@ -37,7 +37,7 @@ public class MAG : MonoBehaviour
     {
         if(other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            PlayerStats.playerStats.AddMag();
+            PlayerStats.playerStats.AddGold();
             PlayerStats.playerStats.AddExp(exp);
             
             Destroy(gameObject);

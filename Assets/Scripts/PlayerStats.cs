@@ -31,7 +31,7 @@ public class PlayerStats : MonoBehaviour
     
     public int level;
     public int exp;
-    public int mag;
+    public int gold;
 
     public GameObject[] characterMode;
 
@@ -49,7 +49,7 @@ public class PlayerStats : MonoBehaviour
 
     public float x,y,z;
 
-    public TextMeshProUGUI textMag;
+    public TextMeshProUGUI textgold;
     public TextMeshProUGUI textLevel;
 
 
@@ -79,7 +79,7 @@ public class PlayerStats : MonoBehaviour
         {
             SetLevel(Client.client.level);
             SetExp(Client.client.exp); 
-            SetMag(Client.client.mag);
+            SetGold(Client.client.gold);
 
 
         }
@@ -87,7 +87,7 @@ public class PlayerStats : MonoBehaviour
         {
             SetLevel(1);
             SetExp(1);
-            SetMag(100000);
+            SetGold(100000);
         }
        
     }
@@ -99,10 +99,10 @@ public class PlayerStats : MonoBehaviour
         maxExp = maxExp + (level*1000);
     }
 
-    public void SetMag(int _mag)
+    public void SetGold(int _gold)
     {
-        mag = _mag;
-        textMag.text = mag.ToString();
+        gold = _gold;
+        textgold.text = gold.ToString();
     }
 
     public void SetExp(int _exp)
@@ -144,30 +144,30 @@ public class PlayerStats : MonoBehaviour
     }
 
     
-    public void AddMag()
+    public void AddGold()
     {
-        mag += 30;
+        gold += 30;
         if(Client.client != null)
-            Client.client.UserStats(level,mag,exp);
-        textMag.text = mag.ToString();
+            Client.client.UserStats(level,gold,exp);
+        textgold.text = gold.ToString();
     }
 
-    public void UseMag(int _use)
+    public void UseGold(int _use)
     {
-        if(0 > mag - _use)
+        if(0 > gold - _use)
             return;
 
-        mag -= _use;
-        textMag.text = mag.ToString();
+        gold -= _use;
+        textgold.text = gold.ToString();
         if(Client.client != null)
-            Client.client.UserStats(level,mag,exp);
+            Client.client.UserStats(level,gold,exp);
     }
 
     public void AddExp(int _exp)
     {
         exp += _exp;
         if(Client.client != null)
-            Client.client.UserStats(level,mag,exp);
+            Client.client.UserStats(level,gold,exp);
 
         LevelUp();
 
@@ -185,7 +185,7 @@ public class PlayerStats : MonoBehaviour
             level++;
 
             if(Client.client != null)
-                Client.client.UserStats(level,mag,exp);
+                Client.client.UserStats(level,gold,exp);
 
             maxExp += level*1000;
             textLevel.text = level.ToString();

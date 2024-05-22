@@ -59,13 +59,13 @@ public class SoliderFire : MonoBehaviour
             return;
         }
 
-        if(PlayerStats.playerStats.mag - useBullets >= 0)
+        if(PlayerStats.playerStats.gold - useBullets >= 0)
         {
             if(Input.GetMouseButtonDown(0))
             {
 
                 anim.SetTrigger("Attack");
-                PlayerStats.playerStats.UseMag(useBullets);
+                PlayerStats.playerStats.UseGold(useBullets);
 
                 Shoot();
 
@@ -122,11 +122,11 @@ public class SoliderFire : MonoBehaviour
 
        
        
-        if(PlayerStats.playerStats.mag - useBomb >= 0)
+        if(PlayerStats.playerStats.gold - useBomb >= 0)
         {
             if(Input.GetKeyUp(KeyCode.Alpha3))
             {
-                PlayerStats.playerStats.UseMag(useBomb);
+                PlayerStats.playerStats.UseGold(useBomb);
 
                 GameObject bomb = Instantiate(bombFactory);
                 bomb.transform.position = firePosition.transform.position;

@@ -147,7 +147,7 @@ public class PlayerMove : MonoBehaviour
 
     public void CharacterReset()
     {
-        cc = GetComponent<CharacterController>();
+       
         anim = GetComponentInChildren<Animator>();
 
     }

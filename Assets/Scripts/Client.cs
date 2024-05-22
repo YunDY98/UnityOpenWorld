@@ -36,7 +36,7 @@ public class Client : MonoBehaviour
     public const int levelPacketSize = 33;
      public const int expPacketSize = 33;
 
-    public const int magPacketSize = 33;
+    public const int goldPacketSize = 33;
 
    
     public const int scenePacketSize = 2;
@@ -77,7 +77,7 @@ public class Client : MonoBehaviour
         Connecting, //현재 아이디가 접속중인지 
         KeepAlive, // 인터넷 연결 상태 확인
         UserStats, // 레벨 경험치 등 유저 정보 
-        MagStat, // 총알 수 
+        GoldStat, // 총알 수 
         SceneNum, // 현재 씬 
         LevelStat, // 캐릭터 레벨
         ExpStat, // 캐릭터 경험치 
@@ -95,7 +95,7 @@ public class Client : MonoBehaviour
 
     public int level;
     public int exp; 
-    public int mag;
+    public int gold;
     public int sceneNumber;
     
 
@@ -129,7 +129,7 @@ public class Client : MonoBehaviour
 
             level = int.Parse(parts[0]); 
             exp = int.Parse(parts[1]);
-            mag = int.Parse(parts[2]);
+            gold = int.Parse(parts[2]);
             sceneNumber = int.Parse(parts[3]);
            
             receiveMessage = "";
@@ -347,15 +347,15 @@ public class Client : MonoBehaviour
 
         byte[] _userinfo = Encoding.UTF8.GetBytes(
             _action.PadRight(statePacketSize,'\0')+
-            _sSceneNum.PadRight(magPacketSize,'\0'));
+            _sSceneNum.PadRight(goldPacketSize,'\0'));
 
         //stream.Write(_userinfo,0, _userinfo.Length);
     }
 
-    public void UserStats(int _level,int _mag,int _exp)
+    public void UserStats(int _level,int _gold,int _exp)
     {
         string _action = EnumToString(State.UserStats);
-        string _sMag = _mag.ToString();
+        string _sGold = _gold.ToString();
         string _sLevel = _level.ToString();
         string _sExp = _exp.ToString();
 
@@ -364,7 +364,7 @@ public class Client : MonoBehaviour
            _action.PadRight(statePacketSize,'\0')+
            _sLevel.PadRight(levelPacketSize,'\0')+
            _sExp.PadRight(expPacketSize,'\0')+
-           _sMag.PadRight(magPacketSize,'\0')
+           _sGold.PadRight(goldPacketSize,'\0')
            
         );
         stream.Write(_userinfo,0, _userinfo.Length);
