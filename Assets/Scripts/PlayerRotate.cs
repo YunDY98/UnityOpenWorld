@@ -11,23 +11,30 @@ public class PlayerRotate : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rotSpeed = GameManager.gm.rotSpeed;
+        rotSpeed = GameManager.gameManager.rotSpeed;
     }
 
     // Update is called once per frame
     void Update()
     {
          // 게임 중일때만 동작 
-        if(GameManager.gm.gState != GameManager.GameState.Run)
+        if(GameManager.gameManager.gState != GameManager.GameState.Run)
         {
             return;
         }
+
+        if(GameManager.gameManager.isMove)
+        {
+            float mouse_X = Input.GetAxis("Mouse X");
+
+            mx += mouse_X * rotSpeed * Time.deltaTime;
+
+            transform.eulerAngles = new Vector3(0,mx,0);
+
+        }
+      
        
-        float mouse_X = Input.GetAxis("Mouse X");
-
-        mx += mouse_X * rotSpeed * Time.deltaTime;
-
-        transform.eulerAngles = new Vector3(0,mx,0);
+       
         
     }
 }

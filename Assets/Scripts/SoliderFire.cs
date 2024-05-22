@@ -39,13 +39,17 @@ public class SoliderFire : MonoBehaviour
     public ParticleSystem ps;
     void Start ()
     {   
+        anim = GetComponentInChildren<Animator>();
         wMode = WeaponMode.Rifle;
         useBullets = 1;
         useBomb = 10;
+
         //ps = bulletEffect.GetComponent<ParticleSystem>();
 
-        anim = GetComponentInChildren<Animator>();
+        
     }
+
+  
 
 
     // Update is called once per frame
@@ -53,28 +57,27 @@ public class SoliderFire : MonoBehaviour
     {
        
          // 게임 중일때만 동작 
-        if(GameManager.gm.gState != GameManager.GameState.Run || PlayerStats.playerStats.selectCharacter != PlayerStats.SelectCharacter.Solider)
+        if((GameManager.gameManager.gState != GameManager.GameState.Run) || (PlayerStats.playerStats.selectCharacter != PlayerStats.SelectCharacter.Solider))
         {
            
             return;
         }
-
-        if(PlayerStats.playerStats.gold - useBullets >= 0)
+       
+        
+        if(Input.GetMouseButtonDown(0))
         {
-            if(Input.GetMouseButtonDown(0))
+            if(PlayerStats.playerStats.UseGold(useBullets))
             {
-
                 anim.SetTrigger("Attack");
-                PlayerStats.playerStats.UseGold(useBullets);
-
+            
                 Shoot();
 
-                
-
-
             }
-
+           
+            
         }
+
+        
        
 
         if(Input.GetMouseButtonDown(1))

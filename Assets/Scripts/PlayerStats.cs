@@ -20,8 +20,9 @@ public class PlayerStats : MonoBehaviour
     }
     public enum SelectCharacter
     {
-        Solider,
+        
         MasaSchool,
+        Solider,
 
     }
 
@@ -87,7 +88,7 @@ public class PlayerStats : MonoBehaviour
         {
             SetLevel(1);
             SetExp(1);
-            SetGold(100000);
+            SetGold(10);
         }
        
     }
@@ -124,6 +125,7 @@ public class PlayerStats : MonoBehaviour
         {
             selectCharacter = SelectCharacter.Solider;
             SetActiveCharacter((int)selectCharacter);
+            
             camPos.localPosition = new Vector3(0.05f,0.5f,0.3f);
             playerMove.CharacterReset();
           
@@ -134,6 +136,7 @@ public class PlayerStats : MonoBehaviour
             selectCharacter = SelectCharacter.MasaSchool;
             SetActiveCharacter((int)selectCharacter);
             camPos.localPosition = new Vector3(-0.03f,0.45f,-0.8f);
+            
             playerMove.CharacterReset();
             
             
@@ -152,15 +155,17 @@ public class PlayerStats : MonoBehaviour
         textgold.text = gold.ToString();
     }
 
-    public void UseGold(int _use)
+    public bool UseGold(int _use)
     {
         if(0 > gold - _use)
-            return;
+            return false;
 
         gold -= _use;
         textgold.text = gold.ToString();
         if(Client.client != null)
             Client.client.UserStats(level,gold,exp);
+            
+        return true;
     }
 
     public void AddExp(int _exp)
@@ -209,6 +214,7 @@ public class PlayerStats : MonoBehaviour
         {
             characterMode[index].SetActive(true);
             selectedIndex = index;
+           
             
         }
     }

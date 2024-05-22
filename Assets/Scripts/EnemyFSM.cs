@@ -310,8 +310,8 @@ public class EnemyFSM : MonoBehaviour
         //캐릭터컨트롤러 비활성화
        // cc.enabled = false;
 
-        //2초후 제거
-        yield return new WaitForSeconds(2f);
+        //N초후 제거
+        yield return new WaitForSeconds(0.5f);
         print("소멸");
        // Destroy(gameObject);
        Respawn();

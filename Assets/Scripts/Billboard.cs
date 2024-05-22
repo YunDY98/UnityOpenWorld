@@ -6,6 +6,7 @@ public class Billboard : MonoBehaviour
 {
 
     public Transform target;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -15,6 +16,7 @@ public class Billboard : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         transform.forward = target.forward;
         
     }

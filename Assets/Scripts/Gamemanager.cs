@@ -15,9 +15,22 @@ public class GameManager : MonoBehaviour
     }
 
     
-    public static GameManager gm;
+    private static GameManager _instance;
     // Start is called before the first frame update
+    
+    public static GameManager gameManager
+    {
+        get
+        {
 
+            return _instance;
+        }
+        set
+        {
+
+        }
+    }
+ 
     public float rotSpeed = 2000f;
 
     // 게임 상태 ui 변수
@@ -31,6 +44,12 @@ public class GameManager : MonoBehaviour
     public PlayerMove player;
 
     public float RotSpeed;
+
+    //움직임 관련 일시정지
+    public bool isMove = true;
+
+    //캐릭터 정면으로 보기 
+    public bool showFace = false;
    
     
   
@@ -39,9 +58,16 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        if(gm == null)
+       
+         // 이미 인스턴스가 존재한다면 파괴합니다.
+        if (_instance != null && _instance != this)
         {
-            gm = this;
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            _instance = this;
+            DontDestroyOnLoad(this.gameObject);
         }
     }
 
@@ -108,5 +134,11 @@ public class GameManager : MonoBehaviour
 
         SceneManager.LoadScene(1);
     }
+
+   
+
+    
+
+   
 
 }

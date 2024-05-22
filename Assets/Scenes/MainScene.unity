@@ -320,7 +320,7 @@ GameObject:
   - component: {fileID: 92242442}
   - component: {fileID: 92242441}
   m_Layer: 5
-  m_Name: Magtext
+  m_Name: GoldText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1249,6 +1249,68 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1001 &693001679
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 8861183747020685652}
+    m_Modifications:
+    - target: {fileID: 2874647690635546162, guid: 3341a9b74931946cbba28c423d760dea, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.054349706
+      objectReference: {fileID: 0}
+    - target: {fileID: 2874647690635546162, guid: 3341a9b74931946cbba28c423d760dea, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.027101766
+      objectReference: {fileID: 0}
+    - target: {fileID: 2874647690635546162, guid: 3341a9b74931946cbba28c423d760dea, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.020488469
+      objectReference: {fileID: 0}
+    - target: {fileID: 2874647690635546162, guid: 3341a9b74931946cbba28c423d760dea, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.45169133
+      objectReference: {fileID: 0}
+    - target: {fileID: 2874647690635546162, guid: 3341a9b74931946cbba28c423d760dea, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.4313805
+      objectReference: {fileID: 0}
+    - target: {fileID: 2874647690635546162, guid: 3341a9b74931946cbba28c423d760dea, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.5604491
+      objectReference: {fileID: 0}
+    - target: {fileID: 2874647690635546162, guid: 3341a9b74931946cbba28c423d760dea, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.543859
+      objectReference: {fileID: 0}
+    - target: {fileID: 2874647690635546162, guid: 3341a9b74931946cbba28c423d760dea, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -92.12499
+      objectReference: {fileID: 0}
+    - target: {fileID: 2874647690635546162, guid: 3341a9b74931946cbba28c423d760dea, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 89.406
+      objectReference: {fileID: 0}
+    - target: {fileID: 2874647690635546162, guid: 3341a9b74931946cbba28c423d760dea, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 167.89
+      objectReference: {fileID: 0}
+    - target: {fileID: 7073770829152446246, guid: 3341a9b74931946cbba28c423d760dea, type: 3}
+      propertyPath: m_Name
+      value: Masa_sword
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3341a9b74931946cbba28c423d760dea, type: 3}
+--- !u!4 &693001680 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2874647690635546162, guid: 3341a9b74931946cbba28c423d760dea, type: 3}
+  m_PrefabInstance: {fileID: 693001679}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &724854021
 GameObject:
   m_ObjectHideFlags: 0
@@ -1655,7 +1717,7 @@ MonoBehaviour:
   playerMove: {fileID: 2011273275}
   level: 0
   exp: 0
-  mag: 0
+  gold: 0
   characterMode:
   - {fileID: 8859308424107800294}
   - {fileID: 1075608656}
@@ -1665,7 +1727,7 @@ MonoBehaviour:
   x: 0
   y: 0
   z: 0
-  textMag: {fileID: 92242441}
+  textgold: {fileID: 92242441}
   textLevel: {fileID: 1442764556}
 --- !u!4 &765650467
 Transform:
@@ -3537,6 +3599,8 @@ MonoBehaviour:
   aim: {fileID: 1520083356}
   player: {fileID: 2011273275}
   RotSpeed: 0
+  isMove: 1
+  showFace: 0
   gState: 0
 --- !u!4 &1527136569
 Transform:
@@ -3716,13 +3780,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1554684383}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 2.34, z: 0.83}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1554684389
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4628,7 +4692,7 @@ GameObject:
   - component: {fileID: 1947191584}
   - component: {fileID: 1947191583}
   m_Layer: 5
-  m_Name: 'Mag:'
+  m_Name: 'Gold:'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4920,6 +4984,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b11276996757a447982c9d051c05e955, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  show: {fileID: 0}
 --- !u!4 &41817425117222517
 Transform:
   m_ObjectHideFlags: 0
@@ -12306,7 +12371,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &8859313912353046070
 GameObject:
   m_ObjectHideFlags: 0
@@ -15129,6 +15194,7 @@ Transform:
   - {fileID: 8855976380487979712}
   - {fileID: 8856134160216741144}
   - {fileID: 8861169094408465200}
+  - {fileID: 693001680}
   m_Father: {fileID: 8861135857285006364}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &8861185478885471340
@@ -16645,6 +16711,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b11276996757a447982c9d051c05e955, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  show: {fileID: 0}
 --- !u!1 &9132153090127109061
 GameObject:
   m_ObjectHideFlags: 0
