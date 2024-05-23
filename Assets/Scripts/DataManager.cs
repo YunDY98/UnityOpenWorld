@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.IO;
+using System.Runtime.InteropServices;
 
 public class DataManager : MonoBehaviour
 {
@@ -37,6 +38,7 @@ public class DataManager : MonoBehaviour
     // 데이터 저장
     public void SavePlayerData()
     {
+        print("save");
         PlayerData pd = new PlayerData();
 
         pd.level = PlayerStats.playerStats.level;

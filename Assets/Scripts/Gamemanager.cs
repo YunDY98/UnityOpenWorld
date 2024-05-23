@@ -37,6 +37,8 @@ public class GameManager : MonoBehaviour
 
     public GameObject gameLabel;
 
+    public GameObject esc;
+
     public Text gameText;
     
     
@@ -50,6 +52,8 @@ public class GameManager : MonoBehaviour
 
     //캐릭터 정면으로 보기 
     public bool showFace = false;
+
+    private bool isCursorVisible;
    
     
   
@@ -78,9 +82,8 @@ public class GameManager : MonoBehaviour
 
         gState = GameState.Ready;
 
+        Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false; 
-
        // gameText = gameLabel.GetComponent<Text>();
 
         gameText.text = "Ready .. ";
@@ -123,6 +126,12 @@ public class GameManager : MonoBehaviour
             gState = GameState.GameOver;
                 
         }
+
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            ToggleCursor();
+            esc.SetActive(!esc.activeSelf);
+        }
     }
 
 
@@ -135,7 +144,12 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(1);
     }
 
-   
+    void ToggleCursor()
+    {
+        isCursorVisible = !isCursorVisible;
+        Cursor.visible = isCursorVisible;
+        Cursor.lockState = isCursorVisible ? CursorLockMode.None : CursorLockMode.Locked;
+    }
 
     
 

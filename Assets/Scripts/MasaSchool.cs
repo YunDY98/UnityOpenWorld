@@ -29,6 +29,7 @@ public class MasaSchool : MonoBehaviour
     void Start()
     {
         anim = GetComponent<Animator>();
+       
     }
 
 
@@ -69,14 +70,12 @@ public class MasaSchool : MonoBehaviour
             if(Input.GetKeyUp(KeyCode.X))
             {
                 IsMove();
-                
+                SetSingleAttack(300,200,4f);
                 if(PlayerStats.playerStats.UseGold(singleAttackGold))
                 {
                     anim.SetTrigger("Attack3");
                     
-                    singleAttackGold = 100;
-                    singleAttackRange = 1f;
-                    singleAttackPower = 100;
+                    
                    
 
                 }
@@ -95,7 +94,14 @@ public class MasaSchool : MonoBehaviour
    
 
  
+    void SetSingleAttack(int _gold,int _power,float _range)
+    {
+        singleAttackGold = _gold;
+        singleAttackRange =_range;
+        singleAttackPower = _power;
 
+
+    }
     void MultiAttack(float _range,int _cnt,int _damage)
     {
         // 주변의 적을 감지
@@ -109,18 +115,18 @@ public class MasaSchool : MonoBehaviour
             }
         }
 
-        // 가까운 적만 선택하여 공격
-        int enemiesAttacked = 0;
+        // cnt 수만큼 적 공격 
+       
         foreach (GameObject enemy in enemies)
         {
-            if (enemiesAttacked < _cnt)
+            if (0 < _cnt)
             {
                 // EnemyFSM 컴포넌트 가져오기
                 EnemyFSM efsm = enemy.GetComponent<EnemyFSM>();
                 if (efsm != null)
                 {
                     efsm.HitEnemy(_damage);
-                    enemiesAttacked++;
+                    _cnt--;
                 }
             }
             else
