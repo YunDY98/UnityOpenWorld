@@ -14,10 +14,16 @@ public class MasaSchool : MonoBehaviour
 
 
 
+    private int singleAttackPower;
+    private float singleAttackRange;
+
+    private int singleAttackGold;
     
 
-    private int attack1 = 30;
-    private int attack2 = 100;
+    
+    private int multiAttackGold = 30;
+
+   
 
     // Start is called before the first frame update
     void Start()
@@ -46,13 +52,13 @@ public class MasaSchool : MonoBehaviour
 
             if(Input.GetKeyUp(KeyCode.C))
             {
-                
-                if(PlayerStats.playerStats.UseGold(attack1))
+                IsMove();
+                if(PlayerStats.playerStats.UseGold(multiAttackGold))
                 {
                     anim.SetTrigger("Attack1");
                     
                    
-                    Attack(10f,10,10);
+                    MultiAttack(10f,10,10);
 
                 }
 
@@ -62,12 +68,15 @@ public class MasaSchool : MonoBehaviour
 
             if(Input.GetKeyUp(KeyCode.X))
             {
+                IsMove();
                 
-                if(PlayerStats.playerStats.UseGold(attack2))
+                if(PlayerStats.playerStats.UseGold(singleAttackGold))
                 {
                     anim.SetTrigger("Attack3");
                     
-                    Attack(0.7f,1,100);
+                    singleAttackGold = 100;
+                    singleAttackRange = 1f;
+                    singleAttackPower = 100;
                    
 
                 }
@@ -87,7 +96,7 @@ public class MasaSchool : MonoBehaviour
 
  
 
-    void Attack(float _range,int _cnt,int _damage)
+    void MultiAttack(float _range,int _cnt,int _damage)
     {
         // 주변의 적을 감지
         Collider[] colliders = Physics.OverlapSphere(transform.position, _range);
@@ -119,6 +128,42 @@ public class MasaSchool : MonoBehaviour
                 break; // 최대 공격수에 도달하면 루프 종료
             }
         }
+
+      
+       
+
+        
+       
+
+
+        
+        
+    }
+    public void SingleAttack()
+    {
+        // 화면의 정중앙 좌표 계산
+        Vector3 screenCenter = new Vector3(Screen.width / 2, Screen.height / 2, 0);
+
+        // 카메라에서 화면 정중앙을 기준으로 레이 생성
+        Ray ray = Camera.main.ScreenPointToRay(screenCenter);
+
+        // "IgnoreRaycast" 레이어를 제외한 레이어 마스크 생성
+        int layerMask = ~LayerMask.GetMask("Player");
+
+        RaycastHit hitInfo = new RaycastHit();
+        if(Physics.Raycast(ray, out hitInfo,singleAttackRange,layerMask)) // out키워드는 주소를 복사해 가져옮, 반드시 함수안에서 파라미터 값을 할당할 것을 요구 
+        {
+            print(hitInfo.transform.gameObject.name);
+            if(hitInfo.transform.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+            {
+                
+                EnemyFSM eFSM = hitInfo.transform.GetComponent<EnemyFSM>();
+                eFSM.HitEnemy(singleAttackPower);
+                
+            }
+            
+        }
+        
     }
 
     public void IsMove()

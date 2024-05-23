@@ -33,6 +33,8 @@ public class PlayerStats : MonoBehaviour
     public PlayerMove playerMove;
 
     public GameObject aim;
+
+    private PlayerData playerData;
     
     public int level;
     public int exp;
@@ -80,21 +82,34 @@ public class PlayerStats : MonoBehaviour
         selectedIndex = 0;
         
         SetActiveCharacter((int)selectCharacter);
-        if(Client.client != null)
+       
+        SetPlayerData();
+        
+        
+        
+       
+    }
+
+    //데이터 불러오기 
+    public void SetPlayerData()
+    {
+        playerData = DataManager.dataManager.LoadPlayerData();
+
+        if(playerData != null)
         {
-            SetLevel(Client.client.level);
-            SetExp(Client.client.exp); 
-            SetGold(Client.client.gold);
-
-
+            SetLevel(playerData.level);
+            SetExp(playerData.exp); 
+            SetGold(playerData.gold);
         }
         else
         {
+
             SetLevel(1);
-            SetExp(1);
+            SetExp(0);
             SetGold(1000);
-        }
-       
+
+        }    
+
     }
 
     public void SetLevel(int _level)
@@ -124,10 +139,12 @@ public class PlayerStats : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
+    {   
+        // 솔저로 
         if(Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.Alpha1))
         {
-            // 솔저로 
+            selectCharacter = SelectCharacter.Solider;
+            
             SetActiveCharacter((int)SelectCharacter.Solider);
             
             camPos.localPosition = new Vector3(0.05f,0.5f,0.3f);
@@ -138,7 +155,7 @@ public class PlayerStats : MonoBehaviour
         // 마사 캐릭터로 
         if(Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.Alpha2))
         {
-            
+            selectCharacter = SelectCharacter.MasaSchool;
             SetActiveCharacter((int)SelectCharacter.MasaSchool);
             camPos.localPosition = new Vector3(-0.03f,0.45f,-0.8f);
             
@@ -156,12 +173,13 @@ public class PlayerStats : MonoBehaviour
        
     }
 
+    
+
     // 골드 획득시
     public void AddGold(int _gold)
     {
         gold += _gold;
-        if(Client.client != null)
-            Client.client.UserStats(level,gold,exp);
+       
         textgold.text = gold.ToString();
     }
 
@@ -173,8 +191,7 @@ public class PlayerStats : MonoBehaviour
 
         gold -= _use;
         textgold.text = gold.ToString();
-        if(Client.client != null)
-            Client.client.UserStats(level,gold,exp);
+       
 
         return true;
     }
@@ -183,8 +200,7 @@ public class PlayerStats : MonoBehaviour
     public void AddExp(int _exp)
     {
         exp += _exp;
-        if(Client.client != null)
-            Client.client.UserStats(level,gold,exp);
+       
 
         LevelUp();
 
@@ -202,8 +218,7 @@ public class PlayerStats : MonoBehaviour
             exp -= maxExp;
             level++;
 
-            if(Client.client != null)
-                Client.client.UserStats(level,gold,exp);
+           
 
             maxExp += level*1000;
             textLevel.text = level.ToString();

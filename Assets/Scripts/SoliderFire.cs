@@ -66,6 +66,7 @@ public class SoliderFire : MonoBehaviour
             return;
         }
        
+       print("solider");
         
         if(Input.GetMouseButtonDown(0))
         {
@@ -156,14 +157,21 @@ public class SoliderFire : MonoBehaviour
 
     IEnumerator Shoot(float _delay)
     {
+        // 화면의 정중앙 좌표 계산
+        Vector3 screenCenter = new Vector3(Screen.width / 2, Screen.height / 2, 0);
+
+        // 카메라에서 화면 정중앙을 기준으로 레이 생성
+        Ray ray = Camera.main.ScreenPointToRay(screenCenter);
+
+        
         // 레이 시작점 과 방향 
-        Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
+        //Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
         RaycastHit hitInfo = new RaycastHit();
         if(Physics.Raycast(ray, out hitInfo)) // out키워드는 주소를 복사해 가져옮, 반드시 함수안에서 파라미터 값을 할당할 것을 요구 
         {
             if(hitInfo.transform.gameObject.layer == LayerMask.NameToLayer("Enemy"))
             {
-                Debug.Log("hitEnemy");
+               
                 EnemyFSM eFSM = hitInfo.transform.GetComponent<EnemyFSM>();
                 eFSM.HitEnemy(weaponPower);
                 
