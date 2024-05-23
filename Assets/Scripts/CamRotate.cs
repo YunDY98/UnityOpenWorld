@@ -5,7 +5,7 @@ using UnityEngine;
 public class CamRotate : MonoBehaviour
 {
     //회전 속도
-    private float rotSpeed;
+   
     //회전 값 변수
     float mx = 0;
     float my = 0;
@@ -14,14 +14,10 @@ public class CamRotate : MonoBehaviour
     
     void Start()
     {
-       RotSpeed();
+      
     }
     
-    void RotSpeed()
-    {
-        rotSpeed = GameManager.gameManager.rotSpeed;
-
-    }
+   
 
     // Update is called once per frame
     void Update()
@@ -40,8 +36,8 @@ public class CamRotate : MonoBehaviour
             float mouse_Y = Input.GetAxis("Mouse Y");
 
             //1-1. 회전 값 변수에 마우스 입력 값 만큼 미리 누적
-            mx += mouse_X * rotSpeed * Time.deltaTime;
-            my += mouse_Y * rotSpeed * Time.deltaTime;
+            mx += mouse_X * GameManager.gameManager.rotSpeed * Time.deltaTime;
+            my += mouse_Y * GameManager.gameManager.rotSpeed * Time.deltaTime;
     
             //1-2. 마우스 상하 이동 회전 변수(my)의 값을 -90 ~90 사이로 제한
             my = Mathf.Clamp(my,-89f,89f);

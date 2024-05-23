@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements.Experimental;
+using TMPro;
 public class GameManager : MonoBehaviour
 {
     //게임 상태 상수
@@ -32,8 +33,8 @@ public class GameManager : MonoBehaviour
         }
     }
  
-    public float rotSpeed = 2000f;
-    private float maxRotSpeed = 5000f;
+    public int rotSpeed = 2000;
+    private int maxRotSpeed = 5000;
 
     // 게임 상태 ui 변수
 
@@ -47,6 +48,8 @@ public class GameManager : MonoBehaviour
 
     public Slider rotSpeedSlider;
 
+  
+    public TextMeshProUGUI rotSpeedText;
 
     public Text gameText;
 
@@ -90,6 +93,7 @@ public class GameManager : MonoBehaviour
     {   
         
        
+       
         gState = GameState.Ready;
 
         Cursor.visible = false;
@@ -123,7 +127,9 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        print(rotSpeed);
+        if(gState != GameState.Run)
+            return;
+       
         if(player.hp <= 0)
         {
             player.GetComponentInChildren<Animator>().SetFloat("MoveMotion",0f);
@@ -137,6 +143,7 @@ public class GameManager : MonoBehaviour
             gState = GameState.GameOver;
                 
         }
+
         ESC();
         Skill();
 
@@ -150,9 +157,11 @@ public class GameManager : MonoBehaviour
         if(option.activeSelf)
         {
             
-            rotSpeedSlider.value = rotSpeed/maxRotSpeed;
+            rotSpeedSlider.value = (float)rotSpeed/maxRotSpeed;
+            rotSpeedText.text = rotSpeed.ToString();
 
-           
+            
+            //rotSpeedText.text = $"{rotSpeed}";
             
         }
        
@@ -161,7 +170,11 @@ public class GameManager : MonoBehaviour
     }
     public void MouseSensitivity()
     {
-        rotSpeed = rotSpeedSlider.value * maxRotSpeed;
+        rotSpeed = (int)(maxRotSpeed * rotSpeedSlider.value);
+       
+        //rotSpeedText.text = $"{rotSpeed}";
+        rotSpeedText.text = rotSpeed.ToString();
+        
         
     }
 
