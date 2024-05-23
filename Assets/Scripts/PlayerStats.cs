@@ -26,6 +26,8 @@ public class PlayerStats : MonoBehaviour
 
     }
 
+   
+
     public SelectCharacter selectCharacter;
 
     public PlayerMove playerMove;
@@ -125,18 +127,19 @@ public class PlayerStats : MonoBehaviour
     {
         if(Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.Alpha1))
         {
-            selectCharacter = SelectCharacter.Solider;
-            SetActiveCharacter((int)selectCharacter);
+            // 솔저로 
+            SetActiveCharacter((int)SelectCharacter.Solider);
             
             camPos.localPosition = new Vector3(0.05f,0.5f,0.3f);
             playerMove.CharacterReset();
             
            
         }
+        // 마사 캐릭터로 
         if(Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.Alpha2))
         {
-            selectCharacter = SelectCharacter.MasaSchool;
-            SetActiveCharacter((int)selectCharacter);
+            
+            SetActiveCharacter((int)SelectCharacter.MasaSchool);
             camPos.localPosition = new Vector3(-0.03f,0.45f,-0.8f);
             
             playerMove.CharacterReset();
@@ -144,19 +147,25 @@ public class PlayerStats : MonoBehaviour
             
         }
 
+        if(gold <= 30)
+        {
+            gold += 30;
+        }
+
 
        
     }
 
-    
-    public void AddGold()
+    // 골드 획득시
+    public void AddGold(int _gold)
     {
-        gold += 30;
+        gold += _gold;
         if(Client.client != null)
             Client.client.UserStats(level,gold,exp);
         textgold.text = gold.ToString();
     }
 
+    //골드 사용시 
     public bool UseGold(int _use)
     {
         if(0 > gold - _use)
@@ -170,6 +179,7 @@ public class PlayerStats : MonoBehaviour
         return true;
     }
 
+    //경험치 획득시 
     public void AddExp(int _exp)
     {
         exp += _exp;
@@ -182,6 +192,7 @@ public class PlayerStats : MonoBehaviour
 
     }
 
+    // 레벨업시 
     private void LevelUp()
     {
         
@@ -197,22 +208,24 @@ public class PlayerStats : MonoBehaviour
             maxExp += level*1000;
             textLevel.text = level.ToString();
             expSlider.value = (float)exp/(float)maxExp;
+            AddGold(level*1000);
 
 
         }
     }
 
+    // 현재 고른 캐릭터 
     public void SetActiveCharacter(int _index)
     {
         aim.SetActive(false);
-        // 배열에 있는 모든 오브젝트를 비활성화합니다.
+        // 배열에 있는 모든 오브젝트를 비활성화
         for (int i = 0; i < characterMode.Length; i++)
         {
             characterMode[i].SetActive(false);
            
         }
 
-        // 선택된 인덱스가 유효한 경우 해당 오브젝트를 활성화합니다.
+        // 선택된 인덱스가 유효한 경우 해당 오브젝트를 활성화
         if (_index >= 0 && _index < characterMode.Length)
         {
             characterMode[_index].SetActive(true);

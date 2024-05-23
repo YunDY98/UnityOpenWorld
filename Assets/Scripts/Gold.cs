@@ -13,6 +13,8 @@ public class Gold : MonoBehaviour
     
     
     public int exp = 100;
+
+    public int addGold = 30;
     private Tween moveTween;
     void Start()
     {
@@ -43,7 +45,7 @@ public class Gold : MonoBehaviour
     {
         if(other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            PlayerStats.playerStats.AddGold();
+            PlayerStats.playerStats.AddGold(addGold);
             PlayerStats.playerStats.AddExp(exp);
             
             Destroy(gameObject);

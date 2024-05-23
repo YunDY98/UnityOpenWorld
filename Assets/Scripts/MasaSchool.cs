@@ -17,6 +17,8 @@ public class MasaSchool : MonoBehaviour
     
 
     private int attack1 = 30;
+    private int attack2 = 100;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -49,7 +51,23 @@ public class MasaSchool : MonoBehaviour
                 {
                     anim.SetTrigger("Attack1");
                     
-                    Attack(0.7f,1);
+                   
+                    Attack(10f,10,10);
+
+                }
+
+
+
+            }
+
+            if(Input.GetKeyUp(KeyCode.X))
+            {
+                
+                if(PlayerStats.playerStats.UseGold(attack2))
+                {
+                    anim.SetTrigger("Attack3");
+                    
+                    Attack(0.7f,1,100);
                    
 
                 }
@@ -69,7 +87,7 @@ public class MasaSchool : MonoBehaviour
 
  
 
-    void Attack(float _range,int _cnt)
+    void Attack(float _range,int _cnt,int _damage)
     {
         // 주변의 적을 감지
         Collider[] colliders = Physics.OverlapSphere(transform.position, _range);
@@ -92,7 +110,7 @@ public class MasaSchool : MonoBehaviour
                 EnemyFSM efsm = enemy.GetComponent<EnemyFSM>();
                 if (efsm != null)
                 {
-                    efsm.HitEnemy(attack1);
+                    efsm.HitEnemy(_damage);
                     enemiesAttacked++;
                 }
             }
