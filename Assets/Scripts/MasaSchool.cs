@@ -1,13 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MasaSchool : MonoBehaviour
 {
     Animator anim;
-
     
+    
+    private List<GameObject> enemies = new List<GameObject>(); // 적 배열
+
+
+
+
     
 
     private int attack1 = 30;
@@ -38,9 +44,13 @@ public class MasaSchool : MonoBehaviour
 
             if(Input.GetKeyUp(KeyCode.C))
             {
+                
                 if(PlayerStats.playerStats.UseGold(attack1))
                 {
                     anim.SetTrigger("Attack1");
+                    
+                    Attack(0.7f,1);
+                   
 
                 }
 
@@ -55,10 +65,51 @@ public class MasaSchool : MonoBehaviour
         
     }
 
+   
+
+ 
+
+    void Attack(float _range,int _cnt)
+    {
+        // 주변의 적을 감지
+        Collider[] colliders = Physics.OverlapSphere(transform.position, _range);
+        enemies.Clear(); // 리스트 초기화
+        foreach (Collider other in colliders)
+        {
+            if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+            {
+                enemies.Add(other.gameObject); // 적을 리스트에 추가
+            }
+        }
+
+        // 가까운 적만 선택하여 공격
+        int enemiesAttacked = 0;
+        foreach (GameObject enemy in enemies)
+        {
+            if (enemiesAttacked < _cnt)
+            {
+                // EnemyFSM 컴포넌트 가져오기
+                EnemyFSM efsm = enemy.GetComponent<EnemyFSM>();
+                if (efsm != null)
+                {
+                    efsm.HitEnemy(attack1);
+                    enemiesAttacked++;
+                }
+            }
+            else
+            {
+                break; // 최대 공격수에 도달하면 루프 종료
+            }
+        }
+    }
+
     public void IsMove()
     {
         GameManager.gameManager.isMove = !GameManager.gameManager.isMove;
     }
+
+
+    //이모션 
 
     // IEnumerator Emotion(float _delay,string _emo)
     // {

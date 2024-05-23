@@ -23,6 +23,7 @@ public class SoliderFire : MonoBehaviour
 
     bool zoomMode = false;
 
+    //총을 쏠수 있는지 
     bool canShoot;
     public GameObject firePosition;
 
@@ -171,8 +172,10 @@ public class SoliderFire : MonoBehaviour
             {
                 // hit 지점에서 이팩트 
                 bulletEffect.transform.position = hitInfo.point;
+
                 // 이펙트 로워드 방향을 레이가 부딪힌 지점의 법선 벡터와 일치 시캄
                 bulletEffect.transform.forward = hitInfo.normal;
+
                 ps.Play();
             }
         }

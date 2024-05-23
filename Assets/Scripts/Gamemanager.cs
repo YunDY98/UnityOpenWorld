@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
 
     public Text gameText;
     
-    public GameObject aim;
+    
     
     public PlayerMove player;
 
@@ -99,7 +99,7 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
 
         gameText.text = "Go!";
-        aim.SetActive(true);
+        
         yield return new WaitForSeconds(.5f);
 
         gameLabel.SetActive(false);
