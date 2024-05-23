@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements.Experimental;
 public class GameManager : MonoBehaviour
 {
     //게임 상태 상수
@@ -32,20 +33,28 @@ public class GameManager : MonoBehaviour
     }
  
     public float rotSpeed = 2000f;
+    private float maxRotSpeed = 5000f;
 
     // 게임 상태 ui 변수
 
     public GameObject gameLabel;
 
+    // esc
     public GameObject esc;
+    public GameObject option;
+
+    public GameObject skill;
+
+    public Slider rotSpeedSlider;
+
 
     public Text gameText;
-    
-    
+
     
     public PlayerMove player;
 
-    public float RotSpeed;
+   
+   
 
     //움직임 관련 일시정지
     public bool isMove = true;
@@ -79,7 +88,8 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {   
-
+        
+       
         gState = GameState.Ready;
 
         Cursor.visible = false;
@@ -113,6 +123,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        print(rotSpeed);
         if(player.hp <= 0)
         {
             player.GetComponentInChildren<Animator>().SetFloat("MoveMotion",0f);
@@ -126,14 +137,61 @@ public class GameManager : MonoBehaviour
             gState = GameState.GameOver;
                 
         }
+        ESC();
+        Skill();
 
+        
+    }
+
+    public void Option()
+    {
+        option.SetActive(!option.activeSelf);
+
+        if(option.activeSelf)
+        {
+            
+            rotSpeedSlider.value = rotSpeed/maxRotSpeed;
+
+           
+            
+        }
+       
+       
+        
+    }
+    public void MouseSensitivity()
+    {
+        rotSpeed = rotSpeedSlider.value * maxRotSpeed;
+        
+    }
+
+    public void Skill()
+    {
+        if(esc.activeSelf == false)
+        {
+            return;
+        }
+        
+        
+        if(Input.GetKeyDown(KeyCode.K))
+        {
+            ToggleCursor();
+            skill.SetActive(!skill.activeSelf);
+           
+        }
+
+    }
+
+    public void ESC()
+    {
         if(Input.GetKeyDown(KeyCode.Escape))
         {
             ToggleCursor();
             esc.SetActive(!esc.activeSelf);
+            Time.timeScale = isCursorVisible ? 0 : 1;
         }
-    }
 
+    }
 
     public void RestartGame()
     {

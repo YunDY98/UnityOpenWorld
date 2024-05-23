@@ -11,8 +11,14 @@ public class PlayerRotate : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rotSpeed = GameManager.gameManager.rotSpeed;
+       RotSpeed();
     }
+
+    public void RotSpeed()
+    {
+         rotSpeed = GameManager.gameManager.rotSpeed;
+    }
+
 
     // Update is called once per frame
     void Update()

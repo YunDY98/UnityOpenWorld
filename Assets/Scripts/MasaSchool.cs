@@ -53,9 +53,10 @@ public class MasaSchool : MonoBehaviour
 
             if(Input.GetKeyUp(KeyCode.C))
             {
-                IsMove();
+                
                 if(PlayerStats.playerStats.UseGold(multiAttackGold))
                 {
+                    IsMove();
                     anim.SetTrigger("Attack1");
                     
                    
@@ -69,10 +70,11 @@ public class MasaSchool : MonoBehaviour
 
             if(Input.GetKeyUp(KeyCode.X))
             {
-                IsMove();
+                
                 SetSingleAttack(300,200,4f);
                 if(PlayerStats.playerStats.UseGold(singleAttackGold))
                 {
+                    IsMove();
                     anim.SetTrigger("Attack3");
                     
                     

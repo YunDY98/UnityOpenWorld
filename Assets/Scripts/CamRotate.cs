@@ -14,9 +14,14 @@ public class CamRotate : MonoBehaviour
     
     void Start()
     {
-        rotSpeed = GameManager.gameManager.rotSpeed;
+       RotSpeed();
     }
-     
+    
+    void RotSpeed()
+    {
+        rotSpeed = GameManager.gameManager.rotSpeed;
+
+    }
 
     // Update is called once per frame
     void Update()
