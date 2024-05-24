@@ -23,8 +23,8 @@ public class EnemyFSM : MonoBehaviour
     // 플레이어 발견 범위
     public float findDistance = 8f;
 
-    public int hp = 15;
-    int maxHp = 15;
+    int hp = 150;
+    int maxHp = 150;
 
     public Slider hpSlider;
     public int attackPower = 0;
@@ -311,7 +311,7 @@ public class EnemyFSM : MonoBehaviour
        // cc.enabled = false;
 
         //N초후 제거
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
         print("소멸");
        // Destroy(gameObject);
        Respawn();

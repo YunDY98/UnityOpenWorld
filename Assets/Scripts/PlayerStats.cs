@@ -73,7 +73,7 @@ public class PlayerStats : MonoBehaviour
     public TextMeshProUGUI textMasaAtk1LevelUpGold;
     public TextMeshProUGUI textMasaAtk3LevelUpGold;
 
-
+    
     
 
 
@@ -163,6 +163,8 @@ public class PlayerStats : MonoBehaviour
             _level += 1;
             _textLevel.text = _level.ToString();
             _textGold.text = _gold.ToString();
+            
+            
         }
         else
         {
@@ -246,6 +248,7 @@ public class PlayerStats : MonoBehaviour
         gold += _gold;
        
         textgold.text = gold.ToString();
+        
     }
 
     //골드 사용시 
@@ -290,7 +293,7 @@ public class PlayerStats : MonoBehaviour
             expSlider.value = (float)exp/(float)maxExp;
             AddGold(level*1000);
 
-
+            DataManager.dataManager.SavePlayerData();
         }
     }
 
