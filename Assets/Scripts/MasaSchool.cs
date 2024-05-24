@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
@@ -13,7 +14,7 @@ public class MasaSchool : MonoBehaviour
 
 
 
-
+    
     private int singleAttackPower;
     private float singleAttackRange;
 
@@ -53,14 +54,14 @@ public class MasaSchool : MonoBehaviour
 
             if(Input.GetKeyUp(KeyCode.C))
             {
-                
-                if(PlayerStats.playerStats.UseGold(multiAttackGold))
+                int atk1level =  PlayerStats.playerStats.masaAtk1Level;
+                if(PlayerStats.playerStats.UseGold((int)(multiAttackGold * atk1level*1.1f)))
                 {
                     IsMove();
                     anim.SetTrigger("Attack1");
-                    
-                   
-                    MultiAttack(10f,10,10);
+                    print(atk1level);
+                    //Range, cnt , damge
+                    MultiAttack(2f * (atk1level * 1.1f) ,(int)(1 + (atk1level/10)),(int)(10 * atk1level*1.2f));
 
                 }
 
@@ -202,7 +203,9 @@ public class MasaSchool : MonoBehaviour
     //     PlayerStats.playerStats.camPos.localPosition = _temp;
 
     // }
-    
-    
-    
+
+   
+
+
+
 }

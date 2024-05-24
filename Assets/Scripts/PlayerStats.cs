@@ -26,7 +26,7 @@ public class PlayerStats : MonoBehaviour
 
     }
 
-   
+    
 
     public SelectCharacter selectCharacter;
 
@@ -34,11 +34,18 @@ public class PlayerStats : MonoBehaviour
 
     public GameObject aim;
 
+
+
     private PlayerData playerData;
     
     public int level;
     public int exp;
     public int gold;
+
+    public int masaAtk1Level;
+    public int masaAtk3Level;
+
+    
 
     public GameObject[] characterMode;
 
@@ -58,6 +65,16 @@ public class PlayerStats : MonoBehaviour
 
     public TextMeshProUGUI textgold;
     public TextMeshProUGUI textLevel;
+    public TextMeshProUGUI textMasaAtk1Level;
+   
+    public TextMeshProUGUI textMasaAtk3Level;
+
+
+    public TextMeshProUGUI textMasaAtk1LevelUpGold;
+    public TextMeshProUGUI textMasaAtk3LevelUpGold;
+
+
+    
 
 
     void Awake()
@@ -100,6 +117,10 @@ public class PlayerStats : MonoBehaviour
             SetLevel(playerData.level);
             SetExp(playerData.exp); 
             SetGold(playerData.gold);
+            masaAtk1Level = GetSkillLevel("Masa","Atk1",playerData.skills);
+            masaAtk3Level = GetSkillLevel("Masa","Atk3",playerData.skills);
+
+
         }
         else
         {
@@ -107,10 +128,54 @@ public class PlayerStats : MonoBehaviour
             SetLevel(1);
             SetExp(0);
             SetGold(1000);
+            masaAtk1Level = 1;
+            masaAtk3Level = 1;
 
         }    
 
     }
+    public void UpdateSkillText()
+    {
+        SetSkillLevel(ref masaAtk1Level,ref textMasaAtk1Level,ref textMasaAtk1LevelUpGold);
+        SetSkillLevel(ref masaAtk3Level,ref textMasaAtk3Level, ref textMasaAtk3LevelUpGold);
+
+    }
+    
+    public void Atk1SkillLevelUp()
+    {
+        SetSkillLevel(ref masaAtk1Level,ref textMasaAtk1Level,ref textMasaAtk1LevelUpGold,true);
+        
+
+    }
+
+    public void Atk3SkillLevelUp()
+    {
+        SetSkillLevel(ref masaAtk3Level,ref textMasaAtk3Level, ref textMasaAtk3LevelUpGold,true);
+    }
+
+    public void SetSkillLevel(ref int _level,ref TextMeshProUGUI _textLevel,ref TextMeshProUGUI _textGold,bool _levelUp = false)
+    {
+        
+        int _gold = (int)(500*(_level*1.1f)* (_level*2));
+
+        if(UseGold(_gold) && _levelUp)
+        {
+            _level += 1;
+            _textLevel.text = _level.ToString();
+            _textGold.text = _gold.ToString();
+        }
+        else
+        {
+            _textLevel.text = _level.ToString();
+            _textGold.text = _gold.ToString();
+
+        }
+       
+
+        
+       
+    }
+   
 
     public void SetLevel(int _level)
     {
@@ -253,6 +318,26 @@ public class PlayerStats : MonoBehaviour
            
             
         }
+    }
+    public int GetSkillLevel(string whoskill, string skillName, Skill[] skills)
+    {
+        // Skill 배열이 유효한지 확인합니다.
+        if (skills != null)
+        {
+            // Skill 배열을 반복하면서 주어진 whoskill과 skillName을 가진 스킬을 찾습니다.
+            foreach (Skill skill in skills)
+            {
+                // 현재 스킬의 whoskill과 skillName이 주어진 값과 일치하는지 확인합니다.
+                if (skill.whoskill == whoskill && skill.skillName == skillName)
+                {
+                    // 일치하는 스킬을 찾으면 해당 스킬의 level 값을 반환합니다.
+                    return skill.level;
+                }
+            }
+        }
+
+        // 일치하는 스킬을 찾지 못하면 기본값으로 1을 반환합니다.
+        return 1;
     }
 
    

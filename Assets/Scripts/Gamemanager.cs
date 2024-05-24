@@ -93,42 +93,42 @@ public class GameManager : MonoBehaviour
     {   
         
        
-       
-        gState = GameState.Ready;
+        //gState = GameState.Ready;
+        gState = GameState.Run;
 
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
        // gameText = gameLabel.GetComponent<Text>();
 
-        gameText.text = "Ready .. ";
+      //  gameText.text = "Ready .. ";
         
-        gameText.color = new Color32(255,185,0,255);
+      //  gameText.color = new Color32(255,185,0,255);
         // 게임 준비 -> 게임 중 상태로 전환 
-        StartCoroutine(ReadyToStart());
+       // StartCoroutine(ReadyToStart());
 
         //player = GameObject.Find("Player").GetComponent<PlayerMove>();
         
         
     }
 
-    IEnumerator ReadyToStart()
-    {
-        yield return new WaitForSeconds(0.1f);
+    // IEnumerator ReadyToStart()
+    // {
+    //     yield return new WaitForSeconds(0.1f);
 
-        gameText.text = "Go!";
+    //     gameText.text = "Go!";
         
-        yield return new WaitForSeconds(.5f);
+    //     yield return new WaitForSeconds(.5f);
 
-        gameLabel.SetActive(false);
+    //     gameLabel.SetActive(false);
 
-        gState = GameState.Run;
-    }
+    //     gState = GameState.Run;
+    // }
 
     // Update is called once per frame
     void Update()
     {
-        if(gState != GameState.Run)
-            return;
+    //     if(gState != GameState.Run)
+    //         return;
        
         if(player.hp <= 0)
         {
@@ -157,23 +157,42 @@ public class GameManager : MonoBehaviour
         if(option.activeSelf)
         {
             
-            rotSpeedSlider.value = (float)rotSpeed/maxRotSpeed;
+            if(PlayerPrefs.HasKey("rotSpeed"))
+            {
+                rotSpeedSlider.value = PlayerPrefs.GetInt("rotSpeed");
+            
+            }
+            else
+            {
+                rotSpeedSlider.value = rotSpeed;
+            }
+
+            
             rotSpeedText.text = rotSpeed.ToString();
 
             
-            //rotSpeedText.text = $"{rotSpeed}";
+          
             
         }
-       
+        else
+        {
+            PlayerPrefs.Save();
+            
+        }
+        
        
         
     }
     public void MouseSensitivity()
     {
-        rotSpeed = (int)(maxRotSpeed * rotSpeedSlider.value);
+        rotSpeed = (int)rotSpeedSlider.value;
        
         //rotSpeedText.text = $"{rotSpeed}";
         rotSpeedText.text = rotSpeed.ToString();
+
+        PlayerPrefs.SetInt("rotSpeed", rotSpeed);
+        
+        
         
         
     }
@@ -188,6 +207,7 @@ public class GameManager : MonoBehaviour
         
         if(Input.GetKeyDown(KeyCode.K))
         {
+            PlayerStats.playerStats.UpdateSkillText();
             ToggleCursor();
             skill.SetActive(!skill.activeSelf);
            
