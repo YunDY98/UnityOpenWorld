@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HitEvent : MonoBehaviour
+public class EnemyEvent : MonoBehaviour
 {
     public EnemyFSM efsm;
     
@@ -10,5 +10,9 @@ public class HitEvent : MonoBehaviour
     public void PlayHit()
     {
         efsm.AttackAction();
+    }
+    public void Respawn()
+    {
+        efsm.Respawn();
     }
 }

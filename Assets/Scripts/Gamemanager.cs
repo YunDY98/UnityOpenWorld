@@ -199,7 +199,7 @@ public class GameManager : MonoBehaviour
 
     public void Skill()
     {
-        if(esc.activeSelf == false)
+        if(esc.activeSelf == true)
         {
             return;
         }

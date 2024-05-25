@@ -37,57 +37,57 @@ public class MasaSchool : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(GameManager.gameManager.gState != GameManager.GameState.Run || PlayerStats.playerStats.selectCharacter != PlayerStats.SelectCharacter.MasaSchool)
+        if(GameManager.gameManager.gState != GameManager.GameState.Run || PlayerStats.playerStats.selectCharacter != PlayerStats.SelectCharacter.MasaSchool || !GameManager.gameManager.isMove)
         {
             
             return;
         }
 
-        if(GameManager.gameManager.isMove)
+        
+        // atk1 
+        if(Input.GetKeyUp(KeyCode.C))
         {
-            if(Input.GetKeyUp(KeyCode.Alpha2))
+            int atk1level =  PlayerStats.playerStats.masaAtk1Level;
+            if(PlayerStats.playerStats.UseGold((int)(multiAttackGold * atk1level*1.1f)))
             {
-            
-                //StartCoroutine(Emotion(2f,"emo2"));
-
+                IsMove();
+                anim.SetTrigger("Attack1");
+                print(atk1level);
+                //Range, cnt , damge
+                MultiAttack(2f * (atk1level * 1.1f) ,(int)(1 + (atk1level/10)),(int)(10 * atk1level*1.2f));
             }
+        }
 
-            if(Input.GetKeyUp(KeyCode.C))
+        // atk3 
+        if(Input.GetKeyUp(KeyCode.X))
+        {
+            int atk3level = PlayerStats.playerStats.masaAtk3Level;
+            //Gold Damage range
+            int _damage = (int)(200* atk3level * 1.2f);
+            SetSingleAttack(300,_damage,4f);
+            if(PlayerStats.playerStats.UseGold((int)(singleAttackGold * atk3level*1.1f)))
             {
-                int atk1level =  PlayerStats.playerStats.masaAtk1Level;
-                if(PlayerStats.playerStats.UseGold((int)(multiAttackGold * atk1level*1.1f)))
-                {
-                    IsMove();
-                    anim.SetTrigger("Attack1");
-                    print(atk1level);
-                    //Range, cnt , damge
-                    MultiAttack(2f * (atk1level * 1.1f) ,(int)(1 + (atk1level/10)),(int)(10 * atk1level*1.2f));
-
-                }
-
-
-
-            }
-
-            if(Input.GetKeyUp(KeyCode.X))
-            {
+                IsMove();
+                anim.SetTrigger("Attack3");
                 
-                SetSingleAttack(300,200,4f);
-                if(PlayerStats.playerStats.UseGold(singleAttackGold))
-                {
-                    IsMove();
-                    anim.SetTrigger("Attack3");
-                    
-                    
-                   
+                
+               
+            }
+        }
 
-                }
-
-
-
+        if(Input.GetKeyUp(KeyCode.Alpha1))
+        {
+            if(PlayerStats.playerStats.UseGold((int)(300)))
+            {
+                IsMove();
+                anim.SetTrigger("Attack3");
+                
+                
+               
             }
 
         }
+        
 
        
 
@@ -97,11 +97,11 @@ public class MasaSchool : MonoBehaviour
    
 
  
-    void SetSingleAttack(int _gold,int _power,float _range)
+    void SetSingleAttack(int _gold,int _damage,float _range)
     {
         singleAttackGold = _gold;
         singleAttackRange =_range;
-        singleAttackPower = _power;
+        singleAttackPower = _damage;
 
 
     }

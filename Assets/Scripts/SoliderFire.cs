@@ -37,7 +37,7 @@ public class SoliderFire : MonoBehaviour
     
 
     //발사 무기 공격력
-    public int weaponPower = 1;
+    public int weaponDamage = 1;
 
     public ParticleSystem ps;
     void Start ()
@@ -98,7 +98,7 @@ public class SoliderFire : MonoBehaviour
                 case WeaponMode.Sniper:
                     if(!zoomMode)
                     {
-                        weaponPower = 10;
+                        weaponDamage = 10;
                         Camera.main.fieldOfView = 15f;
                         zoomMode = true;
                        
@@ -106,7 +106,7 @@ public class SoliderFire : MonoBehaviour
                     }
                     else
                     {
-                        weaponPower = 5;
+                        weaponDamage = 5;
                         Camera.main.fieldOfView = 60f;
                         zoomMode = false;
                         
@@ -173,7 +173,7 @@ public class SoliderFire : MonoBehaviour
             {
                
                 EnemyFSM eFSM = hitInfo.transform.GetComponent<EnemyFSM>();
-                eFSM.HitEnemy(weaponPower);
+                eFSM.HitEnemy(weaponDamage);
                 
             }
             else

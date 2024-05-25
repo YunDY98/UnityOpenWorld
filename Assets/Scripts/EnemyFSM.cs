@@ -98,7 +98,7 @@ public class EnemyFSM : MonoBehaviour
                 Damaged();
                 break;
             case EnemyState.Die:
-               // Die();
+                //Die();
                 break;
 
 
@@ -167,25 +167,19 @@ public class EnemyFSM : MonoBehaviour
 
     void Attack()
     {
-        // 플레이어가 공격 범위 이내에 있다면 공격 
-        if(Vector3.Distance(transform.position,player.position) < attackDistance)
+        
+        //일정한 시간 마다 플레이러를 공격
+        currentTime += Time.deltaTime;
+        if(currentTime > attackDelay)
         {
-            //일정한 시간 마다 플레이러를 공격
-            currentTime += Time.deltaTime;
-            if(currentTime > attackDelay)
+            // 플레이어가 공격 범위 이내에 있다면 공격 
+            if(Vector3.Distance(transform.position,player.position) < attackDistance)
             {
                 print("attack");
-
-              
-               
-               
                 currentTime = 0;
-
                 //공격 애니메이션 플레이 
                 anim.SetTrigger("StartAttck");
-
             }
-
         }
         else
         {
@@ -267,10 +261,9 @@ public class EnemyFSM : MonoBehaviour
         else
         {
             m_State = EnemyState.Die;
+
             print("Any State -> Die");
             
-            //죽음 
-            anim.SetTrigger("Die");
             Die();
         }
     }
@@ -292,7 +285,12 @@ public class EnemyFSM : MonoBehaviour
 
     void Die()
     {
-        StopAllCoroutines();
+        
+        //StopAllCoroutines();
+
+        //죽음 
+        
+        
 
         //죽음 상태 처리
         StartCoroutine(DieProcess());
@@ -309,15 +307,16 @@ public class EnemyFSM : MonoBehaviour
     {
         //캐릭터컨트롤러 비활성화
        // cc.enabled = false;
-
+        anim.SetTrigger("Die");
         //N초후 제거
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(3f);
         print("소멸");
-       // Destroy(gameObject);
-       Respawn();
+        // Destroy(gameObject);
+       
+       
     }
 
-    void Respawn()
+    public void Respawn()
     {
         // 적을 초기 위치로 이동시키고 체력을 회복하며 다시 활성화
         transform.position = originPos;
@@ -325,7 +324,7 @@ public class EnemyFSM : MonoBehaviour
         hp = maxHp;
         m_State = EnemyState.Idle;
         anim.SetTrigger("DieToIdle");
-        gameObject.SetActive(true);
+        //gameObject.SetActive(true);
         print("Respawn");
     }
 
