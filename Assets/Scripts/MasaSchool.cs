@@ -61,9 +61,9 @@ public class MasaSchool : MonoBehaviour
         // atk3 
         if(Input.GetKeyUp(KeyCode.X))
         {
-            int _atk3level = 1;//PlayerStats.playerStats.masaAtk3Level;
+            int _atk3level = PlayerStats.playerStats.GetSkillLevel("MasaAtk3");
             
-
+            print("_atk3Level" + _atk3level);
             int _damage = (int)(200* _atk3level * 1.2f);
 
             SetSingleAttack(300,_damage,4f);//Gold Damage range

@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.IO;
 using System.Runtime.InteropServices;
+using Unity.VisualScripting;
+using System.Collections.Generic;
 
 public class DataManager : MonoBehaviour
 {
@@ -38,7 +40,7 @@ public class DataManager : MonoBehaviour
 
     // 데이터 저장
     public void SavePlayerData()
-    {
+    { 
         print("save");
         PlayerData _pd = new PlayerData();
 
@@ -55,7 +57,7 @@ public class DataManager : MonoBehaviour
 
         int _index = 0;
 
-        foreach (var _skill in PlayerStats.playerStats.skillDictionary)
+        foreach(var _skill in PlayerStats.playerStats.skillDictionary)
         {
             _pd.skills[_index++] = _skill.Value;
         }

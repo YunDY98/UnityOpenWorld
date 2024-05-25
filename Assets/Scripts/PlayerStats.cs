@@ -255,7 +255,7 @@ public class PlayerStats : MonoBehaviour
         if(Input.GetKey(KeyCode.Alpha8))
         {
           // SetPlayerData();
-            SetSkillLevel(skillDictionary["MasaBuff1"],true);
+            SetSkillLevel(skillDictionary["MasaAtk3"],true);
 
         }
 
@@ -371,6 +371,15 @@ public class PlayerStats : MonoBehaviour
     //     return 1;
     // }
 
+    public int GetSkillLevel(string _key)
+    {
+
+        if(!skillDictionary.ContainsKey(_key))
+            return 1;
+
+        return skillDictionary[_key].level;
+    }
+
 
 
 
@@ -394,21 +403,39 @@ public class PlayerStats : MonoBehaviour
 
     void CreateSkill()
     {
+        int i = 0;
         foreach(KeyValuePair<string,Skill> enrty in skillDictionary)
         {
-            Skill skill = enrty.Value;
+            Skill _skill = enrty.Value;
             GameObject skillWindow = Instantiate(skillPrefab,contentPanel);
             TextMeshProUGUI[] texts = skillWindow.GetComponentsInChildren<TextMeshProUGUI>();
             Button button = skillWindow.GetComponentInChildren<Button>();
-            skillObjectDictionary[skill.whoSkill+skill.skillName] = skillWindow;
+            skillObjectDictionary[_skill.whoSkill+_skill.skillName] = skillWindow;
+
+            playerData = DataManager.dataManager.LoadPlayerData();
+
+            
+            
+            
+            _skill = playerData.skills[i++];
             //texts[0].text = // LV:고정
-            texts[(int)SkillText.Level].text = skill.level.ToString(); // 레벨이 몇인지
-            texts[(int)SkillText.SkillName].text = skill.skillName; // 스킬 이름 
+            texts[(int)SkillText.Level].text = _skill.level.ToString(); // 레벨이 몇인지
+            texts[(int)SkillText.SkillName].text = _skill.skillName; // 스킬 이름 
             //texts[3].text =  LevelUp 고정
-            texts[(int)SkillText.Gold].text = "300"; // 몇골드 드는지
+            texts[(int)SkillText.Gold].text = "300"; // 몇 골드 드는지
             //texts[5].text =  // G 고정 
 
-          
+
+            // 버튼 클릭 이벤트 추가
+            button.onClick.AddListener(() => SetSkillLevel(_skill,true));
+                
+               
+
+    
+            
+
+
+            
 
 
 
@@ -423,19 +450,21 @@ public class PlayerStats : MonoBehaviour
     {
         int _level = _skill.level;
         string _key = _skill.whoSkill+_skill.skillName;
-       
-        _skill = skillDictionary[_key];
+        print("level dddd"+ " " + _skill.level);
+        //_skill = skillDictionary[_key];
        
         GameObject skillWindow = skillObjectDictionary[_skill.whoSkill+_skill.skillName];
         TextMeshProUGUI[] texts = skillWindow.GetComponentsInChildren<TextMeshProUGUI>();
+         
         int _gold = (int)(500*(_level*1.1f)* (_level*2));
-        
+       
         if(!skillDictionary.ContainsKey(_key))
             return;
         if(UseGold(_gold) && _levelUp)
         {
             
             _skill.level += 1;
+            skillDictionary[_key].level = _skill.level;
 
             
             
