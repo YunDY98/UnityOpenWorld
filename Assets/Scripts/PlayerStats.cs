@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine.UI;
 using Unity.VisualScripting;
 using Palmmedia.ReportGenerator.Core;
+using UnityEngine.InputSystem.Interactions;
 
 public class PlayerStats : MonoBehaviour
 {
@@ -42,8 +43,8 @@ public class PlayerStats : MonoBehaviour
     public int exp;
     public int gold;
 
-    public int masaAtk1Level;
-    public int masaAtk3Level;
+    // public int masaAtk1Level;
+    // public int masaAtk3Level;
 
     
 
@@ -65,13 +66,13 @@ public class PlayerStats : MonoBehaviour
 
     public TextMeshProUGUI textgold;
     public TextMeshProUGUI textLevel;
-    public TextMeshProUGUI textMasaAtk1Level;
+    // public TextMeshProUGUI textMasaAtk1Level;
    
-    public TextMeshProUGUI textMasaAtk3Level;
+    // public TextMeshProUGUI textMasaAtk3Level;
 
 
-    public TextMeshProUGUI textMasaAtk1LevelUpGold;
-    public TextMeshProUGUI textMasaAtk3LevelUpGold;
+    // public TextMeshProUGUI textMasaAtk1LevelUpGold;
+    // public TextMeshProUGUI textMasaAtk3LevelUpGold;
 
     
     
@@ -100,10 +101,17 @@ public class PlayerStats : MonoBehaviour
         
         SetActiveCharacter((int)selectCharacter);
        
+       
+
+        AddSkill(new Skill("Masa","Atk1",1));
+        AddSkill(new Skill("Masa","Atk3",1));
+
+        AddSkill(new Skill("Masa","Buff1",1));
+        AddSkill(new Skill("Masa","Buff2",1));
+
+        
+        CreateSkill();
         SetPlayerData();
-        
-        
-        
        
     }
 
@@ -117,9 +125,19 @@ public class PlayerStats : MonoBehaviour
             SetLevel(playerData.level);
             SetExp(playerData.exp); 
             SetGold(playerData.gold);
-            masaAtk1Level = GetSkillLevel("Masa","Atk1",playerData.skills);
-            masaAtk3Level = GetSkillLevel("Masa","Atk3",playerData.skills);
+            // masaAtk1Level = GetSkillLevel("Masa","Atk1",playerData.skills);
+            // masaAtk3Level = GetSkillLevel("Masa","Atk3",playerData.skills);
+            int _skillsLength = playerData.skills.Length;
+            
+            for(int i=0;i<_skillsLength;i++)
+            {
+                Skill _skill = playerData.skills[i];
+                print("level" + _skill.level);
+                SetSkillLevel(_skill);
+               
 
+    
+            }
 
         }
         else
@@ -128,55 +146,58 @@ public class PlayerStats : MonoBehaviour
             SetLevel(1);
             SetExp(0);
             SetGold(1000);
-            masaAtk1Level = 1;
-            masaAtk3Level = 1;
+            // masaAtk1Level = 1;
+            // masaAtk3Level = 1;
 
         }    
-
-    }
-    public void UpdateSkillText()
-    {
-        SetSkillLevel(ref masaAtk1Level,ref textMasaAtk1Level,ref textMasaAtk1LevelUpGold);
-        SetSkillLevel(ref masaAtk3Level,ref textMasaAtk3Level, ref textMasaAtk3LevelUpGold);
-
-    }
+        
+        
     
-    public void Atk1SkillLevelUp()
-    {
-        SetSkillLevel(ref masaAtk1Level,ref textMasaAtk1Level,ref textMasaAtk1LevelUpGold,true);
-        
 
     }
+    // public void UpdateSkillText()
+    // {
+    //     SetSkillLevel(ref masaAtk1Level,ref textMasaAtk1Level,ref textMasaAtk1LevelUpGold);
+    //     SetSkillLevel(ref masaAtk3Level,ref textMasaAtk3Level, ref textMasaAtk3LevelUpGold);
 
-    public void Atk3SkillLevelUp()
-    {
-        SetSkillLevel(ref masaAtk3Level,ref textMasaAtk3Level, ref textMasaAtk3LevelUpGold,true);
-    }
-
-    public void SetSkillLevel(ref int _level,ref TextMeshProUGUI _textLevel,ref TextMeshProUGUI _textGold,bool _levelUp = false)
-    {
+    // }
+    
+    // public void Atk1SkillLevelUp()
+    // {
+    //     SetSkillLevel(ref masaAtk1Level,ref textMasaAtk1Level,ref textMasaAtk1LevelUpGold,true);
         
-        int _gold = (int)(500*(_level*1.1f)* (_level*2));
 
-        if(UseGold(_gold) && _levelUp)
-        {
-            _level += 1;
-            _textLevel.text = _level.ToString();
-            _textGold.text = _gold.ToString();
+    // }
+
+    // public void Atk3SkillLevelUp()
+    // {
+    //     SetSkillLevel(ref masaAtk3Level,ref textMasaAtk3Level, ref textMasaAtk3LevelUpGold,true);
+    // }
+
+    // public void SetSkillLevel(ref int _level,ref TextMeshProUGUI _textLevel,ref TextMeshProUGUI _textGold,bool _levelUp = false)
+    // {
+        
+    //     int _gold = (int)(500*(_level*1.1f)* (_level*2));
+
+    //     if(UseGold(_gold) && _levelUp)
+    //     {
+    //         _level += 1;
+    //         _textLevel.text = _level.ToString();
+    //         _textGold.text = _gold.ToString();
             
             
-        }
-        else
-        {
-            _textLevel.text = _level.ToString();
-            _textGold.text = _gold.ToString();
+    //     }
+    //     else
+    //     {
+    //         _textLevel.text = _level.ToString();
+    //         _textGold.text = _gold.ToString();
 
-        }
+    //     }
        
 
         
        
-    }
+    // }
    
 
     public void SetLevel(int _level)
@@ -229,6 +250,13 @@ public class PlayerStats : MonoBehaviour
             playerMove.CharacterReset();
             
             
+        }
+
+        if(Input.GetKey(KeyCode.Alpha8))
+        {
+          // SetPlayerData();
+            SetSkillLevel(skillDictionary["MasaBuff1"],true);
+
         }
 
         if(gold <= 30)
@@ -322,26 +350,138 @@ public class PlayerStats : MonoBehaviour
             
         }
     }
-    public int GetSkillLevel(string whoskill, string skillName, Skill[] skills)
-    {
-        // Skill 배열이 유효한지 확인합니다.
-        if (skills != null)
-        {
-            // Skill 배열을 반복하면서 주어진 whoskill과 skillName을 가진 스킬을 찾습니다.
-            foreach (Skill skill in skills)
-            {
-                // 현재 스킬의 whoskill과 skillName이 주어진 값과 일치하는지 확인합니다.
-                if (skill.whoskill == whoskill && skill.skillName == skillName)
-                {
-                    // 일치하는 스킬을 찾으면 해당 스킬의 level 값을 반환합니다.
-                    return skill.level;
-                }
-            }
-        }
+    // public int GetSkillLevel(string whoskill, string skillName, Skill[] skills)
+    // {
+    //     // Skill 배열이 유효한지 확인합니다.
+    //     if (skills != null)
+    //     {
+    //         // Skill 배열을 반복하면서 주어진 whoskill과 skillName을 가진 스킬을 찾습니다.
+    //         foreach (Skill skill in skills)
+    //         {
+    //             // 현재 스킬의 whoskill과 skillName이 주어진 값과 일치하는지 확인합니다.
+    //             if (skill.whoSkill == whoskill && skill.skillName == skillName)
+    //             {
+    //                 // 일치하는 스킬을 찾으면 해당 스킬의 level 값을 반환합니다.
+    //                 return skill.level;
+    //             }
+    //         }
+    //     }
 
-        // 일치하는 스킬을 찾지 못하면 기본값으로 1을 반환합니다.
-        return 1;
+    //     // 일치하는 스킬을 찾지 못하면 기본값으로 1을 반환합니다.
+    //     return 1;
+    // }
+
+
+
+
+
+    public GameObject skillPrefab;
+    public Transform contentPanel;
+
+    //////////////////////
+
+    public Dictionary<string, Skill> skillDictionary = new();
+
+    public Dictionary<string, GameObject> skillObjectDictionary = new();
+   
+
+    void AddSkill(Skill skill)
+    {
+        skillDictionary[skill.whoSkill + skill.skillName] = skill;
     }
+
+    
+
+    void CreateSkill()
+    {
+        foreach(KeyValuePair<string,Skill> enrty in skillDictionary)
+        {
+            Skill skill = enrty.Value;
+            GameObject skillWindow = Instantiate(skillPrefab,contentPanel);
+            TextMeshProUGUI[] texts = skillWindow.GetComponentsInChildren<TextMeshProUGUI>();
+            Button button = skillWindow.GetComponentInChildren<Button>();
+            skillObjectDictionary[skill.whoSkill+skill.skillName] = skillWindow;
+            //texts[0].text = // LV:고정
+            texts[(int)SkillText.Level].text = skill.level.ToString(); // 레벨이 몇인지
+            texts[(int)SkillText.SkillName].text = skill.skillName; // 스킬 이름 
+            //texts[3].text =  LevelUp 고정
+            texts[(int)SkillText.Gold].text = "300"; // 몇골드 드는지
+            //texts[5].text =  // G 고정 
+
+          
+
+
+
+        }
+    }
+
+   
+
+   
+
+    void SetSkillLevel(Skill _skill,bool _levelUp = false) 
+    {
+        int _level = _skill.level;
+        string _key = _skill.whoSkill+_skill.skillName;
+       
+        _skill = skillDictionary[_key];
+       
+        GameObject skillWindow = skillObjectDictionary[_skill.whoSkill+_skill.skillName];
+        TextMeshProUGUI[] texts = skillWindow.GetComponentsInChildren<TextMeshProUGUI>();
+        int _gold = (int)(500*(_level*1.1f)* (_level*2));
+        
+        if(!skillDictionary.ContainsKey(_key))
+            return;
+        if(UseGold(_gold) && _levelUp)
+        {
+            
+            _skill.level += 1;
+
+            
+            
+                
+            // UI 요소의 텍스트를 변경합니다.
+            texts[(int)SkillText.Level].text = _skill.level.ToString(); // 레벨이 몇인지
+            //texts[2].text = skill.skillName; // 스킬 이름 
+            texts[(int)SkillText.Gold].text = _gold.ToString(); // 몇골드 드는지
+           
+        }
+        else
+        {
+            
+            texts[(int)SkillText.Level].text = _level.ToString(); // 레벨이 몇인지
+            
+            texts[(int)SkillText.Gold].text = _gold.ToString(); // 몇골드 드는지
+
+        }
+    }  
+
+    
+ 
+
+
+
+
+
+
+
+
+
+
+    enum SkillText
+    {
+        Level = 1,
+        SkillName = 2,
+        Gold = 4,
+
+
+    }
+
+
+
+
+
+    
 
    
 }

@@ -40,58 +40,39 @@ public class DataManager : MonoBehaviour
     public void SavePlayerData()
     {
         print("save");
-        PlayerData pd = new PlayerData();
+        PlayerData _pd = new PlayerData();
 
         
 
-        pd.level = PlayerStats.playerStats.level;
-        pd.exp = PlayerStats.playerStats.exp;
-        pd.gold = PlayerStats.playerStats.gold;
+        _pd.level = PlayerStats.playerStats.level;
+        _pd.exp = PlayerStats.playerStats.exp;
+        _pd.gold = PlayerStats.playerStats.gold;
         
 
-        // // 현재 스킬 배열의 길이를 저장해둡니다.
-        // int currentSkillCount = pd.skills != null ? pd.skills.Length : 0;
+        int _skillCount = PlayerStats.playerStats.skillDictionary.Count;
 
-        // // 새로운 스킬을 추가하려면 기존 스킬 배열보다 하나 더 큰 배열이 필요합니다.
-        // Skill[] newSkills = new Skill[currentSkillCount + 1];
+        _pd.skills = new Skill[_skillCount];
 
-        // // 기존 스킬을 새로운 배열에 복사합니다.
-        // if (pd.skills != null)
-        // {
-        //     for (int i = 0; i < currentSkillCount; i++)
-        //     {
-        //         newSkills[i] = pd.skills[i];
-        //     }
-        // }
-        // // 새로운 스킬을 배열에 추가합니다.
-        // newSkills[currentSkillCount] = newSkill;
+        int _index = 0;
 
-        // // PlayerData의 스킬 배열을 새로운 배열로 교체합니다.
-        // pd.skills = newSkills;
-
-        pd.skills = new Skill[2];
-
-        
-        Skill Skill = new Skill();
-        Skill.whoskill = "Masa";
-        Skill.skillName = "Atk1"; 
-        Skill.level = PlayerStats.playerStats.masaAtk1Level;
-
-        Skill Skill3 = new Skill();
-        Skill3.whoskill = "Masa";
-        Skill3.skillName = "Atk3"; 
-        Skill3.level = PlayerStats.playerStats.masaAtk3Level;
+        foreach (var _skill in PlayerStats.playerStats.skillDictionary)
+        {
+            _pd.skills[_index++] = _skill.Value;
+        }
 
         
        
-        pd.skills[0] = Skill;  
-        pd.skills[1] = Skill3;
+       
+
+        
+       
+       
 
 
        
 
         // 데이터를 JSON으로 직렬화
-        string jsonData = JsonUtility.ToJson(pd);
+        string jsonData = JsonUtility.ToJson(_pd);
 
         // JSON 데이터를 파일로 저장
         File.WriteAllText(dataFilePath, jsonData);
@@ -145,9 +126,15 @@ public class Item
 [System.Serializable]
 public class Skill
 {
-    public string whoskill;
+    public string whoSkill;
     public string skillName;
     public int level;
+    public Skill(string _whoSKill,string _skillName, int _level)
+    {
+        this.whoSkill = _whoSKill;
+        this.skillName = _skillName;
+        this.level = _level;
+    }
    
   
 }

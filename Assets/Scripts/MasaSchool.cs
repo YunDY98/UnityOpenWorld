@@ -47,7 +47,7 @@ public class MasaSchool : MonoBehaviour
         // atk1 
         if(Input.GetKeyUp(KeyCode.C))
         {
-            int atk1level =  PlayerStats.playerStats.masaAtk1Level;
+            int atk1level =  1;//PlayerStats.playerStats.masaAtk1Level;
             if(PlayerStats.playerStats.UseGold((int)(multiAttackGold * atk1level*1.1f)))
             {
                 IsMove();
@@ -61,11 +61,13 @@ public class MasaSchool : MonoBehaviour
         // atk3 
         if(Input.GetKeyUp(KeyCode.X))
         {
-            int atk3level = PlayerStats.playerStats.masaAtk3Level;
-            //Gold Damage range
-            int _damage = (int)(200* atk3level * 1.2f);
-            SetSingleAttack(300,_damage,4f);
-            if(PlayerStats.playerStats.UseGold((int)(singleAttackGold * atk3level*1.1f)))
+            int _atk3level = 1;//PlayerStats.playerStats.masaAtk3Level;
+            
+
+            int _damage = (int)(200* _atk3level * 1.2f);
+
+            SetSingleAttack(300,_damage,4f);//Gold Damage range
+            if(PlayerStats.playerStats.UseGold((int)(singleAttackGold * _atk3level*1.1f)))
             {
                 IsMove();
                 anim.SetTrigger("Attack3");

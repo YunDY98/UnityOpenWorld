@@ -207,7 +207,9 @@ public class GameManager : MonoBehaviour
         
         if(Input.GetKeyDown(KeyCode.K))
         {
-            PlayerStats.playerStats.UpdateSkillText();
+            // 스킬레벨 정보 업데이트 
+           // PlayerStats.playerStats.UpdateSkillText();
+
             ToggleCursor();
             skill.SetActive(!skill.activeSelf);
            
