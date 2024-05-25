@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using Unity.VisualScripting;
 using Palmmedia.ReportGenerator.Core;
 using UnityEngine.InputSystem.Interactions;
+using UnityEngine.AI;
 
 public class PlayerStats : MonoBehaviour
 {
@@ -26,9 +27,6 @@ public class PlayerStats : MonoBehaviour
         Solider,
 
     }
-
-    
-
     public SelectCharacter selectCharacter;
 
     public PlayerMove playerMove;
@@ -62,7 +60,6 @@ public class PlayerStats : MonoBehaviour
 
     private int maxExp = 10000;
 
-    public float x,y,z;
 
     public TextMeshProUGUI textgold;
     public TextMeshProUGUI textLevel;
@@ -74,10 +71,18 @@ public class PlayerStats : MonoBehaviour
     // public TextMeshProUGUI textMasaAtk1LevelUpGold;
     // public TextMeshProUGUI textMasaAtk3LevelUpGold;
 
-    
-    
+    // 스킬 Ui
+    public GameObject skillPrefab;
+    //스킬 담을 패널 
+    public Transform contentPanel;
 
+    //////////////////////
 
+    //스킬 딕셔너리
+    public Dictionary<string, Skill> skillDictionary = new();
+    //스킬 패널에 추가된 스킬들 
+    public Dictionary<string, GameObject> skillObjectDictionary = new();
+   
     void Awake()
     {   
         // 이미 인스턴스가 존재한다면 파괴합니다.
@@ -93,22 +98,30 @@ public class PlayerStats : MonoBehaviour
     }
 
 
-
     // Start is called before the first frame update
     void Start()
     {
+        playerData = DataManager.dataManager.LoadPlayerData();
+
+       
         selectedIndex = 0;
         
+        //활성화된 캐릭터 
         SetActiveCharacter((int)selectCharacter);
+        
+        // skills 배열에 저장된 스킬
+        if(playerData.skills != null)
+        {
+            foreach(var _skill in playerData.skills)
+            {
+                SetSkill(new Skill(_skill.whoSkill, _skill.skillName, _skill.level));
+               
+            }
        
-       
 
-        AddSkill(new Skill("Masa","Atk1",1));
-        AddSkill(new Skill("Masa","Atk3",1));
+        }
 
-        AddSkill(new Skill("Masa","Buff1",1));
-        AddSkill(new Skill("Masa","Buff2",1));
-
+         
         
         CreateSkill();
         SetPlayerData();
@@ -118,7 +131,7 @@ public class PlayerStats : MonoBehaviour
     //데이터 불러오기 
     public void SetPlayerData()
     {
-        playerData = DataManager.dataManager.LoadPlayerData();
+        
 
         if(playerData != null)
         {
@@ -128,15 +141,13 @@ public class PlayerStats : MonoBehaviour
             // masaAtk1Level = GetSkillLevel("Masa","Atk1",playerData.skills);
             // masaAtk3Level = GetSkillLevel("Masa","Atk3",playerData.skills);
             int _skillsLength = playerData.skills.Length;
-            
+
             for(int i=0;i<_skillsLength;i++)
             {
                 Skill _skill = playerData.skills[i];
                 print("level" + _skill.level);
                 SetSkillLevel(_skill);
-               
-
-    
+       
             }
 
         }
@@ -153,7 +164,6 @@ public class PlayerStats : MonoBehaviour
         
         
     
-
     }
     // public void UpdateSkillText()
     // {
@@ -254,8 +264,7 @@ public class PlayerStats : MonoBehaviour
 
         if(Input.GetKey(KeyCode.Alpha8))
         {
-          // SetPlayerData();
-            SetSkillLevel(skillDictionary["MasaAtk3"],true);
+            NewSkill();
 
         }
 
@@ -370,13 +379,13 @@ public class PlayerStats : MonoBehaviour
     //     // 일치하는 스킬을 찾지 못하면 기본값으로 1을 반환합니다.
     //     return 1;
     // }
-
     public int GetSkillLevel(string _key)
     {
-
+        print(skillDictionary[_key].level);
+       
         if(!skillDictionary.ContainsKey(_key))
-            return 1;
-
+            return -1;
+       
         return skillDictionary[_key].level;
     }
 
@@ -384,23 +393,55 @@ public class PlayerStats : MonoBehaviour
 
 
 
-    public GameObject skillPrefab;
-    public Transform contentPanel;
-
-    //////////////////////
-
-    public Dictionary<string, Skill> skillDictionary = new();
-
-    public Dictionary<string, GameObject> skillObjectDictionary = new();
-   
-
-    void AddSkill(Skill skill)
+    // 딕셔너리에 스킬 추가 
+    void SetSkill(Skill _skill)
     {
-        skillDictionary[skill.whoSkill + skill.skillName] = skill;
+        skillDictionary[_skill.whoSkill + _skill.skillName] = _skill;
     }
 
-    
+    public void NewSkill()
+    {
+        
+        Skill _skill = new Skill("Masa","Atk1",15);
+        AddSkill(_skill);
 
+    }
+
+    // 스킬 추가 
+    void AddSkill(Skill _skill)
+    {
+        string _key = _skill.whoSkill + _skill.skillName;
+        
+        
+        if(skillDictionary.ContainsKey(_key))
+            return;
+        skillDictionary[_key] = _skill;
+       
+
+
+
+        GameObject skillWindow = Instantiate(skillPrefab,contentPanel);
+        TextMeshProUGUI[] texts = skillWindow.GetComponentsInChildren<TextMeshProUGUI>();
+        Button button = skillWindow.GetComponentInChildren<Button>();
+        skillObjectDictionary[_key] = skillWindow;
+       
+       
+        
+        //texts[0].text = // LV:고정
+        texts[(int)SkillText.Level].text = _skill.level.ToString(); // 레벨이 몇인지
+        texts[(int)SkillText.SkillName].text = _skill.skillName; // 스킬 이름 
+        //texts[3].text =  LevelUp 고정
+        texts[(int)SkillText.Gold].text = "300"; // 몇 골드 드는지
+        //texts[5].text =  // G 고정 
+        // 버튼 클릭 이벤트 추가
+        button.onClick.AddListener(() => SetSkillLevel(_skill,true));
+
+       
+
+
+    }
+
+    // 딕셔너리에 추가된 스킬을 ui로 생성 
     void CreateSkill()
     {
         int i = 0;
@@ -412,11 +453,7 @@ public class PlayerStats : MonoBehaviour
             Button button = skillWindow.GetComponentInChildren<Button>();
             skillObjectDictionary[_skill.whoSkill+_skill.skillName] = skillWindow;
 
-            playerData = DataManager.dataManager.LoadPlayerData();
-
-            
-            
-            
+             
             _skill = playerData.skills[i++];
             //texts[0].text = // LV:고정
             texts[(int)SkillText.Level].text = _skill.level.ToString(); // 레벨이 몇인지
@@ -428,31 +465,15 @@ public class PlayerStats : MonoBehaviour
 
             // 버튼 클릭 이벤트 추가
             button.onClick.AddListener(() => SetSkillLevel(_skill,true));
-                
-               
-
-    
-            
-
-
-            
-
-
-
+      
         }
     }
-
-   
-
-   
 
     void SetSkillLevel(Skill _skill,bool _levelUp = false) 
     {
         int _level = _skill.level;
         string _key = _skill.whoSkill+_skill.skillName;
-        print("level dddd"+ " " + _skill.level);
-        //_skill = skillDictionary[_key];
-       
+        
         GameObject skillWindow = skillObjectDictionary[_skill.whoSkill+_skill.skillName];
         TextMeshProUGUI[] texts = skillWindow.GetComponentsInChildren<TextMeshProUGUI>();
          
@@ -466,9 +487,7 @@ public class PlayerStats : MonoBehaviour
             _skill.level += 1;
             skillDictionary[_key].level = _skill.level;
 
-            
-            
-                
+               
             // UI 요소의 텍스트를 변경합니다.
             texts[(int)SkillText.Level].text = _skill.level.ToString(); // 레벨이 몇인지
             //texts[2].text = skill.skillName; // 스킬 이름 
@@ -485,18 +504,6 @@ public class PlayerStats : MonoBehaviour
         }
     }  
 
-    
- 
-
-
-
-
-
-
-
-
-
-
     enum SkillText
     {
         Level = 1,
@@ -505,12 +512,6 @@ public class PlayerStats : MonoBehaviour
 
 
     }
-
-
-
-
-
-    
 
    
 }

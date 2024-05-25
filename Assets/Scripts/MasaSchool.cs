@@ -47,34 +47,15 @@ public class MasaSchool : MonoBehaviour
         // atk1 
         if(Input.GetKeyUp(KeyCode.C))
         {
-            int atk1level =  1;//PlayerStats.playerStats.masaAtk1Level;
-            if(PlayerStats.playerStats.UseGold((int)(multiAttackGold * atk1level*1.1f)))
-            {
-                IsMove();
-                anim.SetTrigger("Attack1");
-                print(atk1level);
-                //Range, cnt , damge
-                MultiAttack(2f * (atk1level * 1.1f) ,(int)(1 + (atk1level/10)),(int)(10 * atk1level*1.2f));
-            }
+            MasaAtk1();
         }
+
+        
 
         // atk3 
         if(Input.GetKeyUp(KeyCode.X))
         {
-            int _atk3level = PlayerStats.playerStats.GetSkillLevel("MasaAtk3");
-            
-            print("_atk3Level" + _atk3level);
-            int _damage = (int)(200* _atk3level * 1.2f);
-
-            SetSingleAttack(300,_damage,4f);//Gold Damage range
-            if(PlayerStats.playerStats.UseGold((int)(singleAttackGold * _atk3level*1.1f)))
-            {
-                IsMove();
-                anim.SetTrigger("Attack3");
-                
-                
-               
-            }
+            MasaAtk3();
         }
 
         if(Input.GetKeyUp(KeyCode.Alpha1))
@@ -89,11 +70,50 @@ public class MasaSchool : MonoBehaviour
             }
 
         }
+ 
         
+    }
 
-       
-
+    void MasaAtk3()
+    {
+        if(PlayerStats.playerStats.GetSkillLevel("MasaAtk3") < 0)
+        {
+            return;
+        }
+        int _atk3level = PlayerStats.playerStats.GetSkillLevel("MasaAtk3");
         
+        
+        int _damage = (int)(200* _atk3level * 1.2f);
+        //Gold, Damage, range
+        SetSingleAttack(300,_damage,4f);
+        if(PlayerStats.playerStats.UseGold((int)(singleAttackGold * _atk3level*1.1f)))
+        {
+            IsMove();
+            anim.SetTrigger("Attack3");
+            
+            
+           
+        }
+
+    }
+
+    void MasaAtk1()
+    {
+        if(PlayerStats.playerStats.GetSkillLevel("MasaAtk1") < 0)
+        {
+            return;
+        }
+        int atk1level =  PlayerStats.playerStats.GetSkillLevel("MasaAtk1");
+        if(PlayerStats.playerStats.UseGold((int)(multiAttackGold * atk1level*1.1f)))
+        {
+            IsMove();
+            anim.SetTrigger("Attack1");
+            print(atk1level);
+            //Range, cnt , damage
+            MultiAttack(2f * (atk1level * 1.1f) ,(int)(1 + (atk1level/10)),(int)(10 * atk1level*1.2f));
+           
+        }
+
     }
 
    

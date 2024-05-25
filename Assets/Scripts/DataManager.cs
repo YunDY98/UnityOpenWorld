@@ -32,10 +32,6 @@ public class DataManager : MonoBehaviour
     void Start()
     {
        
-        
-
-       
-       
     }
 
     // 데이터 저장
@@ -50,7 +46,7 @@ public class DataManager : MonoBehaviour
         _pd.exp = PlayerStats.playerStats.exp;
         _pd.gold = PlayerStats.playerStats.gold;
         
-
+        // 스킬 총 갯수 
         int _skillCount = PlayerStats.playerStats.skillDictionary.Count;
 
         _pd.skills = new Skill[_skillCount];
@@ -62,16 +58,6 @@ public class DataManager : MonoBehaviour
             _pd.skills[_index++] = _skill.Value;
         }
 
-        
-       
-       
-
-        
-       
-       
-
-
-       
 
         // 데이터를 JSON으로 직렬화
         string jsonData = JsonUtility.ToJson(_pd);
