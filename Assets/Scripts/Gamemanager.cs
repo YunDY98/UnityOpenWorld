@@ -5,8 +5,6 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements.Experimental;
 using TMPro;
-using UnityEngine.InputSystem;
-using Unity.VisualScripting;
 public class GameManager : MonoBehaviour
 {
     //게임 상태 상수
@@ -58,7 +56,7 @@ public class GameManager : MonoBehaviour
     
     public PlayerMove player;
 
-    private Stack<bool> uiStack = new Stack<bool>();
+   
    
 
     //움직임 관련 일시정지
@@ -67,7 +65,7 @@ public class GameManager : MonoBehaviour
     //캐릭터 정면으로 보기 
     public bool showFace = false;
 
-    
+    private bool isCursorVisible;
    
     
   
@@ -198,67 +196,34 @@ public class GameManager : MonoBehaviour
         
         
     }
-    
 
     public void Skill()
     {
-        
+        if(esc.activeSelf == true)
+        {
+            return;
+        }
         
         
         if(Input.GetKeyDown(KeyCode.K))
         {
-            
-            
-            
+            // 스킬레벨 정보 업데이트 
+           // PlayerStats.playerStats.UpdateSkillText();
 
-            UiStack(!skill.activeSelf);
+            ToggleCursor();
             skill.SetActive(!skill.activeSelf);
            
         }
 
     }
 
-    void UiStack(bool _bool)
-    {
-        
-        if(_bool)
-        {
-            uiStack.Push(true);
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
-            Time.timeScale = 0;
-        }
-        else
-        {  
-            if(0 != uiStack.Count)
-                uiStack.Pop();
-
-        }
-        
-        if(0 == uiStack.Count)
-        {
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
-            Time.timeScale = 1;
-        }
-
-           
-       
-            
-        
-           
-    }
-
-
-
     public void ESC()
     {
         if(Input.GetKeyDown(KeyCode.Escape))
         {
-            bool _bool =!esc.activeSelf;
-            UiStack(_bool);
-            esc.SetActive(_bool);
-            
+            ToggleCursor();
+            esc.SetActive(!esc.activeSelf);
+            Time.timeScale = isCursorVisible ? 0 : 1;
         }
 
     }
@@ -272,7 +237,13 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(1);
     }
 
-    
+    void ToggleCursor()
+    {
+        isCursorVisible = !isCursorVisible;
+        Cursor.visible = isCursorVisible;
+        Cursor.lockState = isCursorVisible ? CursorLockMode.None : CursorLockMode.Locked;
+    }
+
     
 
    

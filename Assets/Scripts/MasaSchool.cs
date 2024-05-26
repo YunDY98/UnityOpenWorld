@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -13,10 +12,7 @@ public class MasaSchool : MonoBehaviour
     
     private List<GameObject> enemies = new List<GameObject>(); // 적 배열
 
-    // 유저가 설정한 키를 저장할 변수
-    private KeyCode[] userKeys = new KeyCode[108];
-    
-    
+
 
     
     private int singleAttackPower;
@@ -34,8 +30,6 @@ public class MasaSchool : MonoBehaviour
     void Start()
     {
         anim = GetComponent<Animator>();
-        userKeys[0] = KeyCode.C;
-        userKeys[1] = KeyCode.X;
        
     }
 
@@ -51,7 +45,7 @@ public class MasaSchool : MonoBehaviour
 
         
         // atk1 
-        if(Input.GetKeyUp(userKeys[0]))
+        if(Input.GetKeyUp(KeyCode.C))
         {
             MasaAtk1();
         }
@@ -59,7 +53,7 @@ public class MasaSchool : MonoBehaviour
         
 
         // atk3 
-        if(Input.GetKeyUp(userKeys[1]))
+        if(Input.GetKeyUp(KeyCode.X))
         {
             MasaAtk3();
         }
