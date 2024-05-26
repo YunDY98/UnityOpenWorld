@@ -1,49 +1,43 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class DragUI : MonoBehaviour, IPointerDownHandler, IDragHandler
+public class DragUI : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
     private RectTransform rectTransform;
     private Canvas canvas;
-    private Vector2 originalPosition;
-    private bool isDrag;
+    private Vector2 originalPointerPosition;
+    private Vector2 originalRectTransformPosition;
+    private RectTransform parentRectTransform;
+    private bool isDragging;
 
     private void Start()
     {
         rectTransform = GetComponent<RectTransform>();
         canvas = GetComponentInParent<Canvas>();
+        parentRectTransform = canvas.GetComponent<RectTransform>();
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        originalPosition = rectTransform.anchoredPosition;
-        isDrag = true;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(parentRectTransform, eventData.position, eventData.pressEventCamera, out originalPointerPosition);
+        originalRectTransformPosition = rectTransform.anchoredPosition;
+        isDragging = true;
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (isDrag)
+        if (isDragging)
         {
-            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.transform as RectTransform, eventData.position, eventData.pressEventCamera, out Vector2 localPoint))
+            Vector2 localPointerPosition;
+            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(parentRectTransform, eventData.position, eventData.pressEventCamera, out localPointerPosition))
             {
-                rectTransform.anchoredPosition = localPoint;
+                rectTransform.anchoredPosition = originalRectTransformPosition + localPointerPosition - originalPointerPosition;
             }
         }
     }
 
-    private void Update()
+    public void OnPointerUp(PointerEventData eventData)
     {
-        if (isDrag && Input.GetMouseButton(0))
-        {
-            Vector2 mousePos = Input.mousePosition;
-            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.transform as RectTransform, mousePos, null, out Vector2 localPoint))
-            {
-                rectTransform.anchoredPosition = localPoint;
-            }
-        }
-        else
-        {
-            isDrag = false;
-        }
+        isDragging = false;
     }
 }

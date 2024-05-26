@@ -46,6 +46,7 @@ public class GameManager : MonoBehaviour
     public GameObject esc;
     public GameObject option;
 
+    public GameObject keyboard;
     public GameObject skill;
 
     public Slider rotSpeedSlider;
@@ -148,6 +149,7 @@ public class GameManager : MonoBehaviour
 
         ESC();
         Skill();
+        Keyboard();
 
         
     }
@@ -209,21 +211,21 @@ public class GameManager : MonoBehaviour
         {
             
             
-            
+            bool _bool = !skill.activeSelf;
 
-            UiStack(!skill.activeSelf);
-            skill.SetActive(!skill.activeSelf);
+            UiStack(_bool);
+            skill.SetActive(_bool);
            
         }
 
     }
 
-    void UiStack(bool _bool)
+     void UiStack(bool _bool)
     {
         
         if(_bool)
         {
-            uiStack.Push(true);
+            uiStack.Push(_bool);
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
             Time.timeScale = 0;
@@ -248,6 +250,25 @@ public class GameManager : MonoBehaviour
         
            
     }
+
+    
+    void Keyboard()
+    {
+        if(Input.GetKeyDown(KeyCode.M))
+        {
+            bool _bool = !keyboard.activeSelf;
+            UiStack(_bool);
+            keyboard.SetActive(_bool);
+            
+        }
+
+    }
+           
+       
+            
+        
+           
+    
 
 
 

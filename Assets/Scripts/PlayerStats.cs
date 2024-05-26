@@ -424,6 +424,21 @@ public class PlayerStats : MonoBehaviour
         TextMeshProUGUI[] texts = skillWindow.GetComponentsInChildren<TextMeshProUGUI>();
         Button button = skillWindow.GetComponentInChildren<Button>();
         skillObjectDictionary[_key] = skillWindow;
+
+        // 이미지 로드 및 할당
+        Sprite skillImage = Resources.Load<Sprite>("Sprites/" + _key); // 이미지 파일 경로
+        Transform imageTransform = skillWindow.transform.Find("SkillImage");
+        if(imageTransform != null)
+        {
+            Image imageComponent = imageTransform.GetComponent<Image>();
+            if(imageComponent != null)
+            {
+                if(skillImage != null)
+                {
+                    imageComponent.sprite = skillImage;
+                }
+            }
+        }
        
        
         
@@ -441,6 +456,8 @@ public class PlayerStats : MonoBehaviour
 
     }
 
+    
+
     // 딕셔너리에 추가된 스킬을 ui로 생성 
     void CreateSkill()
     {
@@ -448,10 +465,28 @@ public class PlayerStats : MonoBehaviour
         foreach(KeyValuePair<string,Skill> enrty in skillDictionary)
         {
             Skill _skill = enrty.Value;
+            string _key = _skill.whoSkill+_skill.skillName;
             GameObject skillWindow = Instantiate(skillPrefab,contentPanel);
             TextMeshProUGUI[] texts = skillWindow.GetComponentsInChildren<TextMeshProUGUI>();
             Button button = skillWindow.GetComponentInChildren<Button>();
-            skillObjectDictionary[_skill.whoSkill+_skill.skillName] = skillWindow;
+            skillObjectDictionary[_key] = skillWindow;
+
+            // 이미지 로드 및 할당
+            Sprite skillImage = Resources.Load<Sprite>("Sprites/" + _key); // 이미지 파일 경로
+
+            Transform imageTransform = skillWindow.transform.Find("SkillImage");
+            if (imageTransform != null)
+            {
+                Image imageComponent = imageTransform.GetComponent<Image>();
+                if (imageComponent != null)
+                {
+                    if (skillImage != null)
+                    {
+                        imageComponent.sprite = skillImage;
+                    }
+                }
+            }
+
 
              
             _skill = playerData.skills[i++];
