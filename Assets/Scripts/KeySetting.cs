@@ -1,7 +1,9 @@
 
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+
 
 
 public class KeySetting : MonoBehaviour, IDropHandler
@@ -13,7 +15,10 @@ public class KeySetting : MonoBehaviour, IDropHandler
     
     Image image;
 
-    public Button btn;
+    Button btn;
+
+    Text text;
+
 
     private float doubleClickTime = 0.3f; // 더블 클릭 감지를 위한 시간 간격
     private float lastClickTime = 0f; // 마지막으로 클릭한 시간
@@ -24,6 +29,8 @@ public class KeySetting : MonoBehaviour, IDropHandler
         btn = GetComponent<Button>();
 
         btn.onClick.AddListener(Drop);
+
+        text = GetComponentInChildren<Text>();
         
     }
 
@@ -40,6 +47,17 @@ public class KeySetting : MonoBehaviour, IDropHandler
             Sprite skillImage = Resources.Load<Sprite>("Sprites/" + key); // 이미지 파일 경로
             
             image.sprite = skillImage;
+
+            string _text = text.text;
+
+            int _KeyCode = (int)_text[0];
+            
+            
+            
+            GameManager.gameManager.userKeys[StringToEnum(ref key)] = (KeyCode)_KeyCode;
+               
+            
+            
             
             
         }
@@ -47,6 +65,14 @@ public class KeySetting : MonoBehaviour, IDropHandler
         
     }
 
+    int StringToEnum(ref string _key)
+    {
+        SkillEnum _enum = (SkillEnum)System.Enum.Parse(typeof(SkillEnum), _key);
+
+
+        return (int)_enum;
+    }
+    // 키셋팅된 단축키 변경 
     public void Drop()
     {
 
@@ -59,6 +85,7 @@ public class KeySetting : MonoBehaviour, IDropHandler
             // 더블 클릭 이벤트 처리
             Debug.Log("Double click!");
             image.sprite = null;
+            GameManager.gameManager.userKeys[StringToEnum(ref key)] = KeyCode.None;
            
         }
 
@@ -68,4 +95,11 @@ public class KeySetting : MonoBehaviour, IDropHandler
     }
 
      
+}
+public enum SkillEnum
+{
+    none = 0,
+    MasaAtk1,
+
+
 }

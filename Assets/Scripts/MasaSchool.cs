@@ -51,7 +51,7 @@ public class MasaSchool : MonoBehaviour
 
         
         // atk1 
-        if(Input.GetKeyUp(userKeys[0]))
+        if(Input.GetKeyUp(GameManager.gameManager.userKeys[(int)SkillEnum.MasaAtk1]))
         {
             MasaAtk1();
         }
@@ -64,18 +64,18 @@ public class MasaSchool : MonoBehaviour
             MasaAtk3();
         }
 
-        if(Input.GetKeyUp(KeyCode.Alpha1))
-        {
-            if(PlayerStats.playerStats.UseGold((int)(300)))
-            {
-                IsMove();
-                anim.SetTrigger("Attack3");
+        // if(Input.GetKeyUp(KeyCode.Alpha1))
+        // {
+        //     if(PlayerStats.playerStats.UseGold((int)(300)))
+        //     {
+        //         IsMove();
+        //         anim.SetTrigger("Attack3");
                 
                 
                
-            }
+        //     }
 
-        }
+        // }
  
         
     }

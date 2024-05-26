@@ -68,6 +68,8 @@ public class GameManager : MonoBehaviour
     //캐릭터 정면으로 보기 
     public bool showFace = false;
 
+    // 유저가 설정한 키를 저장할 변수
+    public KeyCode[] userKeys = new KeyCode[108];
     
    
     
