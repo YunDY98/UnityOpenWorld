@@ -487,6 +487,8 @@ public class PlayerStats : MonoBehaviour
                 }
             }
 
+            SkillInfo skillInfo = skillWindow.GetComponentInChildren<SkillInfo>();
+            skillInfo._key = _key;
 
              
             _skill = playerData.skills[i++];
