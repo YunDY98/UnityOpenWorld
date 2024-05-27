@@ -59,7 +59,7 @@ public class MasaSchool : MonoBehaviour
         
 
         // atk3 
-        if(Input.GetKeyUp(userKeys[1]))
+        if(Input.GetKeyUp(GameManager.gameManager.userKeys[(int)SkillEnum.MasaAtk3]))
         {
             MasaAtk3();
         }

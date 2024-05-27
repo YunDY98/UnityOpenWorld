@@ -9,9 +9,11 @@ public class DragUI : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointer
     private Vector2 originalRectTransformPosition;
     private RectTransform parentRectTransform;
     private bool isDragging;
+
+    Vector2 localPointerPosition;
     private GameObject copiedObject;
 
-    // 외부에서 설정할 수 있는 bool 값
+    //ui 복사 
     public bool canCopy;
 
      //Transform imageTransform = skillWindow.transform.Find("SkillImage");
@@ -29,31 +31,51 @@ public class DragUI : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointer
     {
         RectTransformUtility.ScreenPointToLocalPointInRectangle(parentRectTransform, eventData.position, eventData.pressEventCamera, out originalPointerPosition);
         originalRectTransformPosition = rectTransform.anchoredPosition;
-        isDragging = true;
+       
 
         // 복사 기능 구현
-        if (canCopy)
+        if(canCopy)
         {
+            
             copiedObject = Instantiate(gameObject, parentRectTransform);
            
             rectTransform = copiedObject.GetComponent<RectTransform>();
 
-           
-            rectTransform.anchoredPosition = originalRectTransformPosition;
+            if(RectTransformUtility.ScreenPointToLocalPointInRectangle(parentRectTransform, eventData.position, eventData.pressEventCamera, out localPointerPosition))
+            {
+                rectTransform.anchoredPosition = originalRectTransformPosition + localPointerPosition;
+            }
+
+            
         }
+        isDragging = true;
+
+       
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (isDragging)
+        
+
+        if(canCopy)
         {
             SkillInfo skillInfoComponent = eventData.pointerDrag.GetComponent<SkillInfo>();
             
-            Vector2 localPointerPosition;
+           
+            if(RectTransformUtility.ScreenPointToLocalPointInRectangle(parentRectTransform, eventData.position, eventData.pressEventCamera, out localPointerPosition))
+            {
+                rectTransform.anchoredPosition = originalRectTransformPosition + localPointerPosition;
+            }
+            
+        }
+        else if(isDragging)
+        {
+            
             if (RectTransformUtility.ScreenPointToLocalPointInRectangle(parentRectTransform, eventData.position, eventData.pressEventCamera, out localPointerPosition))
             {
                 rectTransform.anchoredPosition = originalRectTransformPosition + localPointerPosition - originalPointerPosition;
             }
+            
         }
     }
 

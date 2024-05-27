@@ -39,6 +39,10 @@ public class KeySetting : MonoBehaviour, IDropHandler
         // 현재 드래그 중인 UI 요소 가져오기
         GameObject draggingObject = eventData.pointerDrag;
 
+        //이미 키세팅이 되있다면 리턴 
+        if(image.sprite != null)
+            return;
+
         // 드래그 중인 UI 요소가 있다면
         if (draggingObject != null)
         {
@@ -54,7 +58,7 @@ public class KeySetting : MonoBehaviour, IDropHandler
             
             
             
-            GameManager.gameManager.userKeys[StringToEnum(ref key)] = (KeyCode)_KeyCode;
+            GameManager.gameManager.userKeys[StringToEnum(key)] = (KeyCode)_KeyCode;
                
             
             
@@ -65,7 +69,7 @@ public class KeySetting : MonoBehaviour, IDropHandler
         
     }
 
-    int StringToEnum(ref string _key)
+    int StringToEnum(string _key)
     {
         SkillEnum _enum = (SkillEnum)System.Enum.Parse(typeof(SkillEnum), _key);
 
@@ -85,7 +89,7 @@ public class KeySetting : MonoBehaviour, IDropHandler
             // 더블 클릭 이벤트 처리
             Debug.Log("Double click!");
             image.sprite = null;
-            GameManager.gameManager.userKeys[StringToEnum(ref key)] = KeyCode.None;
+            GameManager.gameManager.userKeys[StringToEnum(key)] = KeyCode.None;
            
         }
 
@@ -98,8 +102,13 @@ public class KeySetting : MonoBehaviour, IDropHandler
 }
 public enum SkillEnum
 {
+    // 0~49 공격
+    // 50~100 버프
+    // 그외 
     none = 0,
     MasaAtk1,
+    MasaAtk2,
+    MasaAtk3,
 
 
 }
