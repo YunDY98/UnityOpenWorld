@@ -222,7 +222,7 @@ public class GameManager : MonoBehaviour
 
     }
 
-     void UiStack(bool _bool)
+    public void UiStack(bool _bool)
     {
         
         if(_bool)
@@ -236,6 +236,7 @@ public class GameManager : MonoBehaviour
         {  
             if(0 != uiStack.Count)
                 uiStack.Pop();
+            
 
         }
         
@@ -295,7 +296,23 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(1);
     }
 
-    
+    public void StartWarningUI(GameObject _warning)
+    {
+        StartCoroutine(WarningUI(_warning));
+    }
+    public IEnumerator WarningUI(GameObject _warning)
+    {
+        _warning.SetActive(true);
+       
+        yield return new WaitForSecondsRealtime(2f);
+
+       
+        _warning.SetActive(false);
+
+       
+
+
+    }
     
 
    

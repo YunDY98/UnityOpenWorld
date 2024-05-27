@@ -8,7 +8,8 @@ using UnityEngine.UI;
 public class Shop : MonoBehaviour
 {
 
-    
+    public GameObject goldShortage;
+    public GameObject isPurchased;
     string itemName;
 
     int price;
@@ -72,6 +73,7 @@ public class Shop : MonoBehaviour
             {
                 
                 // 이미 보유중인 아이템입니다 
+                GameManager.gameManager.StartWarningUI(isPurchased);
                 return;
             }
             
@@ -82,6 +84,7 @@ public class Shop : MonoBehaviour
             if(!PlayerStats.playerStats.UseGold(price))
             {
                 //돈이 부족합니다 
+                GameManager.gameManager.StartWarningUI(goldShortage);
                 return;
 
             }
@@ -90,20 +93,10 @@ public class Shop : MonoBehaviour
 
         }
 
-        
-
-        
-
-        
-        
-       
-
-        
-        
-        
-        
-
-       
-        
     }
+    
+
+    
+
+  
 }
