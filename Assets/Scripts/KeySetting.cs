@@ -13,6 +13,11 @@ public class KeySetting : MonoBehaviour, IDropHandler
     
     string key;
 
+    string sText;
+
+    int keyCode;
+
+    int skillEnum;
 
     string preKey;
     Image image;
@@ -33,6 +38,33 @@ public class KeySetting : MonoBehaviour, IDropHandler
         btn.onClick.AddListener(Drop);
 
         text = GetComponentInChildren<Text>();
+
+        sText = text.text;
+        key = PlayerPrefs.GetString(sText);
+
+        if(key == "")
+            return;
+        
+        Sprite _skillImage = Resources.Load<Sprite>("Sprites/" + key);
+
+        preKey = key;
+       
+        image.sprite = _skillImage;
+
+        keyCode = StringToEnum(sText,typeof(KeyCode));
+
+        skillEnum = PlayerPrefs.GetInt(keyCode.ToString());
+
+        GameManager.gameManager.userKeys[skillEnum] = (KeyCode)keyCode;
+
+
+
+
+    
+
+      
+        
+
         
     }
 
@@ -63,17 +95,26 @@ public class KeySetting : MonoBehaviour, IDropHandler
             
             Sprite skillImage = Resources.Load<Sprite>("Sprites/" + key); // 이미지 파일 경로
 
-            string _text = text.text;
+            
+
+            //이미지 정보 
+            PlayerPrefs.SetString(sText, key);
+
+            keyCode = StringToEnum(sText,typeof(KeyCode));
+            skillEnum = StringToEnum(key,typeof(SkillEnum));
+            GameManager.gameManager.userKeys[skillEnum] = (KeyCode)keyCode;
 
             
 
-            int _KeyCode = StringToEnum(_text,typeof(KeyCode));
+            
+            // 키코드 
+            PlayerPrefs.SetInt(keyCode.ToString(),skillEnum);
 
             
              
             image.sprite = skillImage;
 
-            GameManager.gameManager.userKeys[StringToEnum(key,typeof(SkillEnum))] = (KeyCode)_KeyCode;
+            
                
         }
         
@@ -111,10 +152,15 @@ public class KeySetting : MonoBehaviour, IDropHandler
         // 현재 시간과 마지막으로 클릭한 시간의 차이가 더블 클릭 감지 시간보다 짧으면 더블 클릭으로 처리
         if (currentTime - lastClickTime < doubleClickTime)
         {
+            if(image.sprite == null)
+                return;
             // 더블 클릭 이벤트 처리
             Debug.Log("Double click!");
             image.sprite = null;
             GameManager.gameManager.userKeys[StringToEnum(key,typeof(SkillEnum))] = KeyCode.None;
+
+            PlayerPrefs.DeleteKey(sText);
+            PlayerPrefs.DeleteKey(keyCode.ToString());
            
         }
 
