@@ -78,9 +78,9 @@ public class PlayerStats : MonoBehaviour
 
     //////////////////////
 
-    //스킬 딕셔너리
+    //스킬 정보가 담긴딕셔너리
     public Dictionary<string, Skill> skillDictionary = new();
-    //스킬 패널에 추가된 스킬들 
+    //스킬 Ui패널에 추가된 스킬들 
     public Dictionary<string, GameObject> skillObjectDictionary = new();
    
     void Awake()
@@ -408,9 +408,10 @@ public class PlayerStats : MonoBehaviour
     }
 
     // 스킬 추가 
-    void AddSkill(Skill _skill)
+    public void AddSkill(Skill _skill,string _key = "")
     {
-        string _key = _skill.whoSkill + _skill.skillName;
+        if(_key == "")
+            _key = _skill.whoSkill + _skill.skillName;
         
         
         if(skillDictionary.ContainsKey(_key))

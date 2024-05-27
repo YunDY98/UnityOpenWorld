@@ -130,25 +130,4 @@ public class Skill
    
   
 }
-// [System.Serializable]
-// public class Skill
-// {
-//     public string whoSkill;
-//     public string skillName;
-//     public int level;
-
-//     public string sprite;
-
-
-//     public Skill(string _whoSKill,string _skillName, int _level,string _sprite)
-//     {
-//         this.whoSkill = _whoSKill;
-//         this.skillName = _skillName;
-//         this.level = _level;
-//         this.sprite = _sprite;
-//     }
-   
-  
-// }
-
 
