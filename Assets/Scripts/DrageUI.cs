@@ -1,6 +1,7 @@
+
 using UnityEngine;
 using UnityEngine.EventSystems;
-
+using UnityEngine.UI;
 public class DragUI : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
     private RectTransform rectTransform;
@@ -12,9 +13,11 @@ public class DragUI : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointer
 
     Vector2 localPointerPosition;
     private GameObject copiedObject;
-
+    
     //ui 복사 
     public bool canCopy;
+
+    public bool delete;
 
      //Transform imageTransform = skillWindow.transform.Find("SkillImage");
     private void Start()
@@ -38,6 +41,12 @@ public class DragUI : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointer
         {
             
             copiedObject = Instantiate(gameObject, parentRectTransform);
+
+            if(delete)
+            {
+                KeySetting keySetting = GetComponent<KeySetting>();
+                keySetting.Drop();
+            }
            
             rectTransform = copiedObject.GetComponent<RectTransform>();
 
@@ -59,9 +68,7 @@ public class DragUI : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointer
 
         if(canCopy)
         {
-            SkillInfo skillInfoComponent = eventData.pointerDrag.GetComponent<SkillInfo>();
             
-           
             if(RectTransformUtility.ScreenPointToLocalPointInRectangle(parentRectTransform, eventData.position, eventData.pressEventCamera, out localPointerPosition))
             {
                 rectTransform.anchoredPosition = originalRectTransformPosition + localPointerPosition;

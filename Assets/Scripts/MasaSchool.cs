@@ -34,8 +34,6 @@ public class MasaSchool : MonoBehaviour
     void Start()
     {
         anim = GetComponent<Animator>();
-        userKeys[0] = KeyCode.C;
-        userKeys[1] = KeyCode.X;
        
     }
 

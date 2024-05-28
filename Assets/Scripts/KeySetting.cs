@@ -1,5 +1,6 @@
 
 using System;
+using System.Data.Common;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -73,7 +74,23 @@ public class KeySetting : MonoBehaviour, IDropHandler
         // 현재 드래그 중인 UI 요소 가져오기
         GameObject _dragObject = eventData.pointerDrag;
 
-        key = _dragObject.GetComponent<SkillInfo>()._key;
+        try
+        {
+            key = _dragObject.GetComponent<SkillInfo>()._key;
+        }
+        catch
+        {
+            try
+            {
+                key = _dragObject.GetComponent<KeySetting>().key;
+               
+            }
+            catch
+            {
+
+            }
+        }
+       
 
 
 
@@ -85,7 +102,13 @@ public class KeySetting : MonoBehaviour, IDropHandler
        
         // 스킬 하나당 하나의 키셋팅 
         if(GameManager.gameManager.userKeys[StringToEnum(key,typeof(SkillEnum))] != KeyCode.None)
+        {
+        
+            
             return;
+           
+        }
+            
 
 
         
@@ -113,6 +136,7 @@ public class KeySetting : MonoBehaviour, IDropHandler
             PlayerPrefs.SetString(sText, key);
 
             keyCode = StringToEnum(sText,typeof(KeyCode));
+            
             skillEnum = StringToEnum(key,typeof(SkillEnum));
             GameManager.gameManager.userKeys[skillEnum] = (KeyCode)keyCode;
 
@@ -135,7 +159,17 @@ public class KeySetting : MonoBehaviour, IDropHandler
 
     int StringToEnum(string _key, Type _enumType)
     {
+        // "Alpha1"과 같은 형태의 문자열을 생성
+        if (int.TryParse(_key, out int numericKey) && numericKey >= 0 && numericKey <= 9)
+        {
+            _key = "Alpha" + _key;
+        }
+        
         object _enumValue = System.Enum.Parse(_enumType, _key);
+
+        
+        
+            
         return (int)_enumValue;
     }
 
@@ -157,29 +191,24 @@ public class KeySetting : MonoBehaviour, IDropHandler
     // 키셋팅된 단축키 변경 
     public void Drop()
     {
+        
+        text = GetComponentInChildren<Text>();
 
-        // 현재 클릭한 시간
-        float currentTime = Time.realtimeSinceStartup; // time.scale = 0 이므로 realtime
-
-        // 현재 시간과 마지막으로 클릭한 시간의 차이가 더블 클릭 감지 시간보다 짧으면 더블 클릭으로 처리
-        if (currentTime - lastClickTime < doubleClickTime)
-        {
-            print(currentTime +" - " +lastClickTime);
-            if(image.sprite == null)
-                return;
-            // 더블 클릭 이벤트 처리
-            Debug.Log("Double click!");
-            image.sprite = null;
-            preKey = null;
-            GameManager.gameManager.userKeys[StringToEnum(key,typeof(SkillEnum))] = KeyCode.None;
-
-            PlayerPrefs.DeleteKey(sText);
-            PlayerPrefs.DeleteKey(keyCode.ToString());
+        sText = text.text;
+       
+       
+        if(image.sprite == null)
+            return;
+        
+        
+        image.sprite = null;
+        preKey = null;
+        GameManager.gameManager.userKeys[StringToEnum(key,typeof(SkillEnum))] = KeyCode.None;
+        PlayerPrefs.DeleteKey(sText);
+        PlayerPrefs.DeleteKey(keyCode.ToString());
            
-        }
+    
 
-        // 마지막으로 클릭한 시간 갱신
-        lastClickTime = currentTime;
        
     }
 
