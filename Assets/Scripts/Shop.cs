@@ -90,6 +90,8 @@ public class Shop : MonoBehaviour
             }
 
             PlayerStats.playerStats.AddSkill(skill,key);
+            DataManager.dataManager.SavePlayerData();
+            
 
         }
 

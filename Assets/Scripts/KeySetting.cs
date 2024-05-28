@@ -77,21 +77,33 @@ public class KeySetting : MonoBehaviour, IDropHandler
 
 
 
-        //이미 키세팅이 되있다면
-        if(preKey != null)
-        {
-            
-            GameManager.gameManager.userKeys[StringToEnum(key,typeof(SkillEnum))] = KeyCode.None;
-        }
         
-        preKey = key;
+        
 
+       
+         
+       
+        // 스킬 하나당 하나의 키셋팅 
         if(GameManager.gameManager.userKeys[StringToEnum(key,typeof(SkillEnum))] != KeyCode.None)
             return;
+
+
+        
 
         // 드래그 중인 UI 요소가 있다면
         if(draggingObject != null)
         {
+
+            //이미 키세팅이 되있다면
+            if(preKey != null)
+            {
+                // 새로 드래그된 스킬로 변경 
+                GameManager.gameManager.userKeys[StringToEnum(preKey,typeof(SkillEnum))] = KeyCode.None;
+               
+            }
+
+            preKey = key;
+            
             
             Sprite skillImage = Resources.Load<Sprite>("Sprites/" + key); // 이미지 파일 경로
 
@@ -147,16 +159,18 @@ public class KeySetting : MonoBehaviour, IDropHandler
     {
 
         // 현재 클릭한 시간
-        float currentTime = Time.time;
+        float currentTime = Time.realtimeSinceStartup; // time.scale = 0 이므로 realtime
 
         // 현재 시간과 마지막으로 클릭한 시간의 차이가 더블 클릭 감지 시간보다 짧으면 더블 클릭으로 처리
         if (currentTime - lastClickTime < doubleClickTime)
         {
+            print(currentTime +" - " +lastClickTime);
             if(image.sprite == null)
                 return;
             // 더블 클릭 이벤트 처리
             Debug.Log("Double click!");
             image.sprite = null;
+            preKey = null;
             GameManager.gameManager.userKeys[StringToEnum(key,typeof(SkillEnum))] = KeyCode.None;
 
             PlayerPrefs.DeleteKey(sText);

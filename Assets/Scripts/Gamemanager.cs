@@ -175,9 +175,7 @@ public class GameManager : MonoBehaviour
 
             
             rotSpeedText.text = rotSpeed.ToString();
-
-            
-          
+  
             
         }
         else
@@ -185,8 +183,6 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.Save();
             
         }
-        
-       
         
     }
     public void MouseSensitivity()
@@ -198,16 +194,11 @@ public class GameManager : MonoBehaviour
 
         PlayerPrefs.SetInt("rotSpeed", rotSpeed);
         
-        
-        
-        
     }
     
 
     public void Skill()
     {
-        
-        
         
         if(Input.GetKeyDown(KeyCode.K))
         {
@@ -248,10 +239,6 @@ public class GameManager : MonoBehaviour
         }
 
            
-       
-            
-        
-           
     }
 
     
@@ -267,14 +254,7 @@ public class GameManager : MonoBehaviour
 
     }
            
-       
-            
-        
-           
     
-
-
-
     public void ESC()
     {
         if(Input.GetKeyDown(KeyCode.Escape))
@@ -300,7 +280,7 @@ public class GameManager : MonoBehaviour
     {
         StartCoroutine(WarningUI(_warning));
     }
-    public IEnumerator WarningUI(GameObject _warning)
+    IEnumerator WarningUI(GameObject _warning)
     {
         _warning.SetActive(true);
        

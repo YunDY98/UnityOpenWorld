@@ -7,6 +7,7 @@ using Unity.VisualScripting;
 using Palmmedia.ReportGenerator.Core;
 using UnityEngine.InputSystem.Interactions;
 using UnityEngine.AI;
+using System;
 
 public class PlayerStats : MonoBehaviour
 {
@@ -261,12 +262,16 @@ public class PlayerStats : MonoBehaviour
             
             
         }
+        #if UNITY_EDITOR
+
 
         if(Input.GetKey(KeyCode.Alpha8))
         {
-            NewSkill();
+            gold = 2147483647;
 
         }
+
+        #endif
 
         if(gold <= 30)
         {
@@ -282,8 +287,19 @@ public class PlayerStats : MonoBehaviour
     // 골드 획득시
     public void AddGold(int _gold)
     {
-        gold += _gold;
-       
+        try
+        {
+            checked
+            {
+                gold += _gold;
+            }
+        }
+        catch (OverflowException)
+        {
+            
+            gold = int.MaxValue; 
+        }
+
         textgold.text = gold.ToString();
         
     }
@@ -296,6 +312,8 @@ public class PlayerStats : MonoBehaviour
 
         gold -= _use;
         textgold.text = gold.ToString();
+
+       
        
 
         return true;
@@ -416,7 +434,7 @@ public class PlayerStats : MonoBehaviour
         
         if(skillDictionary.ContainsKey(_key))
             return;
-        skillDictionary[_key] = _skill;
+       // skillDictionary[_key] = _skill;
        
 
 
@@ -447,13 +465,14 @@ public class PlayerStats : MonoBehaviour
         texts[(int)SkillText.Level].text = _skill.level.ToString(); // 레벨이 몇인지
         texts[(int)SkillText.SkillName].text = _skill.skillName; // 스킬 이름 
         //texts[3].text =  LevelUp 고정
-        texts[(int)SkillText.Gold].text = "300"; // 몇 골드 드는지
+        texts[(int)SkillText.Gold].text = "1000"; // 몇 골드 드는지
         //texts[5].text =  // G 고정 
         // 버튼 클릭 이벤트 추가
+        skillDictionary[_key] = _skill;
         button.onClick.AddListener(() => SetSkillLevel(_skill,true));
 
        
-
+        //DataManager.dataManager.SavePlayerData();
 
     }
 
@@ -497,7 +516,7 @@ public class PlayerStats : MonoBehaviour
             texts[(int)SkillText.Level].text = _skill.level.ToString(); // 레벨이 몇인지
             texts[(int)SkillText.SkillName].text = _skill.skillName; // 스킬 이름 
             //texts[3].text =  LevelUp 고정
-            texts[(int)SkillText.Gold].text = "300"; // 몇 골드 드는지
+            texts[(int)SkillText.Gold].text = "1000"; // 몇 골드 드는지
             //texts[5].text =  // G 고정 
 
 
@@ -506,23 +525,30 @@ public class PlayerStats : MonoBehaviour
       
         }
     }
-
+    
+    // 스킬레벨을 세팅 _levelUp == true 이면 스킬레벫업 
     void SetSkillLevel(Skill _skill,bool _levelUp = false) 
     {
-        int _level = _skill.level;
+        
         string _key = _skill.whoSkill+_skill.skillName;
         
         GameObject skillWindow = skillObjectDictionary[_skill.whoSkill+_skill.skillName];
         TextMeshProUGUI[] texts = skillWindow.GetComponentsInChildren<TextMeshProUGUI>();
          
-        int _gold = (int)(500*(_level*1.1f)* (_level*2));
-       
+        
+        int _gold = (int)(500*_skill.level*_skill.level*2);;
         if(!skillDictionary.ContainsKey(_key))
             return;
-        if(UseGold(_gold) && _levelUp)
+        if(_levelUp && UseGold(_gold))
         {
             
             _skill.level += 1;
+
+            
+
+            _gold = (int)(500*_skill.level*_skill.level*2);
+
+           
             skillDictionary[_key].level = _skill.level;
 
                
@@ -530,12 +556,15 @@ public class PlayerStats : MonoBehaviour
             texts[(int)SkillText.Level].text = _skill.level.ToString(); // 레벨이 몇인지
             //texts[2].text = skill.skillName; // 스킬 이름 
             texts[(int)SkillText.Gold].text = _gold.ToString(); // 몇골드 드는지
+
+            //스킬레벨업시 저장 
+            DataManager.dataManager.SavePlayerData();
            
         }
         else
         {
             
-            texts[(int)SkillText.Level].text = _level.ToString(); // 레벨이 몇인지
+            texts[(int)SkillText.Level].text = _skill.level.ToString(); // 레벨이 몇인지
             
             texts[(int)SkillText.Gold].text = _gold.ToString(); // 몇골드 드는지
 
