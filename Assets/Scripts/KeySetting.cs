@@ -71,9 +71,9 @@ public class KeySetting : MonoBehaviour, IDropHandler
     public void OnDrop(PointerEventData eventData)
     {
         // 현재 드래그 중인 UI 요소 가져오기
-        GameObject draggingObject = eventData.pointerDrag;
+        GameObject _dragObject = eventData.pointerDrag;
 
-        key = draggingObject.GetComponent<SkillInfo>()._key;
+        key = _dragObject.GetComponent<SkillInfo>()._key;
 
 
 
@@ -91,7 +91,7 @@ public class KeySetting : MonoBehaviour, IDropHandler
         
 
         // 드래그 중인 UI 요소가 있다면
-        if(draggingObject != null)
+        if(_dragObject != null)
         {
 
             //이미 키세팅이 되있다면
