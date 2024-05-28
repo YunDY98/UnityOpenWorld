@@ -1,10 +1,8 @@
 
 using System;
-using System.Data.Common;
-using Unity.VisualScripting;
+
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 
@@ -23,7 +21,7 @@ public class KeySetting : MonoBehaviour, IDropHandler
     string preKey;
     Image image;
 
-    Button btn;
+    
 
     Text text;
 
@@ -34,10 +32,6 @@ public class KeySetting : MonoBehaviour, IDropHandler
     void Start()
     {
         image = GetComponent<Image>();
-        btn = GetComponent<Button>();
-
-        btn.onClick.AddListener(Drop);
-
         text = GetComponentInChildren<Text>();
 
         sText = text.text;
@@ -103,7 +97,7 @@ public class KeySetting : MonoBehaviour, IDropHandler
         // 스킬 하나당 하나의 키셋팅 
         if(GameManager.gameManager.userKeys[StringToEnum(key,typeof(SkillEnum))] != KeyCode.None)
         {
-        
+            // 여기서 스왑 
             
             return;
            
@@ -122,7 +116,7 @@ public class KeySetting : MonoBehaviour, IDropHandler
             {
                 // 새로 드래그된 스킬로 변경 
                 GameManager.gameManager.userKeys[StringToEnum(preKey,typeof(SkillEnum))] = KeyCode.None;
-               
+                
             }
 
             preKey = key;
@@ -160,6 +154,7 @@ public class KeySetting : MonoBehaviour, IDropHandler
     int StringToEnum(string _key, Type _enumType)
     {
         // "Alpha1"과 같은 형태의 문자열을 생성
+        // 스크립트를 넣어서 Alpha1으로 가져오는 방법 고려 
         if (int.TryParse(_key, out int numericKey) && numericKey >= 0 && numericKey <= 9)
         {
             _key = "Alpha" + _key;
