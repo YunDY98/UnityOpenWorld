@@ -154,20 +154,5 @@ public class PlayerMove : MonoBehaviour
 
     }
 
-    void PlayerRotate()
-    {
-        //float mouse_X = Input.GetAxis("Mouse X");
-
-        //  // 플레이어의 현재 회전값을 가져옴
-        // Vector3 currentRotation = transform.rotation.eulerAngles;
-
-        // // 마우스 이동량에 따라 플레이어의 y축 회전값을 변경
-        // currentRotation.y += mouse_X * 10;
-
-        // // 새로운 회전값을 적용
-        // transform.rotation = Quaternion.Euler(currentRotation);
-          // 1. 마우스 좌우 입력을 받는다.
-       
-
-    }
+   
 }

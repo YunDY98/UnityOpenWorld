@@ -21,8 +21,7 @@ public class DragUI : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointer
 
     public bool delete;
 
-     //Transform imageTransform = skillWindow.transform.Find("SkillImage");
-    private void Start()
+    void Start()
     {
         rectTransform = GetComponent<RectTransform>();
         canvas = GetComponentInParent<Canvas>();

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEditor;
 public class SoliderFire : MonoBehaviour
 {
     enum WeaponMode
@@ -35,9 +36,9 @@ public class SoliderFire : MonoBehaviour
 
     Animator anim;
     
-
+    
     //발사 무기 공격력
-    public int weaponDamage = 1;
+    public int weaponDamage = PlayerStats.playerStats.AtkDamage;
 
     public ParticleSystem ps;
     void Start ()
@@ -98,7 +99,7 @@ public class SoliderFire : MonoBehaviour
                 case WeaponMode.Sniper:
                     if(!zoomMode)
                     {
-                        weaponDamage = 10;
+                        weaponDamage = (int)(weaponDamage * 1.5f);
                         Camera.main.fieldOfView = 15f;
                         zoomMode = true;
                        
@@ -106,7 +107,7 @@ public class SoliderFire : MonoBehaviour
                     }
                     else
                     {
-                        weaponDamage = 5;
+                        weaponDamage = (int)(weaponDamage * 5f);
                         Camera.main.fieldOfView = 60f;
                         zoomMode = false;
                         

@@ -17,16 +17,15 @@ public class MasaSchool : MonoBehaviour
     private KeyCode[] userKeys = new KeyCode[108];
     
     
-
+    PlayerStats ps = PlayerStats.playerStats;
+    GameManager gm = GameManager.gameManager;
     
-    private int singleAttackPower;
-    private float singleAttackRange;
-
-    private int singleAttackGold;
+    private int singleAtkDamage;
+   
+    private float singleAtkRange;
     
-
     
-    private int multiAttackGold = 30;
+    
 
    
 
@@ -41,7 +40,7 @@ public class MasaSchool : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(GameManager.gameManager.gState != GameManager.GameState.Run || PlayerStats.playerStats.selectCharacter != PlayerStats.SelectCharacter.MasaSchool || !GameManager.gameManager.isMove)
+        if(gm.gState != GameManager.GameState.Run || ps.selectCharacter != PlayerStats.SelectCharacter.MasaSchool || !gm.isMove)
         {
             
             return;
@@ -49,132 +48,120 @@ public class MasaSchool : MonoBehaviour
 
         
         // atk1 
-        if(Input.GetKeyUp(GameManager.gameManager.userKeys[(int)SkillEnum.MasaAtk1]))
+        if(Input.GetKeyUp(gm.userKeys[(int)SkillEnum.MasaAtk1]))
         {
-            MasaAtk1();
+            MultiAtk("MasaAtk1");
         }
 
         
 
         // atk3 
-        if(Input.GetKeyUp(GameManager.gameManager.userKeys[(int)SkillEnum.MasaAtk3]))
+        if(Input.GetKeyUp(gm.userKeys[(int)SkillEnum.MasaAtk3]))
         {
-            MasaAtk3();
+            SingleAtk("MasaAtk3");
         }
 
-        // if(Input.GetKeyUp(KeyCode.Alpha1))
-        // {
-        //     if(PlayerStats.playerStats.UseGold((int)(300)))
-        //     {
-        //         IsMove();
-        //         anim.SetTrigger("Attack3");
-                
-                
-               
-        //     }
-
-        // }
- 
+        
         
     }
 
-    void MasaAtk3()
+    void SingleAtk(string _skillName,float _rangeMult = 1.5f,int _damageMult = 1,float _goldMult = 0.1f)
     {
-        if(PlayerStats.playerStats.GetSkillLevel("MasaAtk3") < 0)
+        int _skillLevel = ps.GetSkillLevel(_skillName);
+
+        if(_skillLevel < 0)
         {
             return;
         }
-        int _atk3level = PlayerStats.playerStats.GetSkillLevel("MasaAtk3");
-        
-        
-        int _damage = (int)(200* _atk3level * 1.2f);
-        //Gold, Damage, range
-        SetSingleAttack(300,_damage,4f);
-        if(PlayerStats.playerStats.UseGold((int)(singleAttackGold * _atk3level*1.1f)))
+
+        int _damage = (int)(ps.AtkDamage* _skillLevel * _damageMult);
+       
+       
+        singleAtkDamage = _damage;
+        singleAtkRange = _rangeMult * _skillLevel;
+
+        if(ps.UseGold((int)(_skillLevel * _goldMult)))
         {
             IsMove();
-            anim.SetTrigger("Attack3");
+            anim.SetTrigger(_skillName);
             
             
            
         }
-
     }
 
-    void MasaAtk1()
+   
+    
+    
+    void MultiAtk(string _skillName,float _rangeMult = 1.5f,int _damageMult = 1,int _cntMult = 1)
     {
-        if(PlayerStats.playerStats.GetSkillLevel("MasaAtk1") < 0)
+        if(ps.GetSkillLevel(_skillName) < 0)
         {
             return;
         }
-        int atk1level =  PlayerStats.playerStats.GetSkillLevel("MasaAtk1");
-        if(PlayerStats.playerStats.UseGold((int)(multiAttackGold * atk1level*1.1f)))
+        int _skillLevel =  ps.GetSkillLevel(_skillName);
+        
+        if(ps.UseGold((int)(_skillLevel*1.1f)))
         {
             IsMove();
-            anim.SetTrigger("Attack1");
-            print(atk1level);
-            //Range, cnt , damage
-            MultiAttack(2f * (atk1level * 1.1f) ,(int)(1 + (atk1level/10)),(int)(10 * atk1level*1.2f));
+            anim.SetTrigger(_skillName);
+
+            
+           
+           
+            float _range = _rangeMult * _skillLevel;
+            int _cnt = (int)(_cntMult + (_skillLevel/10));
+            int _damage = ps.AtkDamage * _damageMult * _skillLevel;
+           
+
+            // 주변의 적을 감지
+            Collider[] colliders = Physics.OverlapSphere(transform.position, _range);
+            enemies.Clear(); // 리스트 초기화
+            foreach (Collider other in colliders)
+            {
+                if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+                {
+                    enemies.Add(other.gameObject); // 적을 리스트에 추가
+                }
+            }
+    
+            // cnt 수만큼 적 공격 
+        
+            foreach (GameObject enemy in enemies)
+            {
+                if (0 < _cnt)
+                {
+                    // EnemyFSM 컴포넌트 가져오기
+                    EnemyFSM efsm = enemy.GetComponent<EnemyFSM>();
+                    if (efsm != null)
+                    {
+                        efsm.HitEnemy(_damage);
+                        _cnt--;
+                    }
+                }
+                else
+                {
+                    break; // 최대 공격수에 도달하면 루프 종료
+                }
+            }
            
         }
 
     }
 
    
-
  
-    void SetSingleAttack(int _gold,int _damage,float _range)
-    {
-        singleAttackGold = _gold;
-        singleAttackRange =_range;
-        singleAttackPower = _damage;
-
-
-    }
-    void MultiAttack(float _range,int _cnt,int _damage)
-    {
-        // 주변의 적을 감지
-        Collider[] colliders = Physics.OverlapSphere(transform.position, _range);
-        enemies.Clear(); // 리스트 초기화
-        foreach (Collider other in colliders)
-        {
-            if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
-            {
-                enemies.Add(other.gameObject); // 적을 리스트에 추가
-            }
-        }
-
-        // cnt 수만큼 적 공격 
-       
-        foreach (GameObject enemy in enemies)
-        {
-            if (0 < _cnt)
-            {
-                // EnemyFSM 컴포넌트 가져오기
-                EnemyFSM efsm = enemy.GetComponent<EnemyFSM>();
-                if (efsm != null)
-                {
-                    efsm.HitEnemy(_damage);
-                    _cnt--;
-                }
-            }
-            else
-            {
-                break; // 최대 공격수에 도달하면 루프 종료
-            }
-        }
-
-      
-       
-
-        
+ 
+    
        
 
 
         
         
-    }
-    public void SingleAttack()
+    
+
+    //애니메이션에서 실행 
+    private void SingleAttack()
     {
         // 화면의 정중앙 좌표 계산
         Vector3 screenCenter = new Vector3(Screen.width / 2, Screen.height / 2, 0);
@@ -186,14 +173,14 @@ public class MasaSchool : MonoBehaviour
         int layerMask = ~LayerMask.GetMask("Player");
 
         RaycastHit hitInfo = new RaycastHit();
-        if(Physics.Raycast(ray, out hitInfo,singleAttackRange,layerMask)) // out키워드는 주소를 복사해 가져옮, 반드시 함수안에서 파라미터 값을 할당할 것을 요구 
+        if(Physics.Raycast(ray, out hitInfo,singleAtkRange,layerMask)) // out키워드는 주소를 복사해 가져옮, 반드시 함수안에서 파라미터 값을 할당할 것을 요구 
         {
             print(hitInfo.transform.gameObject.name);
             if(hitInfo.transform.gameObject.layer == LayerMask.NameToLayer("Enemy"))
             {
                 
                 EnemyFSM eFSM = hitInfo.transform.GetComponent<EnemyFSM>();
-                eFSM.HitEnemy(singleAttackPower);
+                eFSM.HitEnemy(singleAtkDamage);
                 
             }
             
@@ -203,7 +190,7 @@ public class MasaSchool : MonoBehaviour
 
     public void IsMove()
     {
-        GameManager.gameManager.isMove = !GameManager.gameManager.isMove;
+        gm.isMove = !gm.isMove;
     }
 
 
@@ -212,9 +199,9 @@ public class MasaSchool : MonoBehaviour
     // IEnumerator Emotion(float _delay,string _emo)
     // {
         
-    //     GameManager.gameManager.isMove = false;
-    //     Vector3 _temp = PlayerStats.playerStats.camPos.localPosition;
-    //     PlayerStats.playerStats.camPos.localPosition = new Vector3(0.04f,0.5f,-2f);
+    //     gm.isMove = false;
+    //     Vector3 _temp = ps.camPos.localPosition;
+    //     ps.camPos.localPosition = new Vector3(0.04f,0.5f,-2f);
     //     transform.Rotate(0,180,0);
     //     show.SetActive(true);
         
@@ -224,9 +211,9 @@ public class MasaSchool : MonoBehaviour
     //     yield return new WaitForSeconds(_delay);
     //     show.SetActive(false);
 
-    //     GameManager.gameManager.isMove = true;
+    //     gm.isMove = true;
     //     transform.Rotate(0,180,0);
-    //     PlayerStats.playerStats.camPos.localPosition = _temp;
+    //     ps.camPos.localPosition = _temp;
 
     // }
 

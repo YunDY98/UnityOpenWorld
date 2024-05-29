@@ -40,12 +40,65 @@ public class PlayerStats : MonoBehaviour
     private PlayerData playerData;
     
     private int _level;
+    public int Level
+    {
+        get { return _level; }
+        set
+        {
+            _level = value;
+            textLevel.text = _level.ToString();
+            maxExp += (_level*1000);
+        }
+    }
     private int _exp;
+    public int Exp
+    {
+        get { return _exp; }
+        set
+        {
+            _exp = value;
+            expSlider.value = (float)_exp/(float)maxExp;
+           
+        }
+    }
+
+    //보유 중인 골드 
     private int _gold;
+    public int Gold
+    {
+        get { return _gold; }
+        set
+        {
+            _gold = value;
+            textGold.text = _gold.ToString();
+           
+        }
+    }
 
-    public int baseAtk;
+    //골드 사용량 
+    private int _goldUsage = 10;
+    public int GoldUsage
+    {
+        get { return _goldUsage; }
+        set
+        {
+            _goldUsage = value; 
+        }
+    }
 
-    
+    //기본 공격력
+
+    private int _atkDamage = 10;
+    public int AtkDamage
+    {
+        
+        get { return _atkDamage; }
+
+        set
+        {
+            _atkDamage = value;
+        }
+    }
 
     
 
@@ -66,20 +119,13 @@ public class PlayerStats : MonoBehaviour
 
     public TextMeshProUGUI textGold;
     public TextMeshProUGUI textLevel;
-    // public TextMeshProUGUI textMasaAtk1Level;
    
-    // public TextMeshProUGUI textMasaAtk3Level;
-
-
-    // public TextMeshProUGUI textMasaAtk1LevelUpGold;
-    // public TextMeshProUGUI textMasaAtk3LevelUpGold;
-
     // 스킬 Ui
     public GameObject skillPrefab;
     //스킬 담을 패널 
     public Transform contentPanel;
 
-    //////////////////////
+    
 
     //스킬 정보가 담긴딕셔너리
     public Dictionary<string, Skill> skillDictionary = new();
@@ -108,6 +154,8 @@ public class PlayerStats : MonoBehaviour
 
        
         selectedIndex = 0;
+
+        
         
         //활성화된 캐릭터 
         SetActiveCharacter((int)selectCharacter);
@@ -124,10 +172,9 @@ public class PlayerStats : MonoBehaviour
 
         }
 
-         
-        
         CreateSkill();
         SetPlayerData();
+        AtkDamage += (int)(Level * 1.1f);
        
     }
 
@@ -163,69 +210,15 @@ public class PlayerStats : MonoBehaviour
             Level = 1;
             Exp = 0;
             Gold = 1000;
-            // masaAtk1Level = 1;
-            // masaAtk3Level = 1;
+        
 
         }    
         
         
     
     }
-    
    
-    public int Level
-    {
-        get { return _level; }
-        set
-        {
-            _level = value;
-            textLevel.text = _level.ToString();
-            maxExp += (_level*1000);
-        }
-    }
-
-    // public void SetLevel(int _level)
-    // {
-    //     level = _level;
-    //     textLevel.text = level.ToString();
-    //     maxExp = maxExp + (level*1000);
-    // }
-
-    public int Gold
-    {
-        get { return _gold; }
-        set
-        {
-            _gold = value;
-            textGold.text = _gold.ToString();
-           
-        }
-    }
-
-    // public void SetGold(int _gold)
-    // {
-    //     gold = _gold;
-    //     textGold.text = gold.ToString();
-    // }
-
-    public int Exp
-    {
-        get { return _exp; }
-        set
-        {
-            _exp = value;
-            expSlider.value = (float)_exp/(float)maxExp;
-           
-        }
-    }
-    
-
-    // public void SetExp(int _exp)
-    // {
-    //     exp = _exp;
-    //     expSlider.value = (float)exp/(float)maxExp;
-    // }
-
+   
     public void SetSceneNumber(int _sceneNumber)
     {
         sceneNumber = _sceneNumber;
@@ -278,10 +271,7 @@ public class PlayerStats : MonoBehaviour
        
     }
 
-    public void AtkDamage()
-    {
-
-    }
+    
 
     
 
@@ -309,6 +299,7 @@ public class PlayerStats : MonoBehaviour
     //골드 사용시 
     public bool UseGold(int _use)
     {
+        _use *= GoldUsage;
         if(0 > Gold - _use)
             return false;
 
@@ -349,7 +340,8 @@ public class PlayerStats : MonoBehaviour
             textLevel.text = Level.ToString();
             expSlider.value = (float)Exp/(float)maxExp;
             AddGold(Level*1000);
-
+            AtkDamage += (int)(Level * 1.1f);
+            
             DataManager.dataManager.SavePlayerData();
         }
     }
@@ -379,6 +371,8 @@ public class PlayerStats : MonoBehaviour
             
         }
     }
+
+    //현재 스킬에 레벨 
     public int GetSkillLevel(string _key)
     {
         print(skillDictionary[_key].level);
