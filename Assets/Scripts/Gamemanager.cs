@@ -150,7 +150,7 @@ public class GameManager : MonoBehaviour
         }
 
         ESC();
-        Skill();
+        SkillWindow();
         Keyboard();
 
         
@@ -197,7 +197,7 @@ public class GameManager : MonoBehaviour
     }
     
 
-    public void Skill()
+    public void SkillWindow()
     {
         
         if(Input.GetKeyDown(KeyCode.K))

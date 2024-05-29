@@ -35,7 +35,7 @@ public class PlayerStats : MonoBehaviour
 
     public GameObject aim;
 
-    
+    GameManager gm = GameManager.gameManager;
 
     private PlayerData playerData;
     
@@ -267,9 +267,12 @@ public class PlayerStats : MonoBehaviour
            Gold += 300;
         }
 
+        
 
        
     }
+
+    
 
     
 
@@ -375,7 +378,7 @@ public class PlayerStats : MonoBehaviour
     //현재 스킬에 레벨 
     public int GetSkillLevel(string _key)
     {
-        print(skillDictionary[_key].level);
+        
        
         if(!skillDictionary.ContainsKey(_key))
             return -1;

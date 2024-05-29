@@ -17,8 +17,8 @@ public class MasaSchool : MonoBehaviour
     private KeyCode[] userKeys = new KeyCode[108];
     
     
-    PlayerStats ps = PlayerStats.playerStats;
-    GameManager gm = GameManager.gameManager;
+    PlayerStats playerStats;
+    GameManager gm;
     
     private int singleAtkDamage;
    
@@ -33,6 +33,8 @@ public class MasaSchool : MonoBehaviour
     void Start()
     {
         anim = GetComponent<Animator>();
+        playerStats = PlayerStats.playerStats;
+        gm = GameManager.gameManager;
        
     }
 
@@ -40,7 +42,7 @@ public class MasaSchool : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(gm.gState != GameManager.GameState.Run || ps.selectCharacter != PlayerStats.SelectCharacter.MasaSchool || !gm.isMove)
+        if(gm.gState != GameManager.GameState.Run || playerStats.selectCharacter != PlayerStats.SelectCharacter.MasaSchool || !gm.isMove)
         {
             
             return;
@@ -67,20 +69,20 @@ public class MasaSchool : MonoBehaviour
 
     void SingleAtk(string _skillName,float _rangeMult = 1.5f,int _damageMult = 1,float _goldMult = 0.1f)
     {
-        int _skillLevel = ps.GetSkillLevel(_skillName);
+        int _skillLevel = playerStats.GetSkillLevel(_skillName);
 
         if(_skillLevel < 0)
         {
             return;
         }
 
-        int _damage = (int)(ps.AtkDamage* _skillLevel * _damageMult);
+        int _damage = (int)( playerStats.AtkDamage* _skillLevel * _damageMult);
        
        
         singleAtkDamage = _damage;
         singleAtkRange = _rangeMult * _skillLevel;
 
-        if(ps.UseGold((int)(_skillLevel * _goldMult)))
+        if( playerStats.UseGold((int)(_skillLevel * _goldMult)))
         {
             IsMove();
             anim.SetTrigger(_skillName);
@@ -95,13 +97,13 @@ public class MasaSchool : MonoBehaviour
     
     void MultiAtk(string _skillName,float _rangeMult = 1.5f,int _damageMult = 1,int _cntMult = 1)
     {
-        if(ps.GetSkillLevel(_skillName) < 0)
+        if( playerStats.GetSkillLevel(_skillName) < 0)
         {
             return;
         }
-        int _skillLevel =  ps.GetSkillLevel(_skillName);
+        int _skillLevel =   playerStats.GetSkillLevel(_skillName);
         
-        if(ps.UseGold((int)(_skillLevel*1.1f)))
+        if( playerStats.UseGold((int)(_skillLevel*1.1f)))
         {
             IsMove();
             anim.SetTrigger(_skillName);
@@ -111,7 +113,7 @@ public class MasaSchool : MonoBehaviour
            
             float _range = _rangeMult * _skillLevel;
             int _cnt = (int)(_cntMult + (_skillLevel/10));
-            int _damage = ps.AtkDamage * _damageMult * _skillLevel;
+            int _damage =  playerStats.AtkDamage * _damageMult * _skillLevel;
            
 
             // 주변의 적을 감지

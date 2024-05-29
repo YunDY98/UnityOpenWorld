@@ -28,8 +28,7 @@ public class KeySetting : MonoBehaviour, IDropHandler
     Text text;
 
 
-    private float doubleClickTime = 0.3f; // 더블 클릭 감지를 위한 시간 간격
-    private float lastClickTime = 0f; // 마지막으로 클릭한 시간
+    
 
     void Start()
     {
@@ -221,6 +220,9 @@ public enum SkillEnum
     MasaAtk1,
     MasaAtk2,
     MasaAtk3,
+    CommonSpdUp,
+    CommonAtkUp,
+
 
 
 }

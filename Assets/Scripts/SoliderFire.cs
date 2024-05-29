@@ -33,12 +33,12 @@ public class SoliderFire : MonoBehaviour
     public float throwPower = 15f;
 
     public GameObject bulletEffect;
-
+    PlayerStats playerStats;
     Animator anim;
     
     
     //발사 무기 공격력
-    public int weaponDamage = PlayerStats.playerStats.AtkDamage;
+    public int weaponDamage = 10;
 
     public ParticleSystem ps;
     void Start ()
@@ -47,7 +47,7 @@ public class SoliderFire : MonoBehaviour
         wMode = WeaponMode.Rifle;
         useBullets = 1;
         useBomb = 10;
-
+        playerStats = PlayerStats.playerStats;
         //ps = bulletEffect.GetComponent<ParticleSystem>();
 
         canShoot = true;
@@ -61,7 +61,7 @@ public class SoliderFire : MonoBehaviour
     {
        
         // 게임 중일때만 동작 
-        if((GameManager.gameManager.gState != GameManager.GameState.Run) || (PlayerStats.playerStats.selectCharacter != PlayerStats.SelectCharacter.Solider))
+        if((GameManager.gameManager.gState != GameManager.GameState.Run) || (playerStats.selectCharacter != PlayerStats.SelectCharacter.Solider))
         {
            
             return;
@@ -71,7 +71,10 @@ public class SoliderFire : MonoBehaviour
         
         if(Input.GetMouseButtonDown(0))
         {
-            if(PlayerStats.playerStats.UseGold(useBullets) && canShoot)
+            if(canShoot)
+                return;
+
+            if(playerStats.UseGold(useBullets))
             {
                
 
@@ -99,7 +102,8 @@ public class SoliderFire : MonoBehaviour
                 case WeaponMode.Sniper:
                     if(!zoomMode)
                     {
-                        weaponDamage = (int)(weaponDamage * 1.5f);
+                       
+                        weaponDamage = (int)(playerStats.AtkDamage * 1.5f);
                         Camera.main.fieldOfView = 15f;
                         zoomMode = true;
                        
@@ -107,7 +111,7 @@ public class SoliderFire : MonoBehaviour
                     }
                     else
                     {
-                        weaponDamage = (int)(weaponDamage * 5f);
+                        weaponDamage = (int)(playerStats.AtkDamage * 5f);
                         Camera.main.fieldOfView = 60f;
                         zoomMode = false;
                         
