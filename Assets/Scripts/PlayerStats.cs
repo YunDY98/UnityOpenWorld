@@ -8,6 +8,7 @@ using Palmmedia.ReportGenerator.Core;
 using UnityEngine.InputSystem.Interactions;
 using UnityEngine.AI;
 using System;
+using UnityEditorInternal;
 
 public class PlayerStats : MonoBehaviour
 {
@@ -34,16 +35,17 @@ public class PlayerStats : MonoBehaviour
 
     public GameObject aim;
 
-
+    
 
     private PlayerData playerData;
     
-    public int level;
-    public int exp;
-    public int gold;
+    private int _level;
+    private int _exp;
+    private int _gold;
 
-    // public int masaAtk1Level;
-    // public int masaAtk3Level;
+    public int baseAtk;
+
+    
 
     
 
@@ -62,7 +64,7 @@ public class PlayerStats : MonoBehaviour
     private int maxExp = 10000;
 
 
-    public TextMeshProUGUI textgold;
+    public TextMeshProUGUI textGold;
     public TextMeshProUGUI textLevel;
     // public TextMeshProUGUI textMasaAtk1Level;
    
@@ -136,9 +138,12 @@ public class PlayerStats : MonoBehaviour
 
         if(playerData != null)
         {
-            SetLevel(playerData.level);
-            SetExp(playerData.exp); 
-            SetGold(playerData.gold);
+            Level = playerData.level;
+            //SetLevel(playerData.level);
+            //SetExp(playerData.exp); 
+            Exp = playerData.exp;
+            //SetGold(playerData.gold);
+            Gold = playerData.gold;
             // masaAtk1Level = GetSkillLevel("Masa","Atk1",playerData.skills);
             // masaAtk3Level = GetSkillLevel("Masa","Atk3",playerData.skills);
             int _skillsLength = playerData.skills.Length;
@@ -155,9 +160,9 @@ public class PlayerStats : MonoBehaviour
         else
         {
 
-            SetLevel(1);
-            SetExp(0);
-            SetGold(1000);
+            Level = 1;
+            Exp = 0;
+            Gold = 1000;
             // masaAtk1Level = 1;
             // masaAtk3Level = 1;
 
@@ -166,69 +171,60 @@ public class PlayerStats : MonoBehaviour
         
     
     }
-    // public void UpdateSkillText()
-    // {
-    //     SetSkillLevel(ref masaAtk1Level,ref textMasaAtk1Level,ref textMasaAtk1LevelUpGold);
-    //     SetSkillLevel(ref masaAtk3Level,ref textMasaAtk3Level, ref textMasaAtk3LevelUpGold);
-
-    // }
     
-    // public void Atk1SkillLevelUp()
-    // {
-    //     SetSkillLevel(ref masaAtk1Level,ref textMasaAtk1Level,ref textMasaAtk1LevelUpGold,true);
-        
-
-    // }
-
-    // public void Atk3SkillLevelUp()
-    // {
-    //     SetSkillLevel(ref masaAtk3Level,ref textMasaAtk3Level, ref textMasaAtk3LevelUpGold,true);
-    // }
-
-    // public void SetSkillLevel(ref int _level,ref TextMeshProUGUI _textLevel,ref TextMeshProUGUI _textGold,bool _levelUp = false)
-    // {
-        
-    //     int _gold = (int)(500*(_level*1.1f)* (_level*2));
-
-    //     if(UseGold(_gold) && _levelUp)
-    //     {
-    //         _level += 1;
-    //         _textLevel.text = _level.ToString();
-    //         _textGold.text = _gold.ToString();
-            
-            
-    //     }
-    //     else
-    //     {
-    //         _textLevel.text = _level.ToString();
-    //         _textGold.text = _gold.ToString();
-
-    //     }
-       
-
-        
-       
-    // }
    
-
-    public void SetLevel(int _level)
+    public int Level
     {
-        level = _level;
-        textLevel.text = level.ToString();
-        maxExp = maxExp + (level*1000);
+        get { return _level; }
+        set
+        {
+            _level = value;
+            textLevel.text = _level.ToString();
+            maxExp += (_level*1000);
+        }
     }
 
-    public void SetGold(int _gold)
+    // public void SetLevel(int _level)
+    // {
+    //     level = _level;
+    //     textLevel.text = level.ToString();
+    //     maxExp = maxExp + (level*1000);
+    // }
+
+    public int Gold
     {
-        gold = _gold;
-        textgold.text = gold.ToString();
+        get { return _gold; }
+        set
+        {
+            _gold = value;
+            textGold.text = _gold.ToString();
+           
+        }
     }
 
-    public void SetExp(int _exp)
+    // public void SetGold(int _gold)
+    // {
+    //     gold = _gold;
+    //     textGold.text = gold.ToString();
+    // }
+
+    public int Exp
     {
-        exp = _exp;
-        expSlider.value = (float)exp/(float)maxExp;
+        get { return _exp; }
+        set
+        {
+            _exp = value;
+            expSlider.value = (float)_exp/(float)maxExp;
+           
+        }
     }
+    
+
+    // public void SetExp(int _exp)
+    // {
+    //     exp = _exp;
+    //     expSlider.value = (float)exp/(float)maxExp;
+    // }
 
     public void SetSceneNumber(int _sceneNumber)
     {
@@ -267,19 +263,24 @@ public class PlayerStats : MonoBehaviour
 
         if(Input.GetKey(KeyCode.Alpha8))
         {
-            gold = 2147483647;
+            Gold = 2147483647;
 
         }
 
         #endif
 
-        if(gold <= 30)
+        if(Gold <= 30)
         {
-            gold += 30;
+           Gold += 300;
         }
 
 
        
+    }
+
+    public void AtkDamage()
+    {
+
     }
 
     
@@ -287,31 +288,32 @@ public class PlayerStats : MonoBehaviour
     // 골드 획득시
     public void AddGold(int _gold)
     {
+        // 21억 넘어갈시 
         try
         {
             checked
             {
-                gold += _gold;
+                Gold += _gold;
             }
         }
         catch (OverflowException)
         {
             
-            gold = int.MaxValue; 
+            Gold = int.MaxValue; 
         }
 
-        textgold.text = gold.ToString();
+        //textGold.text = Gold.ToString();
         
     }
 
     //골드 사용시 
     public bool UseGold(int _use)
     {
-        if(0 > gold - _use)
+        if(0 > Gold - _use)
             return false;
 
-        gold -= _use;
-        textgold.text = gold.ToString();
+        Gold -= _use;
+        //textGold.text = Gold.ToString();
 
        
        
@@ -322,12 +324,12 @@ public class PlayerStats : MonoBehaviour
     //경험치 획득시 
     public void AddExp(int _exp)
     {
-        exp += _exp;
+        Exp += _exp;
        
 
         LevelUp();
 
-        expSlider.value = (float)exp/(float)maxExp;
+        //expSlider.value = (float)Exp/(float)maxExp;
 
     }
 
@@ -335,18 +337,18 @@ public class PlayerStats : MonoBehaviour
     private void LevelUp()
     {
         
-        if(exp >= maxExp)
+        if(Exp >= maxExp)
         {
             
-            exp -= maxExp;
-            level++;
+            Exp -= maxExp;
+            Level++;
 
            
 
-            maxExp += level*1000;
-            textLevel.text = level.ToString();
-            expSlider.value = (float)exp/(float)maxExp;
-            AddGold(level*1000);
+            maxExp += Level*1000;
+            textLevel.text = Level.ToString();
+            expSlider.value = (float)Exp/(float)maxExp;
+            AddGold(Level*1000);
 
             DataManager.dataManager.SavePlayerData();
         }
@@ -377,26 +379,6 @@ public class PlayerStats : MonoBehaviour
             
         }
     }
-    // public int GetSkillLevel(string whoskill, string skillName, Skill[] skills)
-    // {
-    //     // Skill 배열이 유효한지 확인합니다.
-    //     if (skills != null)
-    //     {
-    //         // Skill 배열을 반복하면서 주어진 whoskill과 skillName을 가진 스킬을 찾습니다.
-    //         foreach (Skill skill in skills)
-    //         {
-    //             // 현재 스킬의 whoskill과 skillName이 주어진 값과 일치하는지 확인합니다.
-    //             if (skill.whoSkill == whoskill && skill.skillName == skillName)
-    //             {
-    //                 // 일치하는 스킬을 찾으면 해당 스킬의 level 값을 반환합니다.
-    //                 return skill.level;
-    //             }
-    //         }
-    //     }
-
-    //     // 일치하는 스킬을 찾지 못하면 기본값으로 1을 반환합니다.
-    //     return 1;
-    // }
     public int GetSkillLevel(string _key)
     {
         print(skillDictionary[_key].level);

@@ -42,9 +42,9 @@ public class DataManager : MonoBehaviour
 
         
 
-        _pd.level = PlayerStats.playerStats.level;
-        _pd.exp = PlayerStats.playerStats.exp;
-        _pd.gold = PlayerStats.playerStats.gold;
+        _pd.level = PlayerStats.playerStats.Level;
+        _pd.exp = PlayerStats.playerStats.Exp;
+        _pd.gold = PlayerStats.playerStats.Gold;
         
         // 스킬 총 갯수 
         int _skillCount = PlayerStats.playerStats.skillDictionary.Count;

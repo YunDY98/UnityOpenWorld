@@ -23,7 +23,7 @@ public class KeySetting : MonoBehaviour, IDropHandler
     string preKey;
     Image image;
 
-    Button btn;
+    
 
     Text text;
 
@@ -34,10 +34,7 @@ public class KeySetting : MonoBehaviour, IDropHandler
     void Start()
     {
         image = GetComponent<Image>();
-        btn = GetComponent<Button>();
-
-        btn.onClick.AddListener(Drop);
-
+        
         text = GetComponentInChildren<Text>();
 
         sText = text.text;
@@ -87,7 +84,7 @@ public class KeySetting : MonoBehaviour, IDropHandler
             }
             catch
             {
-
+                return;
             }
         }
        
@@ -203,6 +200,7 @@ public class KeySetting : MonoBehaviour, IDropHandler
         
         image.sprite = null;
         preKey = null;
+        
         GameManager.gameManager.userKeys[StringToEnum(key,typeof(SkillEnum))] = KeyCode.None;
         PlayerPrefs.DeleteKey(sText);
         PlayerPrefs.DeleteKey(keyCode.ToString());

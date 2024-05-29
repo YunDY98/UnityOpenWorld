@@ -6,6 +6,8 @@ public class DragUI : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointer
 {
     private RectTransform rectTransform;
     private Canvas canvas;
+
+    private Image image;
     private Vector2 originalPointerPosition;
     private Vector2 originalRectTransformPosition;
     private RectTransform parentRectTransform;
@@ -24,24 +26,34 @@ public class DragUI : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointer
     {
         rectTransform = GetComponent<RectTransform>();
         canvas = GetComponentInParent<Canvas>();
-
-       
         
+
         parentRectTransform = canvas.GetComponent<RectTransform>();
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        
+        image = GetComponent<Image>();
+        if(image.sprite == null)
+        {   
+           
+           
+            return;
+        }
+
+       
+
         RectTransformUtility.ScreenPointToLocalPointInRectangle(parentRectTransform, eventData.position, eventData.pressEventCamera, out originalPointerPosition);
         originalRectTransformPosition = rectTransform.anchoredPosition;
-       
+
 
         // 복사 기능 구현
         if(canCopy)
         {
             
             copiedObject = Instantiate(gameObject, parentRectTransform);
-
+        
             if(delete)
             {
                 KeySetting keySetting = GetComponent<KeySetting>();
@@ -64,7 +76,8 @@ public class DragUI : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointer
 
     public void OnDrag(PointerEventData eventData)
     {
-        
+        if(!isDragging)
+            return;
 
         if(canCopy)
         {
@@ -75,7 +88,7 @@ public class DragUI : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointer
             }
             
         }
-        else if(isDragging)
+        else
         {
             
             if (RectTransformUtility.ScreenPointToLocalPointInRectangle(parentRectTransform, eventData.position, eventData.pressEventCamera, out localPointerPosition))
