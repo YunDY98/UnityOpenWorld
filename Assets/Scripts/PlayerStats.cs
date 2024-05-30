@@ -37,7 +37,7 @@ public class PlayerStats : MonoBehaviour
 
     GameManager gm = GameManager.gameManager;
 
-    private PlayerData playerData;
+    public PlayerData playerData;
     
     private int _level;
     public int Level
@@ -144,6 +144,7 @@ public class PlayerStats : MonoBehaviour
             _instance = this;
             DontDestroyOnLoad(this.gameObject);
         }
+       
     }
 
 
@@ -426,6 +427,7 @@ public class PlayerStats : MonoBehaviour
         // 이미지 로드 및 할당
         Sprite skillImage = Resources.Load<Sprite>("Sprites/" + _key); // 이미지 파일 경로
         Transform imageTransform = skillWindow.transform.Find("SkillImage");
+
         if(imageTransform != null)
         {
             Image imageComponent = imageTransform.GetComponent<Image>();
