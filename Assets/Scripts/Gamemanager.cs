@@ -96,8 +96,9 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {   
-        
-       
+        // 키보드 keysetting Awake실행후 
+        keyboard.SetActive(false);
+
         //gState = GameState.Ready;
         gState = GameState.Run;
 

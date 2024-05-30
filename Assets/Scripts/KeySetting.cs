@@ -30,8 +30,9 @@ public class KeySetting : MonoBehaviour, IDropHandler
 
     
 
-    void Start()
+    void Awake()
     {
+        print("asd");
         image = GetComponent<Image>();
         
         text = GetComponentInChildren<Text>();
@@ -64,6 +65,8 @@ public class KeySetting : MonoBehaviour, IDropHandler
 
         
     }
+
+    
 
     public void OnDrop(PointerEventData eventData)
     {

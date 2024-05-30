@@ -1,7 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class BuffManager : MonoBehaviour
 {
@@ -10,6 +13,9 @@ public class BuffManager : MonoBehaviour
     GameManager gameManager;
 
     public PlayerMove playerMove;
+
+    public GameObject buffPrefab;
+    public Transform contentPanel;
 
     int buff;
     // Start is called before the first frame update
@@ -39,11 +45,12 @@ public class BuffManager : MonoBehaviour
         }
        
 
-        print("Move Speed = " + playerMove.moveSpeed);
-        print("Atk Up = " + playerStats.AtkDamage);
+       
 
         
     }
+
+
 
     void UseBuff(string _buffName,float _durationMult = 10f,float _buffAmount = 1f)
     {
@@ -71,7 +78,12 @@ public class BuffManager : MonoBehaviour
             float _duration = _skillLevel * _durationMult;
             float _Amount = _skillLevel * _buffAmount;
             
-            StartCoroutine(BuffDurationCoroutine(_duration,_onBuff,_Amount));
+            StartCoroutine(BuffDurationCoroutine(_buffName,_duration,_onBuff,_Amount));
+
+           
+            
+
+           
             
         }
     
@@ -82,8 +94,31 @@ public class BuffManager : MonoBehaviour
         
     }
 
-    IEnumerator BuffDurationCoroutine(float _duration,int _onBuff,float _buffAmount)
+    IEnumerator BuffDurationCoroutine(string _buffName,float _duration,int _onBuff,float _buffAmount)
     {
+        
+        GameObject _buffWindow = Instantiate(buffPrefab,contentPanel);
+
+        // 이미지 로드 및 할당
+        Sprite buffImage = Resources.Load<Sprite>("Sprites/" + _buffName); // 이미지 파일 경로
+       
+        Image imageComponent = _buffWindow.GetComponent<Image>();
+        
+        TextMeshProUGUI timeText = _buffWindow.GetComponentInChildren<TextMeshProUGUI>();
+       
+        
+       
+       
+        if(imageComponent != null)
+        {
+            if(buffImage != null)
+            {
+                imageComponent.sprite = buffImage;
+            }
+        }
+
+
+
         buff += _onBuff;
         switch(_onBuff)
         {
@@ -102,7 +137,12 @@ public class BuffManager : MonoBehaviour
 
         while(_elapsedTime < _duration)
         {
+            
+            
             _elapsedTime += Time.deltaTime;
+            int _time = (int)(_duration - _elapsedTime);
+            
+            timeText.text = _time.ToString();
             yield return null;
         }
 
@@ -120,7 +160,7 @@ public class BuffManager : MonoBehaviour
             
 
         }
-        
+        Destroy(_buffWindow);
 
     }
     int StringToEnum(string _key, Type _enumType)
