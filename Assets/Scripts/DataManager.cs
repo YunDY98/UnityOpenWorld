@@ -57,6 +57,13 @@ public class DataManager : MonoBehaviour
         {
             _pd.skills[_index++] = _skill.Value;
         }
+        _index = 0;
+        foreach(var _item in InventorySystem.inventorySystem.items)
+        {
+            _pd.items[_index].itemName = _item.Key;
+            _pd.items[_index].quantity = _item.Value;
+            _index++;
+        }
 
 
         // 데이터를 JSON으로 직렬화
@@ -107,7 +114,7 @@ public class PlayerData
 public class Item
 {
     public string itemName;
-    public int cnt;
+    public int quantity;
    
 }
 

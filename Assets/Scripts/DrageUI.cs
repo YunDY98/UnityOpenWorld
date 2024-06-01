@@ -55,6 +55,7 @@ public class DragUI : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointer
         
             if(delete)
             {
+                
                 KeySetting keySetting = GetComponent<KeySetting>();
                 keySetting.Drop();
             }

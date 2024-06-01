@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1441712297114589595}
   - component: {fileID: 4688039829459419774}
   - component: {fileID: 8169100721086949731}
+  - component: {fileID: 1005662086238287088}
   m_Layer: 0
   m_Name: Gold
   m_TagString: Untagged
@@ -121,3 +122,16 @@ MonoBehaviour:
   attractionDistance: 10
   exp: 100
   addGold: 30
+--- !u!114 &1005662086238287088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6292112991115732675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2169d03446f6243468815bc38987d023, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attractionDistance: 10

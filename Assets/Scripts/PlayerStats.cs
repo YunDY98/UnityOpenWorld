@@ -514,6 +514,8 @@ public class PlayerStats : MonoBehaviour
         string _key = _skill.whoSkill+_skill.skillName;
         
         GameObject skillWindow = skillObjectDictionary[_skill.whoSkill+_skill.skillName];
+
+       
         TextMeshProUGUI[] texts = skillWindow.GetComponentsInChildren<TextMeshProUGUI>();
          
         

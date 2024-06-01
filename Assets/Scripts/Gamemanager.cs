@@ -49,6 +49,8 @@ public class GameManager : MonoBehaviour
     public GameObject keyboard;
     public GameObject skill;
 
+    public GameObject inventory;
+
     public Slider rotSpeedSlider;
 
   
@@ -153,6 +155,7 @@ public class GameManager : MonoBehaviour
         ESC();
         SkillWindow();
         Keyboard();
+        Inventory();
 
         
     }
@@ -209,6 +212,21 @@ public class GameManager : MonoBehaviour
 
             UiStack(_bool);
             skill.SetActive(_bool);
+           
+        }
+
+    }
+
+    public void Inventory()
+    {
+        if(Input.GetKeyDown(KeyCode.I))
+        {
+            
+            
+            bool _bool = !inventory.activeSelf;
+
+            UiStack(_bool);
+            inventory.SetActive(_bool);
            
         }
 

@@ -26,7 +26,7 @@ public class Shop : MonoBehaviour
     void Start()
     {
        
-        ItemInfo itemInfo = GetComponent<ItemInfo>();
+        ShopItemInfo itemInfo = GetComponent<ShopItemInfo>();
 
         price = itemInfo.price;
         itemName = itemInfo.itemName;

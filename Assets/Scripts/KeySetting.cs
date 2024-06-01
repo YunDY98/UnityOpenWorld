@@ -23,12 +23,7 @@ public class KeySetting : MonoBehaviour, IDropHandler
     string preKey;
     Image image;
 
-    
-
     Text text;
-
-
-    
 
     void Awake()
     {
@@ -54,14 +49,6 @@ public class KeySetting : MonoBehaviour, IDropHandler
         skillEnum = PlayerPrefs.GetInt(keyCode.ToString());
 
         GameManager.gameManager.userKeys[skillEnum] = (KeyCode)keyCode;
-
-
-
-
-    
-
-      
-        
 
         
     }
@@ -90,14 +77,6 @@ public class KeySetting : MonoBehaviour, IDropHandler
             }
         }
        
-
-
-
-        
-        
-
-       
-         
        
         // 스킬 하나당 하나의 키셋팅 
         if(GameManager.gameManager.userKeys[StringToEnum(key,typeof(SkillEnum))] != KeyCode.None)
@@ -108,9 +87,6 @@ public class KeySetting : MonoBehaviour, IDropHandler
            
         }
             
-
-
-        
 
         // 드래그 중인 UI 요소가 있다면
         if(_dragObject != null)
