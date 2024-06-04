@@ -3,12 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-using Unity.VisualScripting;
-using Palmmedia.ReportGenerator.Core;
-using UnityEngine.InputSystem.Interactions;
-using UnityEngine.AI;
 using System;
-using UnityEditorInternal;
 
 public class PlayerStats : MonoBehaviour
 {
@@ -148,8 +143,8 @@ public class PlayerStats : MonoBehaviour
     }
 
 
-    // Start is called before the first frame update
-    public void PlayerStatsStart()
+    // 스크립트 실행 순서 조절 가능
+    void Start()
     {
         playerData = DataManager.dataManager.LoadPlayerData();
 

@@ -42,7 +42,7 @@ public class InventorySystem : MonoBehaviour
         
         
         playerStats = PlayerStats.playerStats;
-        playerStats.PlayerStatsStart();
+       
 
         playerData = playerStats.playerData;
 
