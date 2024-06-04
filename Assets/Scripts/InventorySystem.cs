@@ -11,11 +11,11 @@ public class InventorySystem : MonoBehaviour
 
     public Dictionary<string,int> items = new();
     private Dictionary<string,TextMeshProUGUI> text = new();
+    //ItemData itemData;
     PlayerStats playerStats;
     PlayerData playerData;
 
     public GameObject content;
-    public RectTransform contentRect;
    
     public GameObject invenItem;
     
@@ -42,6 +42,7 @@ public class InventorySystem : MonoBehaviour
         
         
         playerStats = PlayerStats.playerStats;
+        playerStats.PlayerStatsStart();
 
         playerData = playerStats.playerData;
 
@@ -52,9 +53,9 @@ public class InventorySystem : MonoBehaviour
 
         }   
         total = playerData.items.Length;
-        print(total + "gggg");
+       
 
-        contentRect.sizeDelta = new Vector2(contentRect.sizeDelta.x, 100 * (int)(total /10 + 1));
+       
 
        
         InvenUpdate();
@@ -95,6 +96,8 @@ public class InventorySystem : MonoBehaviour
 
             
             GameObject _item = Instantiate(invenItem,content.transform);
+
+            
 
             // 이미지 로드 및 할당
             
@@ -138,7 +141,7 @@ public class InventorySystem : MonoBehaviour
             text[_itemName] = _itemCnt;
             _itemCnt.text = _quantity.ToString();
             total += 1;
-            contentRect.sizeDelta = new Vector2(contentRect.sizeDelta.x, 100 * (int)(total /10 + 1));
+         
 
         }
 
