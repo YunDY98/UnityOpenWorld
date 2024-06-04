@@ -1,11 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using Unity.VisualScripting;
-using Palmmedia.ReportGenerator.Core.Parser.Analysis;
-using System.Security.Cryptography;
+
 
 public class InventorySystem : MonoBehaviour
 {
@@ -55,11 +52,12 @@ public class InventorySystem : MonoBehaviour
 
         }   
         total = playerData.items.Length;
+        print(total + "gggg");
 
         contentRect.sizeDelta = new Vector2(contentRect.sizeDelta.x, 100 * (int)(total /10 + 1));
 
        
-        InvenUpdate(true);
+        InvenUpdate();
 
 
         
@@ -83,7 +81,7 @@ public class InventorySystem : MonoBehaviour
        
     }
 
-    void InvenUpdate(bool _isStart = false)
+    void InvenUpdate()
     {
         foreach (Transform child in content.transform)
         {

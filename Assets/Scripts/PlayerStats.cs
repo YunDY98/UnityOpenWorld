@@ -172,6 +172,7 @@ public class PlayerStats : MonoBehaviour
        
 
         }
+        
 
         CreateSkill();
         SetPlayerData();

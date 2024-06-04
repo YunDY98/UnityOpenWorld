@@ -12,7 +12,6 @@ public class ItemInfo : MonoBehaviour
     void Start()
     {
         inventorySystem = InventorySystem.inventorySystem;
-        
     }
 
     // Update is called once per frame
@@ -23,14 +22,6 @@ public class ItemInfo : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        // InventorySystem.inventorySystem이 null인지 확인합니다.
-        if (inventorySystem == null)
-        {
-            Debug.LogError("InventorySystem is not initialized.");
-            return;
-        }
-
-       
         
 
         if(other.gameObject.layer == LayerMask.NameToLayer("Player"))

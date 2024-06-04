@@ -3,6 +3,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using Unity.VisualScripting;
 using System.Collections.Generic;
+using System;
 
 public class DataManager : MonoBehaviour
 {
@@ -48,21 +49,25 @@ public class DataManager : MonoBehaviour
         
         // 스킬 총 갯수 
         int _skillCount = PlayerStats.playerStats.skillDictionary.Count;
+        // 아이템 갯수 
+        int _itemCount = InventorySystem.inventorySystem.items.Count;
 
         _pd.skills = new Skill[_skillCount];
-
+        _pd.items = new Item[_itemCount];
+       
         int _index = 0;
 
         foreach(var _skill in PlayerStats.playerStats.skillDictionary)
         {
             _pd.skills[_index++] = _skill.Value;
+            
         }
         _index = 0;
+        
         foreach(var _item in InventorySystem.inventorySystem.items)
         {
-            _pd.items[_index].itemName = _item.Key;
-            _pd.items[_index].quantity = _item.Value;
-            _index++;
+            _pd.items[_index++] = new Item(_item.Key,_item.Value);
+            
         }
 
 
@@ -115,6 +120,12 @@ public class Item
 {
     public string itemName;
     public int quantity;
+    public Item(string _itemName, int _quantity)
+    {
+        this.itemName = _itemName;
+        
+        this.quantity = _quantity;
+    }
    
 }
 
