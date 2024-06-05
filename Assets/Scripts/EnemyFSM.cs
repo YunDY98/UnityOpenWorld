@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.AI;
 using UnityEngine.PlayerLoop;
+using UnityEditor;
 public class EnemyFSM : MonoBehaviour
 {
     NavMeshAgent smith;
@@ -29,7 +30,7 @@ public class EnemyFSM : MonoBehaviour
     public Slider hpSlider;
     public int attackPower = 0;
 
-    public GameObject mag;
+    public GameObject gold;
 
     //초기 위치 
     Vector3 originPos;
@@ -68,7 +69,7 @@ public class EnemyFSM : MonoBehaviour
 
        // player = GameObject.Find("Player").transform;
 
-       //anim = transform.GetComponentInchildren<Animator>();
+        //anim = transform.GetComponentInchildren<Animator>();
     }
     void OnEnable()
     {
@@ -101,10 +102,6 @@ public class EnemyFSM : MonoBehaviour
                 //Die();
                 break;
 
-
-                
-
-
         }
         
     }
@@ -124,7 +121,12 @@ public class EnemyFSM : MonoBehaviour
 
     void Move()
     {
-
+        
+        if(m_State == EnemyState.Die)
+        {
+            
+            return;
+        }
         //초기 위치에서 이동 가능 범위를 넘어간다면 
         if(Vector3.Distance(transform.position,originPos) > moveDistance)
         {
@@ -196,7 +198,7 @@ public class EnemyFSM : MonoBehaviour
     //플레이어의 스크립트의 데미지 처리 함수를 실행 
     public void AttackAction()
     {
-        //player.GetComponent<PlayerMove>().DamageAction(attackPower);
+        //player.GetComponent<PlayerMove>().DagoldeAction(attackPower);
         pm.DamageAction(attackPower);
 
     }
@@ -260,6 +262,7 @@ public class EnemyFSM : MonoBehaviour
         }
         else
         {
+            
             m_State = EnemyState.Die;
 
             print("Any State -> Die");
@@ -270,9 +273,9 @@ public class EnemyFSM : MonoBehaviour
 
     void Damaged()
     {
-        StartCoroutine(DamageProcess());
+        StartCoroutine(DagoldeProcess());
     }
-    IEnumerator DamageProcess()
+    IEnumerator DagoldeProcess()
     {
         // 피격 모션 시간만큼 기다린다
         yield return new WaitForSeconds(1f);
@@ -285,6 +288,7 @@ public class EnemyFSM : MonoBehaviour
 
     void Die()
     {
+       
         
         //StopAllCoroutines();
 
@@ -295,9 +299,9 @@ public class EnemyFSM : MonoBehaviour
         //죽음 상태 처리
         StartCoroutine(DieProcess());
          // 현재 위치에 아이템을 소환
-        if (mag != null)
+        if (gold != null)
         {
-            Instantiate(mag, transform.position, transform.rotation);
+            Instantiate(gold, transform.position, transform.rotation);
         }
 
         
@@ -305,16 +309,28 @@ public class EnemyFSM : MonoBehaviour
 
     IEnumerator DieProcess()
     {
+        
         //캐릭터컨트롤러 비활성화
        // cc.enabled = false;
+        
+        //움직임이 끝나고 die애니메이션 진행 Rebind()로 해결 
+        anim.Rebind();
+
         anim.SetTrigger("Die");
-        //N초후 제거
-        yield return new WaitForSeconds(3f);
-        print("소멸");
-        // Destroy(gameObject);
        
+        
+
+
+        //N초후 제거
+        yield return new WaitForSeconds(10f);
+
+
+       
+        
        
     }
+
+    
 
     public void Respawn()
     {
@@ -323,7 +339,8 @@ public class EnemyFSM : MonoBehaviour
         transform.rotation = originRot;
         hp = maxHp;
         m_State = EnemyState.Idle;
-        anim.SetTrigger("DieToIdle");
+        anim.Play("Idle");
+        //anim.SetTrigger("DieToIdle");
         //gameObject.SetActive(true);
         print("Respawn");
     }

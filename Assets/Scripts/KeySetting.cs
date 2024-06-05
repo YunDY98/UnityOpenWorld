@@ -26,7 +26,7 @@ public class KeySetting : MonoBehaviour, IDropHandler
 
     void Awake()
     {
-        print("asd");
+        print("123ㄴㅇㄹㄴㅇㄹ");
         image = GetComponent<Image>();
         
         text = GetComponentInChildren<Text>();
@@ -35,7 +35,11 @@ public class KeySetting : MonoBehaviour, IDropHandler
         key = PlayerPrefs.GetString(sText);
 
         if(key == "")
+        {
+            
             return;
+        }
+            
         
         Sprite _skillImage = Resources.Load<Sprite>("Sprites/" + key);
 

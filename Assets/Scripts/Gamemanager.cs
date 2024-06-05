@@ -112,7 +112,7 @@ public class GameManager : MonoBehaviour
         
       //  gameText.color = new Color32(255,185,0,255);
         // 게임 준비 -> 게임 중 상태로 전환 
-       // StartCoroutine(ReadyToStart());
+       // StartCoroutine(ReadyToStart());sss
 
         //player = GameObject.Find("Player").GetComponent<PlayerMove>();
         

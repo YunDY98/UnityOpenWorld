@@ -40,7 +40,7 @@ public class SoliderFire : MonoBehaviour
     //발사 무기 공격력
     public int weaponDamage = 10;
 
-    public ParticleSystem ps;
+    ParticleSystem ps;
     void Start ()
     {   
         anim = GetComponentInChildren<Animator>();
@@ -48,7 +48,7 @@ public class SoliderFire : MonoBehaviour
         useBullets = 1;
         useBomb = 10;
         playerStats = PlayerStats.playerStats;
-        //ps = bulletEffect.GetComponent<ParticleSystem>();
+        ps = bulletEffect.GetComponent<ParticleSystem>();
 
         canShoot = true;
     }
@@ -67,12 +67,14 @@ public class SoliderFire : MonoBehaviour
             return;
         }
        
-       print("solider");
+       
         
         if(Input.GetMouseButtonDown(0))
         {
-            if(canShoot)
+            print(canShoot);
+            if(!canShoot)
                 return;
+            
 
             if(playerStats.UseGold(useBullets))
             {
@@ -122,6 +124,7 @@ public class SoliderFire : MonoBehaviour
         }
         if(Input.GetKeyUp(KeyCode.Alpha2))
         {
+            
             wMode = WeaponMode.Rifle;
             WModeTxt.text = "Rifle";
             useBullets = 1;
