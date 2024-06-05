@@ -9,7 +9,7 @@ public class CamRotate : MonoBehaviour
     //회전 값 변수
     float mx = 0;
     float my = 0;
-
+    float smoothSpeed = 1000f;
     
     
     void Start()
@@ -46,6 +46,8 @@ public class CamRotate : MonoBehaviour
     
             transform.eulerAngles = new Vector3(-my,mx,0);
 
+            
+           
 
         }
        

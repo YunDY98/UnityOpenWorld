@@ -22,12 +22,13 @@ public class LodingNextScene : MonoBehaviour
     }
     void Update()
     {
-        if(Client.client.sceneNumber > 0 && loadingStart)
-        {
-            loadingStart = false;
-            StartCoroutine(TransitionNextScene(Client.client.sceneNumber));
+        // if(Client.client.sceneNumber > 0 && loadingStart)
+        // {
+        //     loadingStart = false;
+        //     StartCoroutine(TransitionNextScene(Client.client.sceneNumber));
 
-        }
+        // }
+        StartCoroutine(TransitionNextScene(2));
     }
 
     IEnumerator TransitionNextScene(int num)

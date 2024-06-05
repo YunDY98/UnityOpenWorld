@@ -42,24 +42,26 @@ public class EnemyFSM : MonoBehaviour
 
     //public CharacterController cc;
 
-    public PlayerMove pm;
+    PlayerMove pm;
 
-    public Animator anim;
+    Animator anim;
     //누적 시간 
     private float currentTime = 0;
     private float attackDelay = 2f;
     // 에너미 상태 변수
     EnemyState m_State;
 
+    
    
     //플레이어 트랜스폼 
-    public Transform player;
+    Transform player;
 
     
     // Start is called before the first frame update
     void Start()
     {
         m_State = EnemyState.Idle;
+        pm = GameObject.Find("Player").GetComponent<PlayerMove>();
 
         //자신의 초기 위치 
         originPos = transform.position;
@@ -67,9 +69,9 @@ public class EnemyFSM : MonoBehaviour
 
         smith = GetComponent<NavMeshAgent>();
 
-       // player = GameObject.Find("Player").transform;
+        player = GameObject.Find("Player").transform;
 
-        //anim = transform.GetComponentInchildren<Animator>();
+        anim = transform.GetComponentInChildren<Animator>();
     }
     void OnEnable()
     {
@@ -273,9 +275,9 @@ public class EnemyFSM : MonoBehaviour
 
     void Damaged()
     {
-        StartCoroutine(DagoldeProcess());
+        StartCoroutine(DamageProcess());
     }
-    IEnumerator DagoldeProcess()
+    IEnumerator DamageProcess()
     {
         // 피격 모션 시간만큼 기다린다
         yield return new WaitForSeconds(1f);
