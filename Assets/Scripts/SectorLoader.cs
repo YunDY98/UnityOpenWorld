@@ -3,6 +3,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using System.Collections.Generic;
 using System.Data.Common;
+using UnityEditor;
 public class SectorLoader : MonoBehaviour
 {
     public string sectorAddress;
@@ -10,8 +11,6 @@ public class SectorLoader : MonoBehaviour
     private AsyncOperationHandle<GameObject> handle;
    
 
-   
-    //public List<SectorLoader> sectors;
     public void LoadSector()
     {
         
@@ -26,8 +25,9 @@ public class SectorLoader : MonoBehaviour
         if (obj.Status == AsyncOperationStatus.Succeeded)
         {
             GameObject loadedSector = obj.Result;
-            
+           
             loadedSector.transform.SetParent(transform, false);
+            
             
         }
     }

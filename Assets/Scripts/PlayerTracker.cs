@@ -8,7 +8,7 @@ public class PlayerTracker : MonoBehaviour
      
     bool isUnload = true;
     public float loadDistance = 50f;
-    public float unLoadDistance = 1000f;
+    
     public List<SectorLoader> sectors;
     public Dictionary<string ,bool> isLoad = new();
     void Start()
@@ -34,7 +34,7 @@ public class PlayerTracker : MonoBehaviour
                 isLoad[sector.ToString()] = true;
                 sector.LoadSector();
             }
-            else if(distance > unLoadDistance && isLoad[sector.ToString()])
+            else if(distance > loadDistance && isLoad[sector.ToString()])
             {
                 isLoad[sector.ToString()] = false;
                 sector.UnloadSector();

@@ -24,6 +24,7 @@ public class TriggerUI : MonoBehaviour
             onOffUi.SetActive(!onOffUi.activeSelf);
             rotSpeed = GameManager.gameManager.rotSpeed;
             GameManager.gameManager.rotSpeed = 0;
+           // GameManager.gameManager.UiStack(_bool);
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
             
@@ -38,6 +39,7 @@ public class TriggerUI : MonoBehaviour
         {
             onOffUi.SetActive(!onOffUi.activeSelf);
             GameManager.gameManager.rotSpeed = rotSpeed;
+           // GameManager.gameManager.UiStack(_bool);
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
         }

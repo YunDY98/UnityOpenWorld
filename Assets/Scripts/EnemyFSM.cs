@@ -51,15 +51,19 @@ public class EnemyFSM : MonoBehaviour
     // 에너미 상태 변수
     EnemyState m_State;
 
-    
+    NavMeshAgent navMeshAgent;
    
     //플레이어 트랜스폼 
     Transform player;
-
+    void Awake()
+    {
+        
+    }
     
     // Start is called before the first frame update
     void Start()
     {
+        navMeshAgent = GetComponent<NavMeshAgent>();
         m_State = EnemyState.Idle;
         pm = GameObject.Find("Player").GetComponent<PlayerMove>();
 
@@ -72,9 +76,11 @@ public class EnemyFSM : MonoBehaviour
         player = GameObject.Find("Player").transform;
 
         anim = transform.GetComponentInChildren<Animator>();
+        navMeshAgent.enabled = true;
     }
     void OnEnable()
     {
+        
        
 
     }

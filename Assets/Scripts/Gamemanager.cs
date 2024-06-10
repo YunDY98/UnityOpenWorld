@@ -278,7 +278,7 @@ public class GameManager : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Escape))
         {
-            bool _bool =!esc.activeSelf;
+            bool _bool = !esc.activeSelf;
             UiStack(_bool);
             esc.SetActive(_bool);
             

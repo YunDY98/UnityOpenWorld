@@ -7,7 +7,7 @@
 /Assets/Fonts
 /Assets/Samples
 /Assets/Ignore
-
+/Assets/Resources
 ### macOS ###
 # General
 .DS_Store
