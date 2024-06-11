@@ -98,7 +98,7 @@ public class InventorySystem : MonoBehaviour
             
 
             
-            GameObject _item = Instantiate(invenItem,content.transform);
+            GameObject _itemObject = Instantiate(invenItem,content.transform);
 
             Sprite _sprite;
 
@@ -120,9 +120,9 @@ public class InventorySystem : MonoBehaviour
 
             
             
-            _item.GetComponent<Image>().sprite = _sprite;
+            _itemObject.GetComponent<Image>().sprite = _sprite;
             
-            TextMeshProUGUI _itemCnt = _item.GetComponentInChildren<TextMeshProUGUI>();
+            TextMeshProUGUI _itemCnt = _itemObject.GetComponentInChildren<TextMeshProUGUI>();
             textCache[dic.Key] = _itemCnt;
             _itemCnt.text = dic.Value.ToString();
               
@@ -150,11 +150,11 @@ public class InventorySystem : MonoBehaviour
         else
         {   
            
-            GameObject _item = Instantiate(invenItem,content.transform);  
+            GameObject _itemObject = Instantiate(invenItem,content.transform);  
             // 이미지 로드 및 할당
         
-            _item.GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprites/" + _itemName);   
-            TextMeshProUGUI _itemCnt = _item.GetComponentInChildren<TextMeshProUGUI>();
+            _itemObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprites/" + _itemName);   
+            TextMeshProUGUI _itemCnt = _itemObject.GetComponentInChildren<TextMeshProUGUI>();
             items[_itemName] = _quantity;
             textCache[_itemName] = _itemCnt;
             _itemCnt.text = _quantity.ToString();

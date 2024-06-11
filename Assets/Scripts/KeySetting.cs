@@ -63,6 +63,8 @@ public class KeySetting : MonoBehaviour, IDropHandler
         // 현재 드래그 중인 UI 요소 가져오기
         GameObject _dragObject = eventData.pointerDrag;
 
+
+        //trygetcomponent 사용 
         try
         {
             key = _dragObject.GetComponent<SkillInfo>()._key;

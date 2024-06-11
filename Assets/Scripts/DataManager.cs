@@ -1,5 +1,8 @@
 using UnityEngine;
 using System.IO;
+using TMPro;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 
 
 public class DataManager : MonoBehaviour
@@ -63,7 +66,11 @@ public class DataManager : MonoBehaviour
         
         foreach(var _item in InventorySystem.inventorySystem.items)
         {
-            _pd.items[_index++] = new Item(_item.Key,_item.Value);
+            
+            _pd.items[_index++] = new Item(_item.Key, _item.Value);
+            
+
+            
             
         }
 
@@ -117,6 +124,8 @@ public class Item
 {
     public string itemName;
     public int quantity;
+
+    
     public Item(string _itemName, int _quantity)
     {
         this.itemName = _itemName;
