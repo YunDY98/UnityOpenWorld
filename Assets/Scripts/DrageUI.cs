@@ -1,4 +1,5 @@
 
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -32,7 +33,8 @@ public class DragUI : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointer
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        
+       
+
         image = GetComponent<Image>();
         if(image.sprite == null)
         {   
@@ -45,26 +47,36 @@ public class DragUI : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointer
 
         RectTransformUtility.ScreenPointToLocalPointInRectangle(parentRectTransform, eventData.position, eventData.pressEventCamera, out originalPointerPosition);
         originalRectTransformPosition = rectTransform.anchoredPosition;
+       
 
 
         // 복사 기능 구현
         if(canCopy)
         {
             
-            copiedObject = Instantiate(gameObject, parentRectTransform);
+            
+            copiedObject = Instantiate(gameObject,parentRectTransform);
+            
         
-            if(delete)
-            {
-                
-                KeySetting keySetting = GetComponent<KeySetting>();
-                keySetting.Drop();
-            }
+            
+           
            
             rectTransform = copiedObject.GetComponent<RectTransform>();
 
             if(RectTransformUtility.ScreenPointToLocalPointInRectangle(parentRectTransform, eventData.position, eventData.pressEventCamera, out localPointerPosition))
             {
-                rectTransform.anchoredPosition = originalRectTransformPosition + localPointerPosition;
+                rectTransform.anchoredPosition = localPointerPosition;
+              
+
+            }
+
+            copiedObject.GetComponent<Image>().raycastTarget = false;
+
+            if(delete)
+            {
+                
+                KeySetting keySetting = GetComponent<KeySetting>();
+                keySetting.Drop();
             }
 
             
@@ -84,7 +96,9 @@ public class DragUI : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointer
             
             if(RectTransformUtility.ScreenPointToLocalPointInRectangle(parentRectTransform, eventData.position, eventData.pressEventCamera, out localPointerPosition))
             {
-                rectTransform.anchoredPosition = originalRectTransformPosition + localPointerPosition;
+                rectTransform.anchoredPosition =   localPointerPosition;
+
+               
             }
             
         }
@@ -101,6 +115,7 @@ public class DragUI : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointer
 
     public void OnPointerUp(PointerEventData eventData)
     {
+         
         isDragging = false;
         if (copiedObject != null)
         {

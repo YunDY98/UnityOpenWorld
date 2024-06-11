@@ -1,6 +1,6 @@
 
 using System;
-
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -26,7 +26,7 @@ public class KeySetting : MonoBehaviour, IDropHandler
 
     void Awake()
     {
-        print("123ㄴㅇㄹㄴㅇㄹ");
+        
         image = GetComponent<Image>();
         
         text = GetComponentInChildren<Text>();
@@ -63,6 +63,7 @@ public class KeySetting : MonoBehaviour, IDropHandler
         // 현재 드래그 중인 UI 요소 가져오기
         GameObject _dragObject = eventData.pointerDrag;
 
+        
 
         //trygetcomponent 사용 
         try
@@ -78,6 +79,7 @@ public class KeySetting : MonoBehaviour, IDropHandler
             }
             catch
             {
+                
                 return;
             }
         }
@@ -87,7 +89,7 @@ public class KeySetting : MonoBehaviour, IDropHandler
         if(GameManager.gameManager.userKeys[StringToEnum(key,typeof(SkillEnum))] != KeyCode.None)
         {
         
-            
+           
             return;
            
         }
@@ -133,7 +135,7 @@ public class KeySetting : MonoBehaviour, IDropHandler
             
                
         }
-        
+     
         
     }
 

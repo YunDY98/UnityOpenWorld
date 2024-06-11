@@ -14,7 +14,7 @@ public class DropItem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        print("item");
+        
         //100초후 아이템 파괴 
         StartCoroutine(Timer(100));
     }
