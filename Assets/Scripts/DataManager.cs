@@ -53,7 +53,7 @@ public class DataManager : MonoBehaviour
         int _itemCount = InventorySystem.inventorySystem.items.Count;
 
         _pd.skills = new Skill[_skillCount];
-        _pd.items = new Item[_itemCount];
+        _pd.items = new SaveItemInfo[_itemCount];
        
         int _index = 0;
 
@@ -67,7 +67,7 @@ public class DataManager : MonoBehaviour
         foreach(var _item in InventorySystem.inventorySystem.items)
         {
             
-            _pd.items[_index++] = new Item(_item.Key, _item.Value);
+            _pd.items[_index++] = new SaveItemInfo(_item.Key, _item.Value.quantity);
             
 
             
@@ -114,19 +114,21 @@ public class PlayerData
     public int level;
     public int exp;
     public int gold;
-    public Item[] items;
+    public SaveItemInfo[] items;
     public Skill[] skills;
 
 }
 
 [System.Serializable]
-public class Item
+public class ItemInfo
 {
     public string itemName;
     public int quantity;
 
+    public Sprite sprite;
+    public TextMeshProUGUI text;
     
-    public Item(string _itemName, int _quantity)
+    public ItemInfo(string _itemName, int _quantity)
     {
         this.itemName = _itemName;
         
@@ -134,6 +136,25 @@ public class Item
     }
    
 }
+[System.Serializable]
+public class SaveItemInfo
+{
+    public string itemName;
+    public int quantity;
+
+   
+    public SaveItemInfo(string _itemName, int _quantity)
+    {
+        this.itemName = _itemName;
+        
+        this.quantity = _quantity;
+    }
+   
+}
+
+
+
+
 
 [System.Serializable]
 public class Skill
