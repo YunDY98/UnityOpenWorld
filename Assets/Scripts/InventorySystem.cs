@@ -10,7 +10,8 @@ public class InventorySystem : MonoBehaviour
     public static InventorySystem inventorySystem { get { return _instance; } }
 
     public Dictionary<string,int> items = new();
-    private Dictionary<string,TextMeshProUGUI> text = new();
+    private Dictionary<string,TextMeshProUGUI> textCache = new();
+    private Dictionary<string, Sprite> spriteCache = new(); 
     //ItemData itemData;
     PlayerStats playerStats;
     PlayerData playerData;
@@ -69,6 +70,7 @@ public class InventorySystem : MonoBehaviour
     }
     void Update()
     {
+        #if UNITY_EDITOR
         if(Input.GetKeyUp(KeyCode.Alpha0))
         {
             AddItem("ItemHpPotion",10);
@@ -79,6 +81,7 @@ public class InventorySystem : MonoBehaviour
         {
             UseItem("ItemHpPotion",10);
         }
+        #endif
        
     }
 
@@ -97,15 +100,30 @@ public class InventorySystem : MonoBehaviour
             
             GameObject _item = Instantiate(invenItem,content.transform);
 
-            
+            Sprite _sprite;
 
-            // 이미지 로드 및 할당
-            
-            _item.GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprites/" + dic.Key);
+            if(!spriteCache.TryGetValue(dic.Key,out _sprite))
+            {
+                _sprite = Resources.Load<Sprite>("Sprites/" + dic.Key);
+                if(_sprite != null)
+                {
+                    spriteCache[dic.Key] = _sprite;
 
+                }
+                else
+                {
+                    //sprite 찾을 수 없음
+
+                }
+
+            }
+
+            
+            
+            _item.GetComponent<Image>().sprite = _sprite;
             
             TextMeshProUGUI _itemCnt = _item.GetComponentInChildren<TextMeshProUGUI>();
-            text[dic.Key] = _itemCnt;
+            textCache[dic.Key] = _itemCnt;
             _itemCnt.text = dic.Value.ToString();
               
 
@@ -127,7 +145,7 @@ public class InventorySystem : MonoBehaviour
         {
             items[_itemName] += _quantity;
             
-            text[_itemName].text = items[_itemName].ToString();
+            textCache[_itemName].text = items[_itemName].ToString();
         }
         else
         {   
@@ -138,7 +156,7 @@ public class InventorySystem : MonoBehaviour
             _item.GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprites/" + _itemName);   
             TextMeshProUGUI _itemCnt = _item.GetComponentInChildren<TextMeshProUGUI>();
             items[_itemName] = _quantity;
-            text[_itemName] = _itemCnt;
+            textCache[_itemName] = _itemCnt;
             _itemCnt.text = _quantity.ToString();
             total += 1;
          
@@ -163,12 +181,12 @@ public class InventorySystem : MonoBehaviour
             if(after == 0)
             {
                 items.Remove(_itemName);
-                text.Remove(_itemName);
+                textCache.Remove(_itemName);
                 InvenUpdate();
                 return true;
             }
             items[_itemName] = after;
-            text[_itemName].text = after.ToString();
+            textCache[_itemName].text = after.ToString();
 
         }
         else
