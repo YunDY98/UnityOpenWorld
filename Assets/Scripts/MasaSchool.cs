@@ -177,10 +177,10 @@ public class MasaSchool : MonoBehaviour
         RaycastHit hitInfo = new RaycastHit();
         if(Physics.Raycast(ray, out hitInfo,singleAtkRange,layerMask)) // out키워드는 주소를 복사해 가져옮, 반드시 함수안에서 파라미터 값을 할당할 것을 요구 
         {
-            print(hitInfo.transform.gameObject.name);
+            
             if(hitInfo.transform.gameObject.layer == LayerMask.NameToLayer("Enemy"))
             {
-                
+                print(hitInfo.transform.gameObject.name);
                 EnemyFSM eFSM = hitInfo.transform.GetComponent<EnemyFSM>();
                 eFSM.HitEnemy(singleAtkDamage);
                 
