@@ -43,6 +43,7 @@ public class DragUI : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointer
             return;
         }
 
+        
        
 
         RectTransformUtility.ScreenPointToLocalPointInRectangle(parentRectTransform, eventData.position, eventData.pressEventCamera, out originalPointerPosition);
@@ -80,6 +81,11 @@ public class DragUI : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointer
             }
 
             
+
+        }
+        else
+        {
+            transform.SetAsLastSibling();
         }
         isDragging = true;
 

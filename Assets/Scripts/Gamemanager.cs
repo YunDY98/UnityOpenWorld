@@ -44,12 +44,17 @@ public class GameManager : MonoBehaviour
 
     // esc
     public GameObject esc;
+    public RectTransform rectESC;
     public GameObject option;
+    public RectTransform rectOption;
 
     public GameObject keyboard;
+    public  RectTransform rectKeyboard;
     public GameObject skill;
+    public RectTransform rectSkill;
 
     public GameObject inventory;
+    public RectTransform rectInventory;
 
     public Slider rotSpeedSlider;
 
@@ -166,7 +171,7 @@ public class GameManager : MonoBehaviour
 
         if(option.activeSelf)
         {
-            
+            BringToFront(rectOption);
             if(PlayerPrefs.HasKey("rotSpeed"))
             {
                 rotSpeedSlider.value = PlayerPrefs.GetInt("rotSpeed");
@@ -189,6 +194,7 @@ public class GameManager : MonoBehaviour
         }
         
     }
+    
     public void MouseSensitivity()
     {
         rotSpeed = (int)rotSpeedSlider.value;
@@ -210,6 +216,8 @@ public class GameManager : MonoBehaviour
             
             bool _bool = !skill.activeSelf;
 
+          
+            BringToFront(rectSkill);
             UiStack(_bool);
             skill.SetActive(_bool);
            
@@ -224,6 +232,7 @@ public class GameManager : MonoBehaviour
             
             
             bool _bool = !inventory.activeSelf;
+            BringToFront(rectInventory);
 
             UiStack(_bool);
             inventory.SetActive(_bool);
@@ -266,6 +275,7 @@ public class GameManager : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.M))
         {
             bool _bool = !keyboard.activeSelf;
+            BringToFront(rectKeyboard);
             UiStack(_bool);
             keyboard.SetActive(_bool);
             
@@ -279,6 +289,7 @@ public class GameManager : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Escape))
         {
             bool _bool = !esc.activeSelf;
+            BringToFront(rectESC);
             UiStack(_bool);
             esc.SetActive(_bool);
             
@@ -313,6 +324,12 @@ public class GameManager : MonoBehaviour
 
     }
     
+
+    // 특정 UI 요소를 최상단에 배치하는 함수
+    public void BringToFront(RectTransform uiElement)
+    {
+        uiElement.SetAsLastSibling();
+    }
 
    
 
