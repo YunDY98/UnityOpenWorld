@@ -5,6 +5,7 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using DG.Tweening;
 
 public class BuffManager : MonoBehaviour
 {
@@ -78,7 +79,7 @@ public class BuffManager : MonoBehaviour
             float _duration = _skillLevel * _durationMult;
             float _Amount = _skillLevel * _buffAmount;
             
-            StartCoroutine(BuffDurationCoroutine(_buffName,_duration,_onBuff,_Amount));
+            BuffDurationCoroutine(_buffName,_duration,_onBuff,_Amount);
 
            
             
@@ -94,7 +95,7 @@ public class BuffManager : MonoBehaviour
         
     }
 
-    IEnumerator BuffDurationCoroutine(string _buffName,float _duration,int _onBuff,float _buffAmount)
+    void BuffDurationCoroutine(string _buffName,float _duration,int _onBuff,float _buffAmount)
     {
         
         GameObject _buffWindow = Instantiate(buffPrefab,contentPanel);
@@ -133,35 +134,33 @@ public class BuffManager : MonoBehaviour
 
         }
 
-        float _elapsedTime = 0f;
+       // 버프 지속 시간 동안 타이머 업데이트
+        DOTween.To(() => _duration, x => _duration = x, 0, _duration)
+            .OnUpdate(() => timeText.text = Mathf.CeilToInt(_duration).ToString())
+            .SetEase(Ease.Linear)
+            .OnComplete(() =>
+            {
+                // 버프 제거
+                buff -= _onBuff;
 
-        while(_elapsedTime < _duration)
-        {
-            
-            
-            _elapsedTime += Time.deltaTime;
-            int _time = (int)(_duration - _elapsedTime);
-            
-            timeText.text = _time.ToString();
-            yield return null;
-        }
+                switch(_onBuff)
+                {
+                    case (int)Buff.CommonSpdUp:
+                        playerMove.moveSpeed -= _buffAmount;
+                        break;
+                    case (int)Buff.CommonAtkUp:
+                        playerStats.AtkDamage -= (int)_buffAmount;
+                        break;
 
-        buff -= _onBuff;
 
-        switch(_onBuff)
-        {
-            case (int)Buff.CommonSpdUp:
-                playerMove.moveSpeed -= _buffAmount;
-                break;
-            case (int)Buff.CommonAtkUp:
-                playerStats.AtkDamage -= (int)_buffAmount;
-                break;
+
+                }
+                Destroy(_buffWindow);
+
                 
-            
+            });
 
-        }
-        Destroy(_buffWindow);
-
+       
     }
     int StringToEnum(string _key, Type _enumType)
     {
@@ -173,6 +172,8 @@ public class BuffManager : MonoBehaviour
             
         return (int)_enumValue;
     }
+
+    
 
     enum Buff
     {

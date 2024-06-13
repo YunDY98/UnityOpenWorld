@@ -82,8 +82,8 @@ public class DataManager : MonoBehaviour
         string jsonData = JsonUtility.ToJson(_pd);
 
         // JSON 데이터를 파일로 저장
-        //File.WriteAllText(dataFilePath, EncryptAndDecrypt(jsonData));
-        File.WriteAllText(dataFilePath, (jsonData));
+        File.WriteAllText(dataFilePath, EncryptAndDecrypt(jsonData));
+        //File.WriteAllText(dataFilePath, (jsonData));
 
     }
 
@@ -98,8 +98,8 @@ public class DataManager : MonoBehaviour
             string jsonData = File.ReadAllText(dataFilePath);
 
             // JSON 데이터를 역직렬화하여 객체로 변환
-            //return JsonUtility.FromJson<PlayerData>(EncryptAndDecrypt(jsonData));
-            return JsonUtility.FromJson<PlayerData>((jsonData));
+            return JsonUtility.FromJson<PlayerData>(EncryptAndDecrypt(jsonData));
+            //return JsonUtility.FromJson<PlayerData>((jsonData));
         }
         else
         {
