@@ -8,6 +8,7 @@
 /Assets/Samples
 /Assets/Ignore
 /Assets/Resources
+/Assets/Scenes/MainScene
 ### macOS ###
 # General
 .DS_Store

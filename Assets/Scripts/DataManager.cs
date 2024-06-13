@@ -3,6 +3,7 @@ using System.IO;
 using TMPro;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using Unity.VisualScripting.FullSerializer;
 
 
 public class DataManager : MonoBehaviour
@@ -11,6 +12,8 @@ public class DataManager : MonoBehaviour
     public static DataManager dataManager { get { return _instance; } }
 
     private string dataFilePath;
+
+    private string keyWord = "wutheringwaves";
 
     void Awake()
     {
@@ -79,7 +82,7 @@ public class DataManager : MonoBehaviour
         string jsonData = JsonUtility.ToJson(_pd);
 
         // JSON 데이터를 파일로 저장
-        File.WriteAllText(dataFilePath, jsonData);
+        File.WriteAllText(dataFilePath, EncryptAndDecrypt(jsonData));
     }
 
   
@@ -93,7 +96,7 @@ public class DataManager : MonoBehaviour
             string jsonData = File.ReadAllText(dataFilePath);
 
             // JSON 데이터를 역직렬화하여 객체로 변환
-            return JsonUtility.FromJson<PlayerData>(jsonData);
+            return JsonUtility.FromJson<PlayerData>(EncryptAndDecrypt(jsonData));
         }
         else
         {
@@ -102,9 +105,23 @@ public class DataManager : MonoBehaviour
         }
     }
 
+    private string EncryptAndDecrypt(string data)
+    {
+        string result = "";
+
+        for(int i=0;i<data.Length;++i)
+        {
+            result += (char)(data[i] ^ keyWord[i % keyWord.Length]);
+        }
+
+        return result;
+    }   
+
 
    
 }
+
+
 
 
 
