@@ -87,7 +87,7 @@ public class EnemyFSM : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        print(m_State);
+       
         hpSlider.value = (float)hp/(float)maxHp;
 
         switch (m_State)
@@ -187,8 +187,7 @@ public class EnemyFSM : MonoBehaviour
             // 플레이어가 공격 범위 이내에 있다면 공격 
             if(Vector3.Distance(transform.position,player.position) < attackDistance)
             {
-                print(transform.position + " zombie");
-                print(player.position + "player");
+               
                
                 currentTime = 0;
                 //공격 애니메이션 플레이 
@@ -280,7 +279,7 @@ public class EnemyFSM : MonoBehaviour
             
             m_State = EnemyState.Die;
 
-            print("Any State -> Die");
+            //print("Any State -> Die");
             
             Die();
         }

@@ -33,7 +33,7 @@ public class KeySetting : MonoBehaviour, IDropHandler
 
         sText = text.text;
         key = PlayerPrefs.GetString(sText);
-
+        print(key);
         if(key == "")
         {
             
@@ -60,6 +60,7 @@ public class KeySetting : MonoBehaviour, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
+        
         // 현재 드래그 중인 UI 요소 가져오기
         GameObject _dragObject = eventData.pointerDrag;
 
@@ -83,13 +84,15 @@ public class KeySetting : MonoBehaviour, IDropHandler
                 return;
             }
         }
-       
+        print("drop" + key);
+        
+      
        
         // 스킬 하나당 하나의 키셋팅 
         if(GameManager.gameManager.userKeys[StringToEnum(key,typeof(SkillEnum))] != KeyCode.None)
         {
         
-           
+            
             return;
            
         }
@@ -116,7 +119,7 @@ public class KeySetting : MonoBehaviour, IDropHandler
 
             //이미지 정보 
             PlayerPrefs.SetString(sText, key);
-
+           
             keyCode = StringToEnum(sText,typeof(KeyCode));
             
             skillEnum = StringToEnum(key,typeof(SkillEnum));
@@ -141,6 +144,7 @@ public class KeySetting : MonoBehaviour, IDropHandler
 
     int StringToEnum(string _key, Type _enumType)
     {
+        
         // "Alpha1"과 같은 형태의 문자열을 생성
         if (int.TryParse(_key, out int numericKey) && numericKey >= 0 && numericKey <= 9)
         {

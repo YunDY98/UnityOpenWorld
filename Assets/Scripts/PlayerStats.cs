@@ -145,17 +145,31 @@ public class PlayerStats : MonoBehaviour
 
     // 스크립트 실행 순서 조절 가능
     void Start()
-    {
+    {  
         playerData = DataManager.dataManager.LoadPlayerData();
 
+        SetActiveCharacter((int)selectCharacter);
+       
        
         selectedIndex = 0;
+       
+        if(playerData == null)
+        {
+            Level = 1;
+            Exp = 0;
+            Gold = 10000;
+            AtkDamage += (int)(Level * 1.1f);
+            return;
+        }
+            
+       
+       
 
         
         
         //활성화된 캐릭터 
-        SetActiveCharacter((int)selectCharacter);
-        
+       
+       
         // skills 배열에 저장된 스킬
         if(playerData.skills != null)
         {
@@ -167,10 +181,12 @@ public class PlayerStats : MonoBehaviour
        
 
         }
-        
-
         CreateSkill();
         SetPlayerData();
+       
+        
+
+       
         AtkDamage += (int)(Level * 1.1f);
        
     }
@@ -201,15 +217,7 @@ public class PlayerStats : MonoBehaviour
             }
 
         }
-        else
-        {
-
-            Level = 1;
-            Exp = 0;
-            Gold = 1000;
-        
-
-        }    
+          
         
         
     
@@ -423,6 +431,7 @@ public class PlayerStats : MonoBehaviour
         // 이미지 로드 및 할당
         Sprite skillImage = Resources.Load<Sprite>("Sprites/" + _key); // 이미지 파일 경로
         Transform imageTransform = skillWindow.transform.Find("SkillImage");
+        skillWindow.GetComponentInChildren<SkillInfo>()._key = _key;
 
         if(imageTransform != null)
         {

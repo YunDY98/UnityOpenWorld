@@ -43,9 +43,12 @@ public class InventorySystem : MonoBehaviour
         
         
         playerStats = PlayerStats.playerStats;
-       
+
+        
 
         playerData = playerStats.playerData;
+        if(playerData == null)
+            return;
 
         for(int i=0; i< playerData.items.Length; ++i )
         {
