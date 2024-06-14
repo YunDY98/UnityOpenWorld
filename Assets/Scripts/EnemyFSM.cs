@@ -6,6 +6,9 @@ using UnityEngine.AI;
 using UnityEngine.PlayerLoop;
 using UnityEditor;
 using UnityEngine.Animations;
+using UnityEditor.Search;
+using System.Linq;
+using TMPro;
 public class EnemyFSM : MonoBehaviour
 {
     NavMeshAgent smith;
@@ -25,13 +28,15 @@ public class EnemyFSM : MonoBehaviour
     // 플레이어 발견 범위
     public float findDistance = 8f;
 
-    int hp = 150000;
-    int maxHp = 150000;
+    int hp = 1500000;
+    int maxHp = 1500000;
 
     public Slider hpSlider;
+    public TextMeshProUGUI damageText;
     public int attackPower = 0;
 
     public GameObject gold;
+    public GameObject[] dropItems;
 
     //초기 위치 
     Vector3 originPos;
@@ -53,6 +58,8 @@ public class EnemyFSM : MonoBehaviour
     EnemyState m_State;
 
     NavMeshAgent navMeshAgent;
+
+    Coroutine damageDisplay;
    
     //플레이어 트랜스폼 
     Transform player;
@@ -123,7 +130,7 @@ public class EnemyFSM : MonoBehaviour
 
     void Move()
     {
-        
+       
        
         if(m_State == EnemyState.Die)
         {
@@ -268,21 +275,53 @@ public class EnemyFSM : MonoBehaviour
 
         }
     }
-    
+    IEnumerator DamageDisplay(int _damaged)
+    {
+        float _time = 0;
+        float _duration = 1.5f;
+       
+        if(_damaged <= 0)
+        {
+            damageText.text = "Miss";
+        }
+        else
+        {
+            damageText.text = _damaged.ToString();
+        }
+       
+        while(_time < _duration)
+        {
+            _time += Time.deltaTime;
+            yield return null;
+        }
 
-    public void HitEnemy(int hitPower)
+
+
+        damageText.text = "";
+
+       
+            
+       
+    }
+
+
+
+    public void HitEnemy(int _damaged)
     {
         if(m_State == EnemyState.Die)
         {
             return;
         }
         //플레이어의 공격력만큼 에너미 체력 감소 
-        hp -= hitPower;
+        hp -= _damaged;
+        if(damageDisplay != null)
+            StopCoroutine(damageDisplay);
+        damageDisplay = StartCoroutine(DamageDisplay(_damaged));
         RouteReset();
     
         if(hp <= 0)
         {
-            
+            damageText.text = "";
             m_State = EnemyState.Die;
 
             //print("Any State -> Die");
@@ -339,10 +378,27 @@ public class EnemyFSM : MonoBehaviour
 
         //죽음 상태 처리
         StartCoroutine(DieProcess());
-         // 현재 위치에 아이템을 소환
+        // 현재 위치에 아이템을 소환
         if (gold != null)
         {
             Instantiate(gold, transform.position, transform.rotation);
+        }
+
+        int _per = Random.Range(0, 10);
+        int _dropItemCnt = Random.Range(1,4);
+        int _itemKind = -1;
+
+        if(_per > 5)
+        {
+            for(int i=0; i<_dropItemCnt; ++i)
+            {
+                _itemKind = Random.Range(1,dropItems.Count()+1);
+
+            
+                Instantiate(dropItems[_itemKind - 1],transform.position, transform.rotation);
+
+            }
+           
         }
 
         
