@@ -105,7 +105,7 @@ public class SoliderFire : MonoBehaviour
                     if(!zoomMode)
                     {
                        
-                        weaponDamage = (int)(playerStats.AtkDamage * 1.5f);
+                        weaponDamage = (int)(playerStats.AtkDamage * 5f * playerStats.Level);
                         Camera.main.fieldOfView = 15f;
                         zoomMode = true;
                        
@@ -113,7 +113,7 @@ public class SoliderFire : MonoBehaviour
                     }
                     else
                     {
-                        weaponDamage = (int)(playerStats.AtkDamage * 5f);
+                        weaponDamage = (int)(playerStats.AtkDamage * 1.5f * playerStats.Level);
                         Camera.main.fieldOfView = 60f;
                         zoomMode = false;
                         
@@ -124,10 +124,10 @@ public class SoliderFire : MonoBehaviour
         }
         if(Input.GetKeyUp(KeyCode.Alpha2))
         {
-            
+             weaponDamage = (int)(playerStats.AtkDamage * playerStats.Level);
             wMode = WeaponMode.Rifle;
             WModeTxt.text = "Rifle";
-            useBullets = 1;
+            useBullets = 2 * playerStats.Level;
             Camera.main.fieldOfView = 60f;
 
 
@@ -135,7 +135,7 @@ public class SoliderFire : MonoBehaviour
         else if(Input.GetKeyUp(KeyCode.Alpha1))
         {   
             WModeTxt.text = "Sniper";
-            useBullets = 5;
+            useBullets = 5 * playerStats.Level;
             
             
             wMode = WeaponMode.Sniper;
