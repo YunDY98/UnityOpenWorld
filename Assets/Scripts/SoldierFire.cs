@@ -44,10 +44,11 @@ public class SoldierFire : MonoBehaviour
     void Start ()
     {   
         anim = GetComponentInChildren<Animator>();
-        wMode = WeaponMode.Rifle;
-        useBullets = 1;
+        
+       
         useBomb = 10;
         playerStats = PlayerStats.playerStats;
+        Rifle();
         ps = bulletEffect.GetComponent<ParticleSystem>();
 
         canShoot = true;
@@ -60,8 +61,8 @@ public class SoldierFire : MonoBehaviour
     void Update()
     {
        
-        // 게임 중일때만 동작 
-        if((GameManager.gameManager.gState != GameManager.GameState.Run) || (playerStats.selectCharacter != PlayerStats.SelectCharacter.Solider))
+        // // 게임 중일때만 동작                                                                                                           
+        if((GameManager.gameManager.gState != GameManager.GameState.Run) || (playerStats.selectCharacter != PlayerStats.SelectCharacter.Soldier))
         {
            
             return;
@@ -113,7 +114,7 @@ public class SoldierFire : MonoBehaviour
                     }
                     else
                     {
-                        weaponDamage = (int)(playerStats.AtkDamage * 1.5f * playerStats.Level * playerStats.Level);
+                        weaponDamage = (int)(playerStats.AtkDamage * 2f * playerStats.Level * playerStats.Level);
                         Camera.main.fieldOfView = 60f;
                         zoomMode = false;
                         
@@ -122,21 +123,18 @@ public class SoldierFire : MonoBehaviour
                     break;
             }
         }
-        if(Input.GetKeyUp(KeyCode.Alpha2))
+        if(Input.GetKeyUp(KeyCode.Alpha4))
         {
-            weaponDamage = (int)(playerStats.AtkDamage * playerStats.Level);
-            wMode = WeaponMode.Rifle;
-            WModeTxt.text = "Rifle";
-            useBullets = 2 * playerStats.Level;
-            Camera.main.fieldOfView = 60f;
+            Rifle();
 
 
         }
-        else if(Input.GetKeyUp(KeyCode.Alpha1))
+        else if(Input.GetKeyUp(KeyCode.Alpha5))
         {   
             WModeTxt.text = "Sniper";
             useBullets = 5 * playerStats.Level;
             
+            weaponDamage = (int)(playerStats.AtkDamage * 2f * playerStats.Level * playerStats.Level);
             
             wMode = WeaponMode.Sniper;
         }
@@ -144,7 +142,7 @@ public class SoldierFire : MonoBehaviour
        
        
         
-        if(Input.GetKeyUp(KeyCode.Alpha3))
+        if(Input.GetKeyUp(KeyCode.Alpha6))
         {
             if(PlayerStats.playerStats.UseGold(useBomb))
             {
@@ -218,5 +216,15 @@ public class SoldierFire : MonoBehaviour
         yield return new WaitForSeconds(duration);
 
         muzzleFlash[num].SetActive(false);
+    }
+
+    void Rifle()
+    {
+        weaponDamage = (int)(playerStats.AtkDamage * playerStats.Level);
+        wMode = WeaponMode.Rifle;
+        WModeTxt.text = "Rifle";
+        useBullets = 2 * playerStats.Level;
+        Camera.main.fieldOfView = 60f;
+
     }
 }

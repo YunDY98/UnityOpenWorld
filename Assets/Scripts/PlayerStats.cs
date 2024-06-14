@@ -21,7 +21,7 @@ public class PlayerStats : MonoBehaviour
     {
         
         MasaSchool,
-        Solider,
+        Soldier,
 
     }
     public SelectCharacter selectCharacter;
@@ -148,11 +148,11 @@ public class PlayerStats : MonoBehaviour
     {  
         playerData = DataManager.dataManager.LoadPlayerData();
 
-        SetActiveCharacter((int)selectCharacter);
+       
        
        
         selectedIndex = 0;
-       
+        SetActiveCharacter((int)selectCharacter);
         if(playerData == null)
         {
             Level = 1;
@@ -236,11 +236,11 @@ public class PlayerStats : MonoBehaviour
         // 솔저로 
         if(Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.Alpha1))
         {
-            selectCharacter = SelectCharacter.Solider;
+            selectCharacter = SelectCharacter.Soldier;
             
-            SetActiveCharacter((int)SelectCharacter.Solider);
+            SetActiveCharacter((int)SelectCharacter.Soldier);
             
-            camPos.localPosition = new Vector3(0.05f,0.5f,0.3f);
+            camPos.localPosition = new Vector3(0.05f,0.5f,0.5f);
             playerMove.CharacterReset();
             
            
@@ -250,7 +250,7 @@ public class PlayerStats : MonoBehaviour
         {
             selectCharacter = SelectCharacter.MasaSchool;
             SetActiveCharacter((int)SelectCharacter.MasaSchool);
-            camPos.localPosition = new Vector3(-0.03f,0.45f,-0.8f);
+            camPos.localPosition = new Vector3(0f,0.45f,-0.8f);
             
             playerMove.CharacterReset();
             
@@ -374,7 +374,7 @@ public class PlayerStats : MonoBehaviour
             characterMode[_index].SetActive(true);
             selectedIndex = _index;
 
-            if((int)SelectCharacter.Solider == _index)
+            if((int)SelectCharacter.Soldier == _index)
             {
                 aim.SetActive(true);
             }
