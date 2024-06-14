@@ -79,7 +79,7 @@ public class BuffManager : MonoBehaviour
             float _duration = _skillLevel * _durationMult;
             float _Amount = _skillLevel * _buffAmount;
             
-            BuffDurationCoroutine(_buffName,_duration,_onBuff,_Amount);
+            BuffDuration(_buffName,_duration,_onBuff,_Amount);
 
            
             
@@ -95,7 +95,7 @@ public class BuffManager : MonoBehaviour
         
     }
 
-    void BuffDurationCoroutine(string _buffName,float _duration,int _onBuff,float _buffAmount)
+    void BuffDuration(string _buffName,float _duration,int _onBuff,float _buffAmount)
     {
         
         GameObject _buffWindow = Instantiate(buffPrefab,contentPanel);
