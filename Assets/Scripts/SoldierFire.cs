@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEditor;
-public class SoliderFire : MonoBehaviour
+public class SoldierFire : MonoBehaviour
 {
     enum WeaponMode
     {
@@ -105,7 +105,7 @@ public class SoliderFire : MonoBehaviour
                     if(!zoomMode)
                     {
                        
-                        weaponDamage = (int)(playerStats.AtkDamage * 5f * playerStats.Level);
+                        weaponDamage = (int)(playerStats.AtkDamage * 5f * playerStats.Level * playerStats.Level);
                         Camera.main.fieldOfView = 15f;
                         zoomMode = true;
                        
@@ -113,7 +113,7 @@ public class SoliderFire : MonoBehaviour
                     }
                     else
                     {
-                        weaponDamage = (int)(playerStats.AtkDamage * 1.5f * playerStats.Level);
+                        weaponDamage = (int)(playerStats.AtkDamage * 1.5f * playerStats.Level * playerStats.Level);
                         Camera.main.fieldOfView = 60f;
                         zoomMode = false;
                         
@@ -124,7 +124,7 @@ public class SoliderFire : MonoBehaviour
         }
         if(Input.GetKeyUp(KeyCode.Alpha2))
         {
-             weaponDamage = (int)(playerStats.AtkDamage * playerStats.Level);
+            weaponDamage = (int)(playerStats.AtkDamage * playerStats.Level);
             wMode = WeaponMode.Rifle;
             WModeTxt.text = "Rifle";
             useBullets = 2 * playerStats.Level;

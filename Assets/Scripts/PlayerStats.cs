@@ -358,6 +358,9 @@ public class PlayerStats : MonoBehaviour
     public void SetActiveCharacter(int _index)
     {
         aim.SetActive(false);
+
+        //카메라 배율 초기화 
+        Camera.main.fieldOfView = 60f;
         // 배열에 있는 모든 오브젝트를 비활성화
         for (int i = 0; i < characterMode.Length; i++)
         {
