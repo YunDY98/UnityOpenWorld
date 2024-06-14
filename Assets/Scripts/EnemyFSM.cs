@@ -79,7 +79,7 @@ public class EnemyFSM : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       
+        print(m_State);
         hpSlider.value = (float)hp/(float)maxHp;
 
         switch (m_State)
@@ -97,7 +97,7 @@ public class EnemyFSM : MonoBehaviour
                 Return();
                 break;
             case EnemyState.Damaged:
-                //Damaged();
+                Damaged();
                 break;
             case EnemyState.Die:
                 //Die();
@@ -109,6 +109,7 @@ public class EnemyFSM : MonoBehaviour
 
     void Idle()
     {
+        
         // 플레이어와 거리가 액션 시작범위 이내라면 move 상태로 전환
         if(Vector3.Distance(transform.position, player.position) < findDistance)
         {
@@ -193,6 +194,11 @@ public class EnemyFSM : MonoBehaviour
                 
                 
             }
+            else
+            {
+                m_State = EnemyState.Move;
+                anim.SetTrigger("AttackToMove");
+            }
         }
         else
         {
@@ -221,6 +227,12 @@ public class EnemyFSM : MonoBehaviour
     void Return()
     {
         
+        if(Vector3.Distance(transform.position,originPos) < moveDistance && Vector3.Distance(transform.position,player.position) < attackDistance)
+        {
+            m_State = EnemyState.Move;
+            anim.SetTrigger("Move");
+            return;
+        }
         if(Vector3.Distance(transform.position,originPos) > 0.1f)
         {
             
@@ -238,6 +250,7 @@ public class EnemyFSM : MonoBehaviour
             smith.stoppingDistance = 0;
 
         }
+        
         else
         {
             RouteReset();
@@ -267,23 +280,6 @@ public class EnemyFSM : MonoBehaviour
         hp -= hitPower;
         RouteReset();
     
-        
-       
-        // //에너미의 체력이 0보다 크면 피격 상태
-        // if(hp > 0)
-        // {
-        //    // m_State = EnemyState.Damaged;
-        //     // print("Any State -> Damaged");
-            
-           
-           
-        //     //피격 애니메이션 
-        //    // anim.SetTrigger("Damaged");
-            
-
-            
-        // }
-        // else
         if(hp <= 0)
         {
             
@@ -292,23 +288,44 @@ public class EnemyFSM : MonoBehaviour
             //print("Any State -> Die");
             
             Die();
+            return;
         }
+       
+        //에너미의 체력이 0보다 크면 피격 상태
+        if(hp > 0 && m_State == EnemyState.Idle)
+        {
+            m_State = EnemyState.Damaged;
+            print("Any State -> Damaged");
+            
+           
+           
+           // 피격 애니메이션 
+           anim.SetTrigger("Damaged");
+            
+
+            
+        }
+        
+        
+        
+
     }
 
-    // void Damaged()
-    // {
-    //     StartCoroutine(DamageProcess());
-    // }
-    // IEnumerator DamageProcess()
-    // {
-    //     // 피격 모션 시간만큼 기다린다
-    //     yield return new WaitForSeconds(1f);
+    void Damaged()
+    {
+        StartCoroutine(DamageProcess());
+    }
+    IEnumerator DamageProcess()
+    {
+        // 피격 모션 시간만큼 기다린다
+        yield return new WaitForSeconds(1f);
 
-    //     //현재 상태를 이동 상태로 전환 
-    //     m_State = EnemyState.Idle;
-    //    // print("Damaged -> Move");
+        
+        //현재 상태를 이동 상태로 전환 
+        m_State = EnemyState.Idle;
+       // print("Damaged -> Move");
 
-    // }
+    }
 
     void Die()
     {
