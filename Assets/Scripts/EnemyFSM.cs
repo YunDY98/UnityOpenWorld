@@ -28,8 +28,8 @@ public class EnemyFSM : MonoBehaviour
     // 플레이어 발견 범위
     public float findDistance = 8f;
 
-    int hp = 1500000;
-    int maxHp = 1500000;
+    int hp = 15000;
+    int maxHp = 15000;
 
     public Slider hpSlider;
     public TextMeshProUGUI damageText;
@@ -86,7 +86,7 @@ public class EnemyFSM : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        print(m_State);
+        //print(m_State);
         hpSlider.value = (float)hp/(float)maxHp;
 
         switch (m_State)

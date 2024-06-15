@@ -24,7 +24,7 @@ public class MasaSchool : MonoBehaviour
    
     private float singleAtkRange;
     
-    
+    private int charDamage;
     
 
    
@@ -35,6 +35,10 @@ public class MasaSchool : MonoBehaviour
         anim = GetComponent<Animator>();
         playerStats = PlayerStats.playerStats;
         gm = GameManager.gameManager;
+
+       
+
+        
        
     }
 
@@ -42,7 +46,7 @@ public class MasaSchool : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(gm.gState != GameManager.GameState.Run || playerStats.selectCharacter != PlayerStats.SelectCharacter.MasaSchool || !gm.isMove)
+        if(gm.gState != GameManager.GameState.Run || playerStats.selectCharacter != SelectCharacter.MasaSchool || !gm.isMove)
         {
             
             return;
@@ -76,13 +80,14 @@ public class MasaSchool : MonoBehaviour
             return;
         }
 
-        int _damage = (int)( playerStats.AtkDamage* _skillLevel * _damageMult);
+        
+        int _damage = (int)(playerStats.InitDamage() * _skillLevel * _damageMult);
        
        
         singleAtkDamage = _damage;
         singleAtkRange = _rangeMult * _skillLevel;
 
-        if( playerStats.UseGold((int)(_skillLevel * _goldMult)))
+        if(playerStats.UseGold((int)(_skillLevel * _goldMult)))
         {
             IsMove();
             anim.SetTrigger(_skillName);
@@ -97,13 +102,13 @@ public class MasaSchool : MonoBehaviour
     
     void MultiAtk(string _skillName,float _rangeMult = 1.5f,int _damageMult = 1,int _cntMult = 1)
     {
-        if( playerStats.GetSkillLevel(_skillName) < 0)
+        if(playerStats.GetSkillLevel(_skillName) < 0)
         {
             return;
         }
         int _skillLevel =   playerStats.GetSkillLevel(_skillName);
         
-        if( playerStats.UseGold((int)(_skillLevel*1.1f)))
+        if(playerStats.UseGold((int)(_skillLevel*1.1f)))
         {
             IsMove();
             anim.SetTrigger(_skillName);
@@ -113,7 +118,9 @@ public class MasaSchool : MonoBehaviour
            
             float _range = _rangeMult * _skillLevel;
             int _cnt = (int)(_cntMult + (_skillLevel/10));
-            int _damage =  playerStats.AtkDamage * _damageMult * _skillLevel;
+
+           
+            int _damage =  playerStats.InitDamage() * _damageMult * _skillLevel;
            
 
             // 주변의 적을 감지
@@ -219,6 +226,8 @@ public class MasaSchool : MonoBehaviour
 
     // }
 
+
+    
    
 
 

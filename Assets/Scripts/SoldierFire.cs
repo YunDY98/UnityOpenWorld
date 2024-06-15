@@ -51,6 +51,7 @@ public class SoldierFire : MonoBehaviour
         Rifle();
         ps = bulletEffect.GetComponent<ParticleSystem>();
 
+        
         canShoot = true;
     }
 
@@ -62,13 +63,17 @@ public class SoldierFire : MonoBehaviour
     {
        
         // // 게임 중일때만 동작                                                                                                           
-        if((GameManager.gameManager.gState != GameManager.GameState.Run) || (playerStats.selectCharacter != PlayerStats.SelectCharacter.Soldier))
+        if((GameManager.gameManager.gState != GameManager.GameState.Run) || (playerStats.selectCharacter != SelectCharacter.Soldier))
         {
            
             return;
         }
        
        
+       if(GameManager.gameManager.isUI)
+       {
+            return;
+       }
         
         if(Input.GetMouseButtonDown(0))
         {
@@ -106,7 +111,7 @@ public class SoldierFire : MonoBehaviour
                     if(!zoomMode)
                     {
                        
-                        weaponDamage = (int)(playerStats.AtkDamage * 5f * playerStats.Level * playerStats.Level);
+                        weaponDamage = (int)(playerStats.InitDamage() * 5);
                         Camera.main.fieldOfView = 15f;
                         zoomMode = true;
                        
@@ -114,7 +119,7 @@ public class SoldierFire : MonoBehaviour
                     }
                     else
                     {
-                        weaponDamage = (int)(playerStats.AtkDamage * 2f * playerStats.Level * playerStats.Level);
+                        weaponDamage = (int)(playerStats.InitDamage() * 2);
                         Camera.main.fieldOfView = 60f;
                         zoomMode = false;
                         
@@ -134,7 +139,7 @@ public class SoldierFire : MonoBehaviour
             WModeTxt.text = "Sniper";
             useBullets = 5 * playerStats.Level;
             
-            weaponDamage = (int)(playerStats.AtkDamage * 2f * playerStats.Level * playerStats.Level);
+            weaponDamage = (int)(playerStats.InitDamage() * 5);
             
             wMode = WeaponMode.Sniper;
         }
@@ -220,7 +225,7 @@ public class SoldierFire : MonoBehaviour
 
     void Rifle()
     {
-        weaponDamage = (int)(playerStats.AtkDamage * playerStats.Level);
+        weaponDamage = (int)(playerStats.InitDamage() * 2);
         wMode = WeaponMode.Rifle;
         WModeTxt.text = "Rifle";
         useBullets = 2 * playerStats.Level;

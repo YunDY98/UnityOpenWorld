@@ -4,6 +4,7 @@ using TMPro;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using Unity.VisualScripting.FullSerializer;
+using System.Threading;
 
 
 public class DataManager : MonoBehaviour
@@ -33,11 +34,6 @@ public class DataManager : MonoBehaviour
    
    
 
-    void Start()
-    {
-       
-    }
-
     // 데이터 저장
     public void SavePlayerData()
     { 
@@ -50,13 +46,17 @@ public class DataManager : MonoBehaviour
         _pd.exp = PlayerStats.playerStats.Exp;
         _pd.gold = PlayerStats.playerStats.Gold;
         
+        
         // 스킬 총 갯수 
         int _skillCount = PlayerStats.playerStats.skillDictionary.Count;
         // 아이템 갯수 
         int _itemCount = InventorySystem.inventorySystem.items.Count;
 
+        int _weaponCount = PlayerStats.playerStats.weaponDictionary.Count;
+
         _pd.skills = new Skill[_skillCount];
         _pd.items = new SaveItemInfo[_itemCount];
+        _pd.weapons = new WeaponInfo[_weaponCount];
        
         int _index = 0;
 
@@ -76,14 +76,22 @@ public class DataManager : MonoBehaviour
             
             
         }
+        _index = 0;
+        foreach(var _weapon in PlayerStats.playerStats.weaponDictionary)
+        {
+            WeaponInfo _weaponInfo = new(_weapon.Key,_weapon.Value);
+           
+            _pd.weapons[_index++] = _weaponInfo;
+            
+        }
 
 
         // 데이터를 JSON으로 직렬화
         string jsonData = JsonUtility.ToJson(_pd);
 
         // JSON 데이터를 파일로 저장
-        File.WriteAllText(dataFilePath, EncryptAndDecrypt(jsonData));
-        //File.WriteAllText(dataFilePath, (jsonData));
+        //File.WriteAllText(dataFilePath, EncryptAndDecrypt(jsonData));
+        File.WriteAllText(dataFilePath, (jsonData));
 
     }
 
@@ -98,8 +106,8 @@ public class DataManager : MonoBehaviour
             string jsonData = File.ReadAllText(dataFilePath);
 
             // JSON 데이터를 역직렬화하여 객체로 변환
-            return JsonUtility.FromJson<PlayerData>(EncryptAndDecrypt(jsonData));
-            //return JsonUtility.FromJson<PlayerData>((jsonData));
+            //return JsonUtility.FromJson<PlayerData>(EncryptAndDecrypt(jsonData));
+            return JsonUtility.FromJson<PlayerData>((jsonData));
         }
         else
         {
@@ -137,6 +145,8 @@ public class PlayerData
     public SaveItemInfo[] items;
     public Skill[] skills;
 
+    public WeaponInfo[] weapons;
+
 }
 
 [System.Serializable]
@@ -172,7 +182,17 @@ public class SaveItemInfo
    
 }
 
-
+[System.Serializable]
+public class WeaponInfo
+{
+    public SelectCharacter whoWeapon;
+    public int level;
+    public WeaponInfo(SelectCharacter _whoWeapon, int _level)
+    {
+        whoWeapon = _whoWeapon;
+        level = _level;
+    }
+}
 
 
 
@@ -195,4 +215,13 @@ public class Skill
    
   
 }
+
+
+public enum SelectCharacter
+{
+    MasaSchool,
+    Soldier,
+}
+    
+
 

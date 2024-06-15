@@ -77,13 +77,14 @@ public class InventorySystem : MonoBehaviour
         #if UNITY_EDITOR
         if(Input.GetKeyUp(KeyCode.Alpha0))
         {
-            AddItem("ItemHpPotion",10);
+            AddItem("ItemMasaSchool",1000000);
+            AddItem("ItemSoldier",1000000);
             total += 1;
         }
 
         if(Input.GetKeyUp(KeyCode.Alpha9))
         {
-            UseItem("ItemHpPotion",10);
+            UseItem("ItemMasaSchool",10);
         }
         #endif
        
@@ -179,27 +180,27 @@ public class InventorySystem : MonoBehaviour
     {
         if(items.ContainsKey(_itemName))
         {
-            int quantity = items[_itemName].quantity;
-            int after = quantity - _useQuantity;
-            if(after < 0)
+            int _quantity = items[_itemName].quantity;
+            int _after = _quantity - _useQuantity;
+            if(_after < 0)
             {
                 // 갯수 부족 
                 return false;
             }
-            if(after == 0)
+            if(_after == 0)
             {
                 items.Remove(_itemName);
                // textCache.Remove(_itemName);
                 InvenUpdate();
                 return true;
             }
-            items[_itemName].quantity = after;
-            items[_itemName].text.text = after.ToString();
+            items[_itemName].quantity = _after;
+            items[_itemName].text.text = _after.ToString();
 
         }
         else
         {
-            //보유 하지 않음 아이템 
+            //보유 하지 않음 ,아이템 
             return false;
         }
         

@@ -43,6 +43,9 @@ public class TriggerUI : MonoBehaviour
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
 
+         // UI중 솔저 총나감 방지
+        GameManager.gameManager.isUI = true;
+
     }
 
     public void Off()
@@ -52,6 +55,9 @@ public class TriggerUI : MonoBehaviour
         // GameManager.gameManager.UiStack(_bool);
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+
+         // UI중 솔저 총나감 방지
+        GameManager.gameManager.isUI = false;
 
     }
 }

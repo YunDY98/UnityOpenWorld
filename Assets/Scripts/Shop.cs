@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class Shop : MonoBehaviour
 {
 
-    public GameObject goldShortage;
+    
     public GameObject isPurchased;
     string itemName;
 
@@ -84,7 +84,7 @@ public class Shop : MonoBehaviour
             if(!PlayerStats.playerStats.UseGold(price))
             {
                 //돈이 부족합니다 
-                GameManager.gameManager.StartWarningUI(goldShortage);
+               
                 return;
 
             }

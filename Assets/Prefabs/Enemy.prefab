@@ -1428,6 +1428,7 @@ MonoBehaviour:
   gold: {fileID: 6292112991115732675, guid: 5f65580ebcf6f4602aab74a5134aca70, type: 3}
   dropItems:
   - {fileID: 1531953700682219723, guid: 7f18347d44eac437e8d1b19a0b6519cc, type: 3}
+  - {fileID: 1531953700682219723, guid: c33cd3db3570545819c6b5b9ddea6771, type: 3}
   moveDistance: 20
 --- !u!195 &3693898618921198626
 NavMeshAgent:

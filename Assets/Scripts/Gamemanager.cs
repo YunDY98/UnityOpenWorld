@@ -67,7 +67,9 @@ public class GameManager : MonoBehaviour
     public PlayerMove player;
 
     private Stack<bool> uiStack = new Stack<bool>();
-   
+    
+    // UI중 솔저 총나감 방지
+    public bool isUI;
 
     //움직임 관련 일시정지
     public bool isMove = true;
@@ -246,6 +248,8 @@ public class GameManager : MonoBehaviour
         
         if(_bool)
         {
+            
+            isUI = true;
             uiStack.Push(_bool);
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
@@ -261,6 +265,7 @@ public class GameManager : MonoBehaviour
         
         if(0 == uiStack.Count)
         {
+            isUI = false;
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
             Time.timeScale = 1;

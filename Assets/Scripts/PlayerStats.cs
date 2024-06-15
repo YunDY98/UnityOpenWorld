@@ -17,18 +17,13 @@ public class PlayerStats : MonoBehaviour
             return _instance;
         }
     }
-    public enum SelectCharacter
-    {
-        
-        MasaSchool,
-        Soldier,
-
-    }
+   
     public SelectCharacter selectCharacter;
 
     public PlayerMove playerMove;
 
     public GameObject aim;
+    public GameObject goldShortage;
 
     GameManager gm = GameManager.gameManager;
 
@@ -126,6 +121,8 @@ public class PlayerStats : MonoBehaviour
     public Dictionary<string, Skill> skillDictionary = new();
     //스킬 Ui패널에 추가된 스킬들 
     public Dictionary<string, GameObject> skillObjectDictionary = new();
+    //무기 정보 
+    public Dictionary<SelectCharacter, int> weaponDictionary = new();
    
     void Awake()
     {   
@@ -150,9 +147,10 @@ public class PlayerStats : MonoBehaviour
 
        
        
-       
+        //활성화된 캐릭터 
         selectedIndex = 0;
         SetActiveCharacter((int)selectCharacter);
+
         if(playerData == null)
         {
             Level = 1;
@@ -162,12 +160,34 @@ public class PlayerStats : MonoBehaviour
             return;
         }
             
+        
+       if(playerData.weapons != null)
+       {
+            foreach(var _weapon in playerData.weapons)
+            {
+                SetWeapon(_weapon);
+            }
+        
+            
+       }
+
+       foreach(SelectCharacter _weapon in Enum.GetValues(typeof(SelectCharacter)))
+       {
+          
+            if(!weaponDictionary.ContainsKey(_weapon))
+            {
+                //weaponDictionary.Add(_weapon,1);
+                weaponDictionary[_weapon] = 1;
+            }
+       }
+      
+
        
        
 
         
         
-        //활성화된 캐릭터 
+       
        
        
         // skills 배열에 저장된 스킬
@@ -240,6 +260,7 @@ public class PlayerStats : MonoBehaviour
             
             SetActiveCharacter((int)SelectCharacter.Soldier);
             
+            
             camPos.localPosition = new Vector3(0.05f,0.5f,0.5f);
             playerMove.CharacterReset();
             
@@ -309,8 +330,14 @@ public class PlayerStats : MonoBehaviour
     {
         _use *= GoldUsage;
         if(0 > Gold - _use)
+        {
+
+            //골드 부족 
+            GameManager.gameManager.StartWarningUI(goldShortage);
             return false;
 
+        }
+            
         Gold -= _use;
         //textGold.text = Gold.ToString();
 
@@ -402,6 +429,10 @@ public class PlayerStats : MonoBehaviour
     void SetSkill(Skill _skill)
     {
         skillDictionary[_skill.whoSkill + _skill.skillName] = _skill;
+    }
+    void SetWeapon(WeaponInfo _weapon)
+    {
+        weaponDictionary[_weapon.whoWeapon] = _weapon.level;
     }
 
     public void NewSkill()
@@ -562,6 +593,16 @@ public class PlayerStats : MonoBehaviour
         }
     }  
 
+    public int InitDamage()
+    {
+        int _initDamage;
+        // 전체기본공격력에 + 캐릭별 무기 공격력 
+        _initDamage = AtkDamage + weaponDictionary[selectCharacter]*2 + Level*2;
+
+
+        return _initDamage;
+    }
+
     enum SkillText
     {
         Level = 1,
@@ -570,6 +611,7 @@ public class PlayerStats : MonoBehaviour
 
 
     }
+
 
    
 }
