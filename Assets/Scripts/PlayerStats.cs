@@ -157,31 +157,34 @@ public class PlayerStats : MonoBehaviour
             Exp = 0;
             Gold = 10000;
             AtkDamage += (int)(Level * 1.1f);
+            
+            foreach(SelectCharacter _weapon in Enum.GetValues(typeof(SelectCharacter)))
+            {
+               
+               if(!weaponDictionary.ContainsKey(_weapon))
+               {
+                   //weaponDictionary.Add(_weapon,1);
+                   weaponDictionary[_weapon] = 1;
+               }
+            }
+            
 
+           
+            
+        }
+        else
+        {
             foreach(var _weapon in playerData.weapons)
             {
                 SetWeapon(_weapon);
             }
-
-            // skills 배열에 저장된 스킬
+            
+              // skills 배열에 저장된 스킬
             foreach(var _skill in playerData.skills)
             {
                 SetSkill(new Skill(_skill.whoSkill, _skill.skillName, _skill.level));
                
             }
-            
-        }
-        else
-        {
-             foreach(SelectCharacter _weapon in Enum.GetValues(typeof(SelectCharacter)))
-             {
-                
-                if(!weaponDictionary.ContainsKey(_weapon))
-                {
-                    //weaponDictionary.Add(_weapon,1);
-                    weaponDictionary[_weapon] = 1;
-                }
-             }
 
         }
 
