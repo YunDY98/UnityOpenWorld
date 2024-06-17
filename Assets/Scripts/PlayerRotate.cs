@@ -17,11 +17,21 @@ public class PlayerRotate : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-         // 게임 중일때만 동작 
+        // 게임 중일때만 동작 
         if(GameManager.gameManager.gState != GameManager.GameState.Run)
         {
             return;
         }
+
+        
+
+
+
+
+
+
+
+
 
         if(GameManager.gameManager.isMove)
         {

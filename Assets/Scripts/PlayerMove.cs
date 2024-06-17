@@ -24,9 +24,20 @@ public class PlayerMove : MonoBehaviour
     public Slider hpSlider;
 
 
+    //비행중인지 체크 
+    bool _isFly = false;
+
     //점프
     float jumpPower = 5f;
     bool isJumping = false;
+
+    //땅 체크 
+    public LayerMask groundLayer;
+
+    public float flyDistance;
+
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -43,6 +54,41 @@ public class PlayerMove : MonoBehaviour
         if(GameManager.gameManager.gState != GameManager.GameState.Run)
         {
             return;
+        }
+
+        
+        if(cc.isGrounded)
+        {
+            
+            _isFly = false;
+            anim.SetBool("isGrounded",true);
+            if(isJumping)
+            {
+                isJumping = false;
+                yVelocity = 0;
+            }
+
+        }
+        else
+        {
+            
+            if(Input.GetKey(KeyCode.LeftShift))
+            {
+                _isFly = true;
+            }
+            if(Fly() > 3f &&  _isFly)
+            {
+                anim.SetBool("isGrounded",false);
+                
+                yVelocity += (gravity) * Time.deltaTime * 0.05f; // 중력 적용 
+
+            }
+            else
+            {
+                yVelocity += gravity * Time.deltaTime; // 중력 적용 
+            }
+
+            
         }
 
         
@@ -84,20 +130,21 @@ public class PlayerMove : MonoBehaviour
             //     }
             // }
 
-            if(cc.collisionFlags == CollisionFlags.Below)
-            {
-                if(isJumping)
-                {
-                    isJumping = false;
-                    yVelocity = 0;
-                }
-            }
-            else
-            {
-                yVelocity += gravity * Time.deltaTime; // 중력 적용 
+            // if(cc.collisionFlags == CollisionFlags.Below)
+            // {
+            //     if(isJumping)
+            // {
+            //     isJumping = false;
+            //     yVelocity = 0;
+            // }
+                
+            // }
+            // else
+            // {
+            //     yVelocity += gravity * Time.deltaTime; // 중력 적용 
 
 
-            }
+            // }
 
             if(Input.GetButtonDown("Jump") && !isJumping)
             {
@@ -153,6 +200,16 @@ public class PlayerMove : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
 
     }
-
+    float Fly()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, Mathf.Infinity, groundLayer))
+        {
+            // 캐릭터의 위치에서 지면까지의 거리 계산
+            float distanceToGround = hit.distance;
+            return distanceToGround;
+        }
+        return Mathf.Infinity; // 지면을 찾지 못했을 경우 무한대 반환
+    }
    
 }
