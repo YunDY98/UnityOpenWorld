@@ -32,8 +32,8 @@ public class EnemyFSM : MonoBehaviour
     public float moveDistance = 20f;
 
 
-    int hp = 15000;
-    int maxHp = 15000;
+    public int hp = 15000;
+    public int maxHp = 15000;
 
     public Slider hpSlider;
     public TextMeshProUGUI damageText;
@@ -118,7 +118,8 @@ public class EnemyFSM : MonoBehaviour
 
     void Idle()
     {
-        
+       
+       
         // 플레이어와 거리가 액션 시작범위 이내라면 move 상태로 전환
         if(Vector3.Distance(transform.position, player.position) < findDistance)
         {

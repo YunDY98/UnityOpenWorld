@@ -39,8 +39,12 @@ public class CamRotate : MonoBehaviour
             float mouse_Y = Input.GetAxis("Mouse Y");
 
             //1-1. 회전 값 변수에 마우스 입력 값 만큼 미리 누적
-            mx += mouse_X *GameManager.gameManager.rotSpeed * Time.deltaTime;
-            my -= mouse_Y *GameManager.gameManager.rotSpeed * Time.deltaTime;
+            // mx += mouse_X *GameManager.gameManager.rotSpeed * Time.deltaTime;
+            // my -= mouse_Y *GameManager.gameManager.rotSpeed * Time.deltaTime;
+
+            // 스무딩을 적용하여 회전 값을 부드럽게 업데이트
+            mx = Mathf.Lerp(mx, mx + mouse_X * GameManager.gameManager.rotSpeed * Time.deltaTime, 0.1f);
+            my = Mathf.Lerp(my, my - mouse_Y * GameManager.gameManager.rotSpeed * Time.deltaTime, 0.1f);
 
     
             //1-2. 마우스 상하 이동 회전 변수(my)의 값을 -90 ~90 사이로 제한

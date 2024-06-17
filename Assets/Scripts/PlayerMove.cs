@@ -17,9 +17,9 @@ public class PlayerMove : MonoBehaviour
 
     public GameObject hitEffect;
 
-    public int hp = 1000000;
+    public int hp = 10000;
 
-    int maxHp = 10000000;
+    int maxHp = 10000;
 
     public Slider hpSlider;
 

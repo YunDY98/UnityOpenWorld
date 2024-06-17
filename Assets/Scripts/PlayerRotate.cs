@@ -25,9 +25,15 @@ public class PlayerRotate : MonoBehaviour
 
         if(GameManager.gameManager.isMove)
         {
+            
             float mouse_X = Input.GetAxis("Mouse X");
 
-            mx += mouse_X * GameManager.gameManager.rotSpeed * Time.deltaTime;
+
+            //mx += mouse_X * GameManager.gameManager.rotSpeed * Time.deltaTime;
+
+            // 스무딩을 적용하여 회전 값을 부드럽게 업데이트
+            mx = Mathf.Lerp(mx, mx + mouse_X * GameManager.gameManager.rotSpeed * Time.deltaTime, 0.1f);
+            
 
             transform.eulerAngles = new Vector3(0,mx,0);
 

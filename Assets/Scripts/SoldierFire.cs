@@ -28,6 +28,8 @@ public class SoldierFire : MonoBehaviour
     bool canShoot;
     public GameObject firePosition;
 
+    public CamRotate camRotate;
+
     public GameObject bombFactory;
 
     public float throwPower = 15f;
@@ -63,21 +65,21 @@ public class SoldierFire : MonoBehaviour
     {
        
         // // 게임 중일때만 동작                                                                                                           
-        if((GameManager.gameManager.gState != GameManager.GameState.Run) || (playerStats.selectCharacter != SelectCharacter.Soldier))
+        if((GameManager.gameManager.gState != GameManager.GameState.Run) || (playerStats.selectCharacter != SelectCharacter.Soldier)|| !GameManager.gameManager.isMove)
         {
            
             return;
         }
        
        
-       if(GameManager.gameManager.isUI)
-       {
-            return;
-       }
+    //    if(GameManager.gameManager.isUI)
+    //    {
+    //         return;
+    //    }
         
         if(Input.GetMouseButtonDown(0))
         {
-            print(canShoot);
+          
             if(!canShoot)
                 return;
             
@@ -110,6 +112,7 @@ public class SoldierFire : MonoBehaviour
                 case WeaponMode.Sniper:
                     if(!zoomMode)
                     {
+                        
                        
                         weaponDamage = (int)(playerStats.InitDamage() * 5);
                         Camera.main.fieldOfView = 15f;
@@ -119,6 +122,7 @@ public class SoldierFire : MonoBehaviour
                     }
                     else
                     {
+                       
                         weaponDamage = (int)(playerStats.InitDamage() * 2);
                         Camera.main.fieldOfView = 60f;
                         zoomMode = false;
@@ -230,6 +234,7 @@ public class SoldierFire : MonoBehaviour
         WModeTxt.text = "Rifle";
         useBullets = 2 * playerStats.Level;
         Camera.main.fieldOfView = 60f;
+       
 
     }
 }

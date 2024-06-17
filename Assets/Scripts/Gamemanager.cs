@@ -68,9 +68,8 @@ public class GameManager : MonoBehaviour
 
     private Stack<bool> uiStack = new Stack<bool>();
     
-    // UI중 솔저 총나감 방지
-    public bool isUI;
-
+   
+   
     //움직임 관련 일시정지
     public bool isMove = true;
 
@@ -80,7 +79,7 @@ public class GameManager : MonoBehaviour
     // 유저가 설정한 키를 저장할 변수
     public KeyCode[] userKeys = new KeyCode[108];
     
-   
+    //반동 
     
   
     //현재 게임 상태 변수
@@ -113,6 +112,7 @@ public class GameManager : MonoBehaviour
 
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+        rotSpeed = PlayerPrefs.GetInt("rotSpeed");
        // gameText = gameLabel.GetComponent<Text>();
 
       //  gameText.text = "Ready .. ";
@@ -249,7 +249,7 @@ public class GameManager : MonoBehaviour
         if(_bool)
         {
             
-            isUI = true;
+            isMove = false;
             uiStack.Push(_bool);
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
@@ -265,7 +265,7 @@ public class GameManager : MonoBehaviour
         
         if(0 == uiStack.Count)
         {
-            isUI = false;
+            isMove = true;
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
             Time.timeScale = 1;
@@ -336,6 +336,6 @@ public class GameManager : MonoBehaviour
         uiElement.SetAsLastSibling();
     }
 
-   
 
+    
 }
