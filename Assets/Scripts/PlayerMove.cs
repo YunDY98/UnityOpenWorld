@@ -28,7 +28,7 @@ public class PlayerMove : MonoBehaviour
     bool _isFly = false;
 
     //점프
-    float jumpPower = 5f;
+    float jumpPower = 2.5f;
     bool isJumping = false;
 
     //땅 체크 
@@ -55,7 +55,7 @@ public class PlayerMove : MonoBehaviour
         {
             return;
         }
-
+        print(Fly());
         
         if(cc.isGrounded)
         {
@@ -72,15 +72,15 @@ public class PlayerMove : MonoBehaviour
         else
         {
             
-            if(Input.GetKey(KeyCode.LeftShift))
+            if(Input.GetKeyDown(KeyCode.LeftShift))
             {
-                _isFly = true;
+                _isFly = !_isFly;
             }
-            if(Fly() > 3f &&  _isFly)
+            if(_isFly && Fly() > 5f)
             {
                 anim.SetBool("isGrounded",false);
                 
-                yVelocity += (gravity) * Time.deltaTime * 0.05f; // 중력 적용 
+                yVelocity += (gravity) * Time.deltaTime * 0.01f; // 중력 적용 
 
             }
             else

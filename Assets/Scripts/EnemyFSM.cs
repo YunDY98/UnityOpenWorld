@@ -88,7 +88,7 @@ public class EnemyFSM : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        print(m_State);
+        //print(m_State);
         hpSlider.value = (float)hp/(float)maxHp;
 
         switch (m_State)
