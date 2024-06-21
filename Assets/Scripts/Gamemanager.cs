@@ -249,7 +249,7 @@ public class GameManager : MonoBehaviour
         if(_bool)
         {
             
-            isMove = false;
+            
             uiStack.Push(_bool);
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
@@ -265,7 +265,7 @@ public class GameManager : MonoBehaviour
         
         if(0 == uiStack.Count)
         {
-            isMove = true;
+            
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
             Time.timeScale = 1;

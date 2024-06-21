@@ -97,57 +97,41 @@ public class InventorySystem : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-       
+
         foreach(KeyValuePair<string, ItemInfo> dic in items)
         {
             if(dic.Value.quantity == 0)
                 continue;
             
 
-            
             GameObject _itemObject = Instantiate(invenItem,content.transform);
 
-            ItemInfo _item;
+            ItemInfo _item = dic.Value;
 
-            if(items.TryGetValue(dic.Key,out _item))
+            // sprite가 있는지 체크해서 중복 로드 방지 
+            if(_item.sprite == null)
+            {   
+               
+                _item.sprite = Resources.Load<Sprite>("Sprites/" + dic.Key);
+                items[dic.Key].sprite = _item.sprite;
+            }
+            else
             {
-                // sprite가 있는지 체크해서 중복 로드 방지 
-                if(_item.sprite == null)
-                {   
-                   
-                    _item.sprite = Resources.Load<Sprite>("Sprites/" + dic.Key);
-                    items[dic.Key].sprite = _item.sprite;
-
-                }
-                else
-                {
-                    
-                    _item.sprite = items[dic.Key].sprite;
-                }
                 
-                
-                
-               
-               
-
+                _item.sprite = items[dic.Key].sprite;
             }
 
             
-            
+
             _itemObject.GetComponent<Image>().sprite = _item.sprite;
             
             TextMeshProUGUI _itemCnt = _itemObject.GetComponentInChildren<TextMeshProUGUI>();
             items[dic.Key].text = _itemCnt;
             _itemCnt.text = dic.Value.quantity.ToString();
               
-
-            
-           
-           
             
         }
 
-       
 
     }
 
