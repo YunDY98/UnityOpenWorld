@@ -25,7 +25,7 @@ public class PlayerMove : MonoBehaviour
 
 
     //비행중인지 체크 
-    bool _isFly = false;
+    
 
     //점프
     float jumpPower = 2.5f;
@@ -55,12 +55,12 @@ public class PlayerMove : MonoBehaviour
         {
             return;
         }
-        print(Fly());
+        //print(Fly());
         
         if(cc.isGrounded)
         {
             
-            _isFly = false;
+            PlayerStats.playerStats.IsFly = false;
             anim.SetBool("isGrounded",true);
             if(isJumping)
             {
@@ -74,17 +74,19 @@ public class PlayerMove : MonoBehaviour
             
             if(Input.GetKeyDown(KeyCode.LeftShift))
             {
-                _isFly = !_isFly;
+                yVelocity = 0;
+                PlayerStats.playerStats.IsFly = !PlayerStats.playerStats.IsFly;
             }
-            if(_isFly && Fly() > 5f)
+            if(PlayerStats.playerStats.IsFly && Fly() > 5f)
             {
                 anim.SetBool("isGrounded",false);
                 
-                yVelocity += (gravity) * Time.deltaTime * 0.01f; // 중력 적용 
+                yVelocity += (gravity) * Time.deltaTime * 0.001f; // 중력 적용 
 
             }
             else
             {
+                anim.SetBool("isGrounded",true);
                 yVelocity += gravity * Time.deltaTime; // 중력 적용 
             }
 
@@ -207,6 +209,7 @@ public class PlayerMove : MonoBehaviour
         {
             // 캐릭터의 위치에서 지면까지의 거리 계산
             float distanceToGround = hit.distance;
+
             return distanceToGround;
         }
         return Mathf.Infinity; // 지면을 찾지 못했을 경우 무한대 반환

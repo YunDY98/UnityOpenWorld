@@ -28,6 +28,14 @@ public class PlayerStats : MonoBehaviour
     GameManager gm = GameManager.gameManager;
 
     public PlayerData playerData;
+
+    //비행중인지 
+    private bool isFly;
+    public bool IsFly
+    {
+        get { return isFly; }
+        set { isFly = value; }
+    }
     
     private int _level;
     public int Level
@@ -157,7 +165,7 @@ public class PlayerStats : MonoBehaviour
             Exp = 0;
             Gold = 10000;
             AtkDamage += (int)(Level * 1.1f);
-            
+
             foreach(SelectCharacter _weapon in Enum.GetValues(typeof(SelectCharacter)))
             {
                
@@ -257,8 +265,8 @@ public class PlayerStats : MonoBehaviour
         // 마사 캐릭터로 
         if(Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.Alpha2))
         {
-            selectCharacter = SelectCharacter.MasaSchool;
-            SetActiveCharacter((int)SelectCharacter.MasaSchool);
+            selectCharacter = SelectCharacter.Masa;
+            SetActiveCharacter((int)SelectCharacter.Masa);
             camPos.localPosition = new Vector3(0f,0.45f,-0.8f);
             
             playerMove.CharacterReset();

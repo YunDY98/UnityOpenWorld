@@ -20,7 +20,7 @@ public class InventorySystem : MonoBehaviour
    
     public GameObject invenItem;
     
-    private int total;
+    
    
     void Awake()
     {
@@ -42,11 +42,11 @@ public class InventorySystem : MonoBehaviour
     {
         
         
-        playerStats = PlayerStats.playerStats;
+        playerStats = PlayerStats.playerStats; // 플레이어의 공격력 , 캐릭터 레벨등 상태
 
         
 
-        playerData = playerStats.playerData;
+        playerData = playerStats.playerData;  // 레벨 경험치 재화 등 데이터 
         if(playerData == null)
             return;
 
@@ -57,7 +57,7 @@ public class InventorySystem : MonoBehaviour
             //items[playerData.items[i].itemName].quantity = playerData.items[i].quantity;
 
         }   
-        total = playerData.items.Length;
+       
        
 
        
@@ -77,14 +77,14 @@ public class InventorySystem : MonoBehaviour
         #if UNITY_EDITOR
         if(Input.GetKeyUp(KeyCode.Alpha0))
         {
-            AddItem("ItemMasaSchool",1000000);
-            AddItem("ItemSoldier",1000000);
-            total += 1;
+            AddItem("ItemMasa",10);
+            AddItem("ItemSoldier",10);
+           
         }
 
         if(Input.GetKeyUp(KeyCode.Alpha9))
         {
-            UseItem("ItemMasaSchool",10);
+            UseItem("ItemMasa",10);
         }
         #endif
        
@@ -100,6 +100,8 @@ public class InventorySystem : MonoBehaviour
        
         foreach(KeyValuePair<string, ItemInfo> dic in items)
         {
+            if(dic.Value.quantity == 0)
+                continue;
             
 
             
@@ -109,16 +111,21 @@ public class InventorySystem : MonoBehaviour
 
             if(items.TryGetValue(dic.Key,out _item))
             {
+                // sprite가 있는지 체크해서 중복 로드 방지 
                 if(_item.sprite == null)
-                {
+                {   
+                   
                     _item.sprite = Resources.Load<Sprite>("Sprites/" + dic.Key);
                     items[dic.Key].sprite = _item.sprite;
 
                 }
                 else
                 {
+                    
                     _item.sprite = items[dic.Key].sprite;
                 }
+                
+                
                 
                
                
@@ -150,7 +157,17 @@ public class InventorySystem : MonoBehaviour
         
         if(items.ContainsKey(_itemName))
         {
-            items[_itemName].quantity += _quantity;
+            if(items[_itemName].quantity != 0)
+            {
+                items[_itemName].quantity += _quantity;
+               
+            }
+            else
+            {
+                items[_itemName].quantity += _quantity;
+                InvenUpdate();
+            }
+            
             
             items[_itemName].text.text = items[_itemName].quantity.ToString();
         }
@@ -159,19 +176,23 @@ public class InventorySystem : MonoBehaviour
            
             GameObject _itemObject = Instantiate(invenItem,content.transform);  
             // 이미지 로드 및 할당
-        
-            _itemObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprites/" + _itemName);   
+            
+           
+            _itemObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprites/" + _itemName); 
+            
+             
             TextMeshProUGUI _itemCnt = _itemObject.GetComponentInChildren<TextMeshProUGUI>();
 
             items.Add(_itemName,new ItemInfo(_itemName,_quantity));
            
             items[_itemName].text = _itemCnt;
             _itemCnt.text = _quantity.ToString();
-            total += 1;
-         
+           
+            
 
         }
 
+       
 
 
     }
@@ -184,13 +205,15 @@ public class InventorySystem : MonoBehaviour
             int _after = _quantity - _useQuantity;
             if(_after < 0)
             {
-                // 갯수 부족 
+                //아이템 갯수 부족 
                 return false;
             }
             if(_after == 0)
-            {
-                items.Remove(_itemName);
-               // textCache.Remove(_itemName);
+            {   //아이템 모두 소모시
+                //items.Remove(_itemName);
+                items[_itemName].quantity = 0;
+
+           
                 InvenUpdate();
                 return true;
             }
@@ -200,7 +223,7 @@ public class InventorySystem : MonoBehaviour
         }
         else
         {
-            //보유 하지 않음 ,아이템 
+            //보유 하지 않은 아이템
             return false;
         }
         

@@ -6,7 +6,7 @@ using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class MasaSchool : MonoBehaviour
+public class Masa : MonoBehaviour
 {
     Animator anim;
     
@@ -18,7 +18,7 @@ public class MasaSchool : MonoBehaviour
     
     
     PlayerStats playerStats;
-    GameManager gm;
+    GameManager gameManager;
     
     private int singleAtkDamage;
    
@@ -34,7 +34,7 @@ public class MasaSchool : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         playerStats = PlayerStats.playerStats;
-        gm = GameManager.gameManager;
+        gameManager = GameManager.gameManager;
 
        
 
@@ -46,7 +46,7 @@ public class MasaSchool : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(gm.gState != GameManager.GameState.Run || playerStats.selectCharacter != SelectCharacter.MasaSchool || !gm.isMove)
+        if(gameManager.gState != GameManager.GameState.Run || playerStats.selectCharacter != SelectCharacter.Masa || !gameManager.isMove || playerStats.IsFly)
         {
             
             return;
@@ -54,7 +54,7 @@ public class MasaSchool : MonoBehaviour
 
         
         // atk1 
-        if(Input.GetKeyUp(gm.userKeys[(int)SkillEnum.MasaAtk1]))
+        if(Input.GetKeyUp(gameManager.userKeys[(int)SkillEnum.MasaAtk1]))
         {
             MultiAtk("MasaAtk1");
         }
@@ -62,7 +62,7 @@ public class MasaSchool : MonoBehaviour
         
 
         // atk3 
-        if(Input.GetKeyUp(gm.userKeys[(int)SkillEnum.MasaAtk3]))
+        if(Input.GetKeyUp(gameManager.userKeys[(int)SkillEnum.MasaAtk3]))
         {
             SingleAtk("MasaAtk3",_damageMult: 3);
         }
@@ -199,7 +199,7 @@ public class MasaSchool : MonoBehaviour
 
     public void IsMove()
     {
-        gm.isMove = !gm.isMove;
+        gameManager.isMove = ! gameManager.isMove;
     }
 
 

@@ -219,7 +219,7 @@ public class Skill
 
 public enum SelectCharacter
 {
-    MasaSchool,
+    Masa,
     Soldier,
 }
     
