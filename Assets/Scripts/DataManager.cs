@@ -29,7 +29,7 @@ public class DataManager : MonoBehaviour
         }
 
         // 데이터 파일 경로 설정
-        dataFilePath = Application.persistentDataPath + "/data.json";
+        dataFilePath = $"{Application.persistentDataPath}/data.json";
     }
    
    

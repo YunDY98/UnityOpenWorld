@@ -100,6 +100,7 @@ public class InventorySystem : MonoBehaviour
 
         foreach(KeyValuePair<string, ItemInfo> dic in items)
         {
+            
             if(dic.Value.quantity == 0)
                 continue;
             
@@ -112,7 +113,7 @@ public class InventorySystem : MonoBehaviour
             if(_item.sprite == null)
             {   
                
-                _item.sprite = Resources.Load<Sprite>("Sprites/" + dic.Key);
+                _item.sprite = Resources.Load<Sprite>($"Sprites/{dic.Key}" );
                 items[dic.Key].sprite = _item.sprite;
             }
             else
@@ -162,7 +163,7 @@ public class InventorySystem : MonoBehaviour
             // 이미지 로드 및 할당
             
            
-            _itemObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprites/" + _itemName); 
+            _itemObject.GetComponent<Image>().sprite = Resources.Load<Sprite>($"Sprites/{_itemName}"); 
             
              
             TextMeshProUGUI _itemCnt = _itemObject.GetComponentInChildren<TextMeshProUGUI>();
@@ -193,7 +194,8 @@ public class InventorySystem : MonoBehaviour
                 return false;
             }
             if(_after == 0)
-            {   //아이템 모두 소모시
+            {   
+                //아이템 모두 소모시
                 //items.Remove(_itemName);
                 items[_itemName].quantity = 0;
 

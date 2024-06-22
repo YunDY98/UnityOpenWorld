@@ -29,6 +29,7 @@ public class PlayerStats : MonoBehaviour
 
     public PlayerData playerData;
 
+    
     //비행중인지 
     private bool isFly;
     public bool IsFly
@@ -424,7 +425,7 @@ public class PlayerStats : MonoBehaviour
     // 딕셔너리에 스킬 추가 
     void SetSkill(Skill _skill)
     {
-        skillDictionary[_skill.whoSkill + _skill.skillName] = _skill;
+        skillDictionary[$"{_skill.whoSkill}{_skill.skillName}"] = _skill;
     }
     void SetWeapon(WeaponInfo _weapon)
     {
@@ -443,7 +444,7 @@ public class PlayerStats : MonoBehaviour
     public void AddSkill(Skill _skill,string _key = "")
     {
         if(_key == "")
-            _key = _skill.whoSkill + _skill.skillName;
+            _key = $"{_skill.whoSkill}{_skill.skillName}";
         
         
         if(skillDictionary.ContainsKey(_key))
@@ -501,7 +502,7 @@ public class PlayerStats : MonoBehaviour
         foreach(KeyValuePair<string,Skill> enrty in skillDictionary)
         {
             Skill _skill = enrty.Value;
-            string _key = _skill.whoSkill+_skill.skillName;
+            string _key = $"{_skill.whoSkill}{_skill.skillName}";
             GameObject skillWindow = Instantiate(skillPrefab,contentPanel);
             TextMeshProUGUI[] texts = skillWindow.GetComponentsInChildren<TextMeshProUGUI>();
             Button button = skillWindow.GetComponentInChildren<Button>();
@@ -546,9 +547,9 @@ public class PlayerStats : MonoBehaviour
     void SetSkillLevel(Skill _skill,bool _levelUp = false) 
     {
         
-        string _key = _skill.whoSkill+_skill.skillName;
+        string _key = $"{_skill.whoSkill}{_skill.skillName}";
         
-        GameObject skillWindow = skillObjectDictionary[_skill.whoSkill+_skill.skillName];
+        GameObject skillWindow = skillObjectDictionary[_key];
 
        
         TextMeshProUGUI[] texts = skillWindow.GetComponentsInChildren<TextMeshProUGUI>();
