@@ -102,13 +102,13 @@ public class WeaponUpgrade : MonoBehaviour
         sBeforeLevel.text = _level.ToString();
         sAfterLevel.text = (_level + 1).ToString();
         fBeforeLevel.text = _level.ToString();
-        if(_level - 1 > 0)
+        if(_level - 1 > 1)
         {
             fAfterLevel.text = (_level -1).ToString();
         }
         else
         {
-            fAfterLevel.text = "0";
+            fAfterLevel.text = "1";
         }
        
         useGold.text = (_level * 100).ToString();

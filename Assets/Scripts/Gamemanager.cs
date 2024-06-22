@@ -63,6 +63,7 @@ public class GameManager : MonoBehaviour
 
     public Text gameText;
 
+    public bool isUI;
     
     public PlayerMove player;
 
