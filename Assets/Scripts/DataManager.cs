@@ -158,11 +158,15 @@ public class ItemInfo
     public Sprite sprite;
     public TextMeshProUGUI text;
     
-    public ItemInfo(string _itemName, int _quantity)
+    public ItemInfo(string _itemName, int _quantity, Sprite _sprite = null, TextMeshProUGUI _text = null)
     {
         this.itemName = _itemName;
         
         this.quantity = _quantity;
+
+        sprite = _sprite;
+
+        text = _text;
     }
    
 }

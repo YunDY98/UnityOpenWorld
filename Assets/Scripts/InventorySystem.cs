@@ -92,6 +92,7 @@ public class InventorySystem : MonoBehaviour
 
     void InvenUpdate()
     {
+        //업데이트를 위해 기존 목록 제거 
         foreach (Transform child in content.transform)
         {
             Destroy(child.gameObject);
@@ -100,7 +101,7 @@ public class InventorySystem : MonoBehaviour
 
         foreach(KeyValuePair<string, ItemInfo> dic in items)
         {
-            
+            // 아이템수가 0개라면 
             if(dic.Value.quantity == 0)
                 continue;
             
@@ -139,9 +140,10 @@ public class InventorySystem : MonoBehaviour
     public void AddItem(string _itemName,int _quantity)
     {
         
-        
+        //딕셔너리에 아이템이 존재한다면 
         if(items.ContainsKey(_itemName))
         {
+
             if(items[_itemName].quantity != 0)
             {
                 items[_itemName].quantity += _quantity;
@@ -150,6 +152,8 @@ public class InventorySystem : MonoBehaviour
             else
             {
                 items[_itemName].quantity += _quantity;
+
+                // 갯수가 0개라면 업데이트 
                 InvenUpdate();
             }
             
@@ -160,17 +164,17 @@ public class InventorySystem : MonoBehaviour
         {   
            
             GameObject _itemObject = Instantiate(invenItem,content.transform);  
+
             // 이미지 로드 및 할당
-            
-           
-            _itemObject.GetComponent<Image>().sprite = Resources.Load<Sprite>($"Sprites/{_itemName}"); 
+            Sprite _sprite = Resources.Load<Sprite>($"Sprites/{_itemName}"); 
+            _itemObject.GetComponent<Image>().sprite = _sprite;
             
              
             TextMeshProUGUI _itemCnt = _itemObject.GetComponentInChildren<TextMeshProUGUI>();
 
-            items.Add(_itemName,new ItemInfo(_itemName,_quantity));
+            items.Add(_itemName,new ItemInfo(_itemName,_quantity,_sprite,_itemCnt));
            
-            items[_itemName].text = _itemCnt;
+            
             _itemCnt.text = _quantity.ToString();
            
             

@@ -72,10 +72,10 @@ public class SoldierFire : MonoBehaviour
         }
        
        
-       if(GameManager.gameManager.isUI)
-       {
+        if(GameManager.gameManager.isUI)
+        {
             return;
-       }
+        }
         
         if(Input.GetMouseButtonDown(0))
         {
