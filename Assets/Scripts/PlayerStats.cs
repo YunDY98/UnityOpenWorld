@@ -74,17 +74,6 @@ public class PlayerStats : MonoBehaviour
         }
     }
 
-    //골드 사용량 
-    private int _goldUsage = 10;
-    public int GoldUsage
-    {
-        get { return _goldUsage; }
-        set
-        {
-            _goldUsage = value; 
-        }
-    }
-
     //기본 공격력
 
     private int _atkDamage = 10;
@@ -310,6 +299,7 @@ public class PlayerStats : MonoBehaviour
             checked
             {
                 Gold += _gold;
+                
             }
         }
         catch (OverflowException)
@@ -318,14 +308,14 @@ public class PlayerStats : MonoBehaviour
             Gold = int.MaxValue; 
         }
 
-        //textGold.text = Gold.ToString();
+        
         
     }
 
     //골드 사용시 
     public bool UseGold(int _use)
     {
-        _use *= GoldUsage;
+        
         if(0 > Gold - _use)
         {
 
@@ -336,7 +326,7 @@ public class PlayerStats : MonoBehaviour
         }
             
         Gold -= _use;
-        //textGold.text = Gold.ToString();
+       
 
        
        

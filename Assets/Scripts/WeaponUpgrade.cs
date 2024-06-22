@@ -47,27 +47,28 @@ public class WeaponUpgrade : MonoBehaviour
         who = playerStats.selectCharacter;
         level = playerStats.weaponDictionary[who];
 
-       
+        int _mult = 100;
         
-        if(playerStats.UseGold(level * 100))
+        if(playerStats.UseGold(level * _mult))
         {
-            if(!InventorySystem.inventorySystem.UseItem("Item" + who,level))
+            if(!InventorySystem.inventorySystem.UseItem($"Item{who}",level))
             {
                 // 아이템 부족
-
+                //사용골드 반환 
+                playerStats.AddGold(level*_mult);
                 
                
                 return;
 
             }
+            
 
            
             
         }
         else
         {
-            //사용골드 반환 
-            playerStats.AddGold(level*100);
+            //골드 부족 
             return;
 
         }
@@ -101,7 +102,15 @@ public class WeaponUpgrade : MonoBehaviour
         sBeforeLevel.text = _level.ToString();
         sAfterLevel.text = (_level + 1).ToString();
         fBeforeLevel.text = _level.ToString();
-        fAfterLevel.text = (_level -1).ToString();
+        if(_level - 1 > 0)
+        {
+            fAfterLevel.text = (_level -1).ToString();
+        }
+        else
+        {
+            fAfterLevel.text = "0";
+        }
+       
         useGold.text = (_level * 100).ToString();
         
         useItem.text = _level.ToString();

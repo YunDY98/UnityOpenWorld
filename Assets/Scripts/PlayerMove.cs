@@ -93,7 +93,7 @@ public class PlayerMove : MonoBehaviour
             
         }
 
-        print(GameManager.gameManager.isMove);
+        
         if(GameManager.gameManager.isMove)
         {
             float h = Input.GetAxisRaw("Horizontal"); // 미끄러짐 방지 GetAxisRaw  부드러운 움직임은   GetAxix()
