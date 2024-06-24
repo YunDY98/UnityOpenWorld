@@ -19,6 +19,10 @@ public class InventorySystem : MonoBehaviour
     public GameObject content;
    
     public GameObject invenItem;
+
+    public GameObject itemWarning;
+   
+   
     
     
    
@@ -165,17 +169,18 @@ public class InventorySystem : MonoBehaviour
            
             GameObject _itemObject = Instantiate(invenItem,content.transform);  
 
-            // 이미지 로드 및 할당
+            
             Sprite _sprite = Resources.Load<Sprite>($"Sprites/{_itemName}"); 
             _itemObject.GetComponent<Image>().sprite = _sprite;
             
              
-            TextMeshProUGUI _itemCnt = _itemObject.GetComponentInChildren<TextMeshProUGUI>();
+            TextMeshProUGUI _itemCntText = _itemObject.GetComponentInChildren<TextMeshProUGUI>();
 
-            items.Add(_itemName,new ItemInfo(_itemName,_quantity,_sprite,_itemCnt));
+            items.Add(_itemName,new ItemInfo(_itemName,_quantity,_sprite,_itemCntText));
+            
            
             
-            _itemCnt.text = _quantity.ToString();
+            _itemCntText.text = _quantity.ToString();
            
             
 
@@ -191,17 +196,24 @@ public class InventorySystem : MonoBehaviour
         if(items.ContainsKey(_itemName))
         {
             int _quantity = items[_itemName].quantity;
+
+            if(_quantity == 0)
+            {
+	            //보유 하지 않은 아이템 
+                GameManager.gameManager.StartWarningUI(itemWarning);
+	            return false;
+	        }
             int _after = _quantity - _useQuantity;
             if(_after < 0)
             {
                 //아이템 갯수 부족 
+                GameManager.gameManager.StartWarningUI(itemWarning);
                 return false;
             }
             if(_after == 0)
             {   
                 //아이템 모두 소모시
-                //items.Remove(_itemName);
-                items[_itemName].quantity = 0;
+                items[_itemName].quantity = _after;
 
            
                 InvenUpdate();

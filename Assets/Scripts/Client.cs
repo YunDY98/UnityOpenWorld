@@ -24,7 +24,7 @@ public class Client : MonoBehaviour
             return _instance;
         }
     }
-    public string serverIP = "192.168.35.105";
+    public string serverIP = "";
 
     public int serverPort = 8888;
 

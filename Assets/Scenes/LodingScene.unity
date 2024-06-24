@@ -203,8 +203,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91771d2e19d4c452f8c97009c89ad0e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneNumber: 2
   loadingBar: {fileID: 821436701}
+  loadingStart: 1
 --- !u!1 &92001183
 GameObject:
   m_ObjectHideFlags: 0

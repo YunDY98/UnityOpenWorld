@@ -106,6 +106,7 @@ public class DataManager : MonoBehaviour
             string jsonData = File.ReadAllText(dataFilePath);
 
             // JSON 데이터를 역직렬화하여 객체로 변환
+            
             //return JsonUtility.FromJson<PlayerData>(EncryptAndDecrypt(jsonData));
             return JsonUtility.FromJson<PlayerData>((jsonData));
         }
@@ -160,9 +161,9 @@ public class ItemInfo
     
     public ItemInfo(string _itemName, int _quantity, Sprite _sprite = null, TextMeshProUGUI _text = null)
     {
-        this.itemName = _itemName;
+        itemName = _itemName;
         
-        this.quantity = _quantity;
+        quantity = _quantity;
 
         sprite = _sprite;
 

@@ -134,5 +134,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Gold
   quantity: 1
-  gold: 2147483647
+  gold: 100
   exp: 400
