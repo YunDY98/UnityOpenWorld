@@ -13,7 +13,7 @@ public class SectorLoader : MonoBehaviour
 
     public void LoadSector()
     {
-        
+       
         handle = Addressables.InstantiateAsync(sectorAddress);
         handle.Completed += OnSectorLoaded;
        
@@ -21,15 +21,18 @@ public class SectorLoader : MonoBehaviour
 
     private void OnSectorLoaded(AsyncOperationHandle<GameObject> obj)
     {
+       
         // 섹터가 로드된 후 처리
         if (obj.Status == AsyncOperationStatus.Succeeded)
         {
+           
             GameObject loadedSector = obj.Result;
            
             loadedSector.transform.SetParent(transform, false);
             
             
         }
+       
     }
 
     public void UnloadSector()

@@ -12,7 +12,7 @@ public class PlayerMove : MonoBehaviour
     // 캐릭터 컨트롤러 변수
     CharacterController cc; 
     //중력 변수
-    float gravity = -9f;
+    public float gravity = -9f;
     float yVelocity = 0;
 
     public GameObject hitEffect;

@@ -18,7 +18,7 @@ public class LodingNextScene : MonoBehaviour
     void Start()
     {   
       
-       
+       StartCoroutine(TransitionNextScene(2));
     }
     void Update()
     {
@@ -28,7 +28,7 @@ public class LodingNextScene : MonoBehaviour
         //     StartCoroutine(TransitionNextScene(Client.client.sceneNumber));
 
         // }
-        StartCoroutine(TransitionNextScene(2));
+        
     }
 
     IEnumerator TransitionNextScene(int num)
@@ -36,7 +36,7 @@ public class LodingNextScene : MonoBehaviour
         Debug.Log("CoStart");
         AsyncOperation ao = SceneManager.LoadSceneAsync(num);
        
-        //로드되는 씬 안보이게 
+        // //로드되는 씬 안보이게 
         ao.allowSceneActivation = false;
 
         //로딩이 완료 될때까지 
@@ -46,7 +46,7 @@ public class LodingNextScene : MonoBehaviour
             loadingBar.value = ao.progress;
           
            
-            if(ao.progress > 0.89f)
+            if(ao.progress >= 0.90f)
             {
                 
                 ao.allowSceneActivation = true;
