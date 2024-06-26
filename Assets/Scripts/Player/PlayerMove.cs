@@ -1,5 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.UI;
 public class PlayerMove : MonoBehaviour
@@ -81,7 +81,7 @@ public class PlayerMove : MonoBehaviour
             {
                 anim.SetBool("isGrounded",false);
                 
-                yVelocity += (gravity) * Time.deltaTime * 0.001f; // 중력 적용 
+                yVelocity += (gravity) * Time.deltaTime * 0.005f; // 중력 적용 
 
             }
             else
@@ -157,9 +157,6 @@ public class PlayerMove : MonoBehaviour
 
 
             dir.y = yVelocity; // 위를 바라봤을때 위로 날라가는거 방지 
-
-
-    
 
 
             // Debug.Log(dir.x+" "+ dir.z);

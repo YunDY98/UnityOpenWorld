@@ -143,8 +143,6 @@ public class PlayerStats : MonoBehaviour
     {  
         playerData = DataManager.dataManager.LoadPlayerData();
 
-       
-       
         //활성화된 캐릭터 
         selectedIndex = 0;
         SetActiveCharacter((int)selectCharacter);
@@ -165,10 +163,7 @@ public class PlayerStats : MonoBehaviour
                    weaponDictionary[_weapon] = 1;
                }
             }
-            
-
-           
-            
+                 
         }
         else
         {
@@ -191,8 +186,6 @@ public class PlayerStats : MonoBehaviour
         SetPlayerData();
        
         
-
-       
         AtkDamage += (int)(Level * 1.1f);
        
     }
@@ -223,10 +216,7 @@ public class PlayerStats : MonoBehaviour
             }
 
         }
-          
-        
-        
-    
+      
     }
    
    
@@ -236,7 +226,7 @@ public class PlayerStats : MonoBehaviour
 
     }
 
-    // Update is called once per frame
+    // Uwwwwwpdate is called once per frame
     void Update()
     {   
         // 솔저로 
@@ -257,7 +247,7 @@ public class PlayerStats : MonoBehaviour
         {
             selectCharacter = SelectCharacter.Masa;
             SetActiveCharacter((int)SelectCharacter.Masa);
-            camPos.localPosition = new Vector3(0f,0.45f,-0.8f);
+            camPos.localPosition = new Vector3(0f,0.45f,-2f);
             
             playerMove.CharacterReset();
             
@@ -279,16 +269,10 @@ public class PlayerStats : MonoBehaviour
            Gold += 300;
         }
 
-        
-
-       
+      
     }
 
-    
-
-    
-
-    
+   
 
     // 골드 획득시
     public void AddGold(int _gold)
@@ -307,9 +291,7 @@ public class PlayerStats : MonoBehaviour
             
             Gold = int.MaxValue; 
         }
-
-        
-        
+  
     }
 
     //골드 사용시 
@@ -327,10 +309,6 @@ public class PlayerStats : MonoBehaviour
             
         Gold -= _use;
        
-
-       
-       
-
         return true;
     }
 
@@ -355,8 +333,6 @@ public class PlayerStats : MonoBehaviour
             
             Exp -= maxExp;
             Level++;
-
-           
 
             maxExp += Level*1000;
             textLevel.text = Level.ToString();
@@ -452,7 +428,7 @@ public class PlayerStats : MonoBehaviour
         // 이미지 로드 및 할당
         Sprite skillImage = Resources.Load<Sprite>("Sprites/" + _key); // 이미지 파일 경로
         Transform imageTransform = skillWindow.transform.Find("SkillImage");
-        skillWindow.GetComponentInChildren<SkillInfo>()._key = _key;
+        skillWindow.GetComponentInChildren<SkillInfo>().key = _key;
 
         if(imageTransform != null)
         {
@@ -515,7 +491,7 @@ public class PlayerStats : MonoBehaviour
             }
 
             SkillInfo skillInfo = skillWindow.GetComponentInChildren<SkillInfo>();
-            skillInfo._key = _key;
+            skillInfo.key = _key;
 
              
             _skill = playerData.skills[i++];

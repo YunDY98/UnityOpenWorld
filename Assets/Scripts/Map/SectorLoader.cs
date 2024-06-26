@@ -1,9 +1,7 @@
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
-using System.Collections.Generic;
-using System.Data.Common;
-using UnityEditor;
+
 public class SectorLoader : MonoBehaviour
 {
     public string sectorAddress;
@@ -44,10 +42,4 @@ public class SectorLoader : MonoBehaviour
 
     }
    
-
-   
-   
-
-    
-
 }

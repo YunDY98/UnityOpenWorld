@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 public class ItemMove : MonoBehaviour
 {
-    // private PlayerStats playerStats;
+    
     private GameObject character; // 캐릭터의 Transform
     public float attractionDistance = 10f; // 아이템이 캐릭터에게 끌려오는 거리
     private float attractionDuration = 0.1f; // 아이템이 캐릭터에게 이동하는 시간
@@ -12,7 +10,7 @@ public class ItemMove : MonoBehaviour
     void Start()
     {
         character = GameObject.Find("Player");
-       // playerStats = character.GetComponent<PlayerStats>();
+      
       
     }
   

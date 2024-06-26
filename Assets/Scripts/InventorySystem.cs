@@ -63,17 +63,7 @@ public class InventorySystem : MonoBehaviour
         }   
        
        
-
-       
-
-       
         InvenUpdate();
-
-
-        
-        
-        
-       
         
     }
     void Update()
@@ -185,9 +175,6 @@ public class InventorySystem : MonoBehaviour
             
 
         }
-
-       
-
 
     }
 

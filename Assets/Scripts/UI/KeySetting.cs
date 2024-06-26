@@ -1,9 +1,6 @@
-
 using System;
-using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-
 using UnityEngine.UI;
 
 
@@ -56,45 +53,33 @@ public class KeySetting : MonoBehaviour, IDropHandler
         
     }
 
-    
-
     public void OnDrop(PointerEventData eventData)
     {
         
         // 현재 드래그 중인 UI 요소 가져오기
         GameObject _dragObject = eventData.pointerDrag;
 
-        
-
-        //trygetcomponent 사용 
         try
         {
-            key = _dragObject.GetComponent<SkillInfo>()._key;
+            if(_dragObject.TryGetComponent(out SkillInfo skillInfo))
+            {
+                key = skillInfo.key;
+            }
+            else if(_dragObject.TryGetComponent(out KeySetting keySetting))
+            {
+                key = keySetting.key;
+            }
         }
         catch
         {
-            try
-            {
-                key = _dragObject.GetComponent<KeySetting>().key;
-               
-            }
-            catch
-            {
-                
-                return;
-            }
+            return;
         }
         print("drop" + key);
-        
-      
-       
+         
         // 스킬 하나당 하나의 키셋팅 
         if(GameManager.gameManager.userKeys[StringToEnum(key,typeof(SkillEnum))] != KeyCode.None)
         {
-        
-            
             return;
-           
         }
             
 
@@ -115,8 +100,6 @@ public class KeySetting : MonoBehaviour, IDropHandler
             
             Sprite skillImage = Resources.Load<Sprite>("Sprites/" + key); // 이미지 파일 경로
 
-            
-
             //이미지 정보 
             PlayerPrefs.SetString(sText, key);
            
@@ -125,18 +108,13 @@ public class KeySetting : MonoBehaviour, IDropHandler
             skillEnum = StringToEnum(key,typeof(SkillEnum));
             GameManager.gameManager.userKeys[skillEnum] = (KeyCode)keyCode;
 
-            
-
-            
             // 키코드 
             PlayerPrefs.SetInt(keyCode.ToString(),skillEnum);
 
             
              
             image.sprite = skillImage;
-
-            
-               
+       
         }
      
         
@@ -194,9 +172,6 @@ public class KeySetting : MonoBehaviour, IDropHandler
         PlayerPrefs.DeleteKey(sText);
         PlayerPrefs.DeleteKey(keyCode.ToString());
            
-    
-
-       
     }
 
      

@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
-using TMPro;
+
 public class PlayerTracker : MonoBehaviour
 {
     public Transform player;
@@ -41,8 +41,5 @@ public class PlayerTracker : MonoBehaviour
         }
         
     }
-
-    
-
 
 }

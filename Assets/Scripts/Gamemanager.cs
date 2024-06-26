@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using UnityEngine.UIElements.Experimental;
 using TMPro;
-using UnityEngine.InputSystem;
-using Unity.VisualScripting;
+
 public class GameManager : MonoBehaviour
 {
     //게임 상태 상수
@@ -275,7 +273,6 @@ public class GameManager : MonoBehaviour
            
     }
 
-    
     void Keyboard()
     {
         if(Input.GetKeyDown(KeyCode.M))
@@ -326,8 +323,6 @@ public class GameManager : MonoBehaviour
         _warning.SetActive(false);
 
        
-
-
     }
     
 

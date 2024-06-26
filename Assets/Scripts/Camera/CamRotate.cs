@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CamRotate : MonoBehaviour
@@ -9,18 +7,6 @@ public class CamRotate : MonoBehaviour
     //회전 값 변수
     float mx = 0;
     float my = 0;
-    float smoothTime = 0.1f;
-    private float currentX = 0f;
-    private float currentY = 0f;
-    private float currentXVelocity = 0f;
-    private float currentYVelocity = 0f;
-    
-    void Start()
-    {
-      
-    }
-    
-   
 
     // Update is called once per frame
     void Update()
@@ -59,14 +45,7 @@ public class CamRotate : MonoBehaviour
     
             transform.eulerAngles = new Vector3(my,mx,0);
 
-            
-           
-
         }
-       
-
-        
-        
        
        
     }

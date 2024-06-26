@@ -1,13 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 using TMPro;
-using Unity.VisualScripting;
+
 public class WeaponUpgrade : MonoBehaviour
 {
     SelectCharacter who;
-
     public TextMeshProUGUI sBeforeLevel;
     public TextMeshProUGUI sAfterLevel;
 
@@ -24,14 +20,6 @@ public class WeaponUpgrade : MonoBehaviour
     int level = 0;
     
     PlayerStats playerStats;
-    void Start()
-    {
-       
-        
-       
-       
-        
-    } 
     void OnEnable()
     {
         playerStats = PlayerStats.playerStats;
@@ -63,8 +51,6 @@ public class WeaponUpgrade : MonoBehaviour
             }
             
 
-           
-            
         }
         else
         {
@@ -73,8 +59,7 @@ public class WeaponUpgrade : MonoBehaviour
 
         }
 
-       
-
+    
         bool _random = Random.Range(0,2) == 1;
 
         if(_random)
@@ -115,9 +100,6 @@ public class WeaponUpgrade : MonoBehaviour
         
         useItem.text = _level.ToString();
     
-
     }
-
-    
 
 }

@@ -1,18 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class TriggerUI : MonoBehaviour
 {
     public GameObject onOffUi;
 
-   
-
     int rotSpeed = 0;
     void OnTriggerEnter(Collider other)
     {  
-        
         
         if(other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
@@ -29,10 +23,7 @@ public class TriggerUI : MonoBehaviour
         {
            Off();
         }
-            
-
         
-
     }
     public void On()
     {
@@ -54,8 +45,6 @@ public class TriggerUI : MonoBehaviour
         GameManager.gameManager.isUI = false;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-
-        
 
     }
 }

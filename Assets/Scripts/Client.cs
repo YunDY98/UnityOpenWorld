@@ -1,12 +1,10 @@
 using UnityEngine;
-using UnityEngine.UI;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using TMPro;
 using UnityEngine.SceneManagement;
-using System.Data;
-using Unity.VisualScripting;
+
 
 public class Client : MonoBehaviour
 {
@@ -113,11 +111,6 @@ public class Client : MonoBehaviour
             DontDestroyOnLoad(this.gameObject);
         }
     }
-    void Start()
-    {
-      
-    }
-
     void Update()
     {
        
@@ -193,12 +186,6 @@ public class Client : MonoBehaviour
             
         }
 
-        
-
-        
-
-      
-       
         clientTime += Time.deltaTime;
         if(sendTime < clientTime)
         {
@@ -207,11 +194,7 @@ public class Client : MonoBehaviour
             KeepAlive(EnumToString(State.KeepAlive));
             
         }
-        
-
-
-             
-        
+         
     }
 
   
@@ -225,11 +208,6 @@ public class Client : MonoBehaviour
         
 
     }
-
- 
-
-   
-    
 
     void ConnectToServer()
     {

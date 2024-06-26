@@ -10,10 +10,6 @@ public class PlayerRotate : MonoBehaviour
     float mx = 0;
     // Start is called before the first frame update
    
-
-   
-
-
     // Update is called once per frame
     void Update()
     {
@@ -22,16 +18,6 @@ public class PlayerRotate : MonoBehaviour
         {
             return;
         }
-
-        
-
-
-
-
-
-
-
-
 
         if(GameManager.gameManager.isMove)
         {
@@ -48,9 +34,6 @@ public class PlayerRotate : MonoBehaviour
             transform.eulerAngles = new Vector3(0,mx,0);
 
         }
-      
-       
-       
-        
+
     }
 }

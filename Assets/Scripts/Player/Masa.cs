@@ -1,9 +1,4 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using TMPro;
-using Unity.Mathematics;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Masa : MonoBehaviour
@@ -36,10 +31,6 @@ public class Masa : MonoBehaviour
         playerStats = PlayerStats.playerStats;
         gameManager = GameManager.gameManager;
 
-       
-
-        
-       
     }
 
 
@@ -92,8 +83,6 @@ public class Masa : MonoBehaviour
             IsMove();
             anim.SetTrigger(_skillName);
             
-            
-           
         }
     }
 

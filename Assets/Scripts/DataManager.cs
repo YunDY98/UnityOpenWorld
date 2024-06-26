@@ -1,10 +1,7 @@
 using UnityEngine;
 using System.IO;
 using TMPro;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using Unity.VisualScripting.FullSerializer;
-using System.Threading;
+
 
 
 public class DataManager : MonoBehaviour
@@ -72,9 +69,7 @@ public class DataManager : MonoBehaviour
             
             _pd.items[_index++] = new SaveItemInfo(_item.Key, _item.Value.quantity);
             
-
-            
-            
+    
         }
         _index = 0;
         foreach(var _weapon in PlayerStats.playerStats.weaponDictionary)
@@ -106,7 +101,7 @@ public class DataManager : MonoBehaviour
             string jsonData = File.ReadAllText(dataFilePath);
 
             // JSON 데이터를 역직렬화하여 객체로 변환
-            
+
             //return JsonUtility.FromJson<PlayerData>(EncryptAndDecrypt(jsonData));
             return JsonUtility.FromJson<PlayerData>((jsonData));
         }

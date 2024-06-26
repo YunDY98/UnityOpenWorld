@@ -1,7 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -25,8 +22,6 @@ public class BuffManager : MonoBehaviour
         playerStats = PlayerStats.playerStats;
         gameManager = GameManager.gameManager;
 
-        
-
         buff = 0;
     }
 
@@ -45,10 +40,6 @@ public class BuffManager : MonoBehaviour
             UseBuff("CommonAtkUp");
         }
        
-
-       
-
-        
     }
 
 

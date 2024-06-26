@@ -1,15 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class LodingNextScene : MonoBehaviour
 {
-    
-
-
-
     //로딩 바
     public Slider loadingBar;
 
@@ -20,16 +15,16 @@ public class LodingNextScene : MonoBehaviour
       
        StartCoroutine(TransitionNextScene(2));
     }
-    void Update()
-    {
-        // if(Client.client.sceneNumber > 0 && loadingStart)
-        // {
-        //     loadingStart = false;
-        //     StartCoroutine(TransitionNextScene(Client.client.sceneNumber));
+    // void Update()
+    // {
+    //     // if(Client.client.sceneNumber > 0 && loadingStart)
+    //     // {
+    //     //     loadingStart = false;
+    //     //     StartCoroutine(TransitionNextScene(Client.client.sceneNumber));
 
-        // }
+    //     // }
         
-    }
+    // }
 
     IEnumerator TransitionNextScene(int num)
     {

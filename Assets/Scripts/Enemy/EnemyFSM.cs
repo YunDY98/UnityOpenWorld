@@ -1,12 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.AI;
-using UnityEngine.PlayerLoop;
-using UnityEditor;
-using UnityEngine.Animations;
-using UnityEditor.Search;
 using System.Linq;
 using TMPro;
 public class EnemyFSM : MonoBehaviour
