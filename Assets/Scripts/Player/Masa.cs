@@ -21,6 +21,7 @@ public class Masa : MonoBehaviour
     
     private int charDamage;
     
+    private float cameraDistance = 2f;
 
    
 
@@ -76,7 +77,7 @@ public class Masa : MonoBehaviour
        
        
         singleAtkDamage = _damage;
-        singleAtkRange = _rangeMult * _skillLevel;
+        singleAtkRange = _rangeMult * _skillLevel + cameraDistance;
 
         if(playerStats.UseGold((int)(_skillLevel * _goldMult)))
         {

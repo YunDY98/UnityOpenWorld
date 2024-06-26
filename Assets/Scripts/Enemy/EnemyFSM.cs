@@ -398,7 +398,7 @@ public class EnemyFSM : MonoBehaviour
                 _itemKind = Random.Range(1,dropItems.Count()+1);
 
             
-                Instantiate(dropItems[_itemKind - 1],transform.position, transform.rotation);
+                Instantiate(dropItems[_itemKind - 1],transform.position + new Vector3(0,0,i), transform.rotation);
 
             }
            

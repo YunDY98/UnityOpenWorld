@@ -13,7 +13,7 @@ public class LodingNextScene : MonoBehaviour
     void Start()
     {   
       
-       StartCoroutine(TransitionNextScene(2));
+       StartCoroutine(TransitionNextScene(1));
     }
     // void Update()
     // {
