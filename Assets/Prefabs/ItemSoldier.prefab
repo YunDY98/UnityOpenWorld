@@ -120,7 +120,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: ItemSoldier
-  quantity: 1
+  quantity: 100
   gold: 0
   exp: 0
 --- !u!114 &-2681866326712318057

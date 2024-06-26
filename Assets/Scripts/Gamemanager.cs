@@ -332,6 +332,11 @@ public class GameManager : MonoBehaviour
         uiElement.SetAsLastSibling();
     }
 
+    public void ExitGame()
+    {
+        DataManager.dataManager.SavePlayerData();
+        Application.Quit();
+    }
 
     
 }
