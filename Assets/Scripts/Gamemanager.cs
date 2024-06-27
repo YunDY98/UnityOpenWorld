@@ -309,11 +309,11 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(1);
     }
 
-    public void StartWarningUI(GameObject _warning)
+    public void StartUI(GameObject _warning)
     {
-        StartCoroutine(WarningUI(_warning));
+        StartCoroutine(UIEnum(_warning));
     }
-    IEnumerator WarningUI(GameObject _warning)
+    IEnumerator UIEnum(GameObject _warning)
     {
         _warning.SetActive(true);
        

@@ -27,19 +27,13 @@ public class SectorLoader : MonoBehaviour
             GameObject loadedSector = obj.Result;
            
             loadedSector.transform.SetParent(transform, false);
-            
-            
-        }
-       
+              
+        } 
     }
 
     public void UnloadSector()
     {
-
         Addressables.ReleaseInstance(handle);
-       
-
-
     }
    
 }

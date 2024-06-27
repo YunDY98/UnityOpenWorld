@@ -123,7 +123,16 @@ public class InventorySystem : MonoBehaviour
             
             TextMeshProUGUI _itemCnt = _itemObject.GetComponentInChildren<TextMeshProUGUI>();
             items[dic.Key].text = _itemCnt;
-            _itemCnt.text = dic.Value.quantity.ToString();
+            
+            if(dic.Value.quantity > 999)
+            {
+                _itemCnt.text = "999+";
+            }
+            else
+            {
+                _itemCnt.text = dic.Value.quantity.ToString();
+            }
+            
               
             
         }
@@ -151,8 +160,16 @@ public class InventorySystem : MonoBehaviour
                 InvenUpdate();
             }
             
+            if(items[_itemName].quantity > 999)
+            {
+                items[_itemName].text.text = "999+";
+
+            }
+            else
+            {
+                items[_itemName].text.text = items[_itemName].quantity.ToString();
+            }
             
-            items[_itemName].text.text = items[_itemName].quantity.ToString();
         }
         else
         {   
@@ -187,14 +204,14 @@ public class InventorySystem : MonoBehaviour
             if(_quantity == 0)
             {
 	            //보유 하지 않은 아이템 
-                GameManager.gameManager.StartWarningUI(itemWarning);
+                GameManager.gameManager.StartUI(itemWarning);
 	            return false;
 	        }
             int _after = _quantity - _useQuantity;
             if(_after < 0)
             {
                 //아이템 갯수 부족 
-                GameManager.gameManager.StartWarningUI(itemWarning);
+                GameManager.gameManager.StartUI(itemWarning);
                 return false;
             }
             if(_after == 0)
@@ -207,7 +224,15 @@ public class InventorySystem : MonoBehaviour
                 return true;
             }
             items[_itemName].quantity = _after;
-            items[_itemName].text.text = _after.ToString();
+            if(_after > 999)
+            {
+                items[_itemName].text.text = "999+";
+            }
+            else
+            {
+                items[_itemName].text.text = _after.ToString();
+            }
+            
 
         }
         else

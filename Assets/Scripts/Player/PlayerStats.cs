@@ -25,6 +25,8 @@ public class PlayerStats : MonoBehaviour
     public GameObject aim;
     public GameObject goldShortage;
 
+    public GameObject levelUp;
+
     GameManager gm = GameManager.gameManager;
 
     public PlayerData playerData;
@@ -303,7 +305,7 @@ public class PlayerStats : MonoBehaviour
         {
 
             //골드 부족 
-            GameManager.gameManager.StartWarningUI(goldShortage);
+            GameManager.gameManager.StartUI(goldShortage);
             return false;
 
         }
@@ -341,7 +343,7 @@ public class PlayerStats : MonoBehaviour
         textLevel.text = Level.ToString();
         expSlider.value = (float)Exp/(float)maxExp;
       
-       
+        GameManager.gameManager.StartUI(levelUp);
         
         
         //레벨업시 알려주기 
