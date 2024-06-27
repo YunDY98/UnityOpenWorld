@@ -32,7 +32,7 @@ public class EnemyFSM : MonoBehaviour
 
     public Slider hpSlider;
     public TextMeshProUGUI damageText;
-    public int attackPower = 0;
+    public int attackPower = 30;
 
     public GameObject gold;
     public GameObject[] dropItems;
@@ -225,9 +225,6 @@ public class EnemyFSM : MonoBehaviour
         if(Vector3.Distance(transform.position,player.position) < attackDistance)
             pm.DamageAction(attackPower);
             
-       
-        
-
     }
 
     void Return()
@@ -298,9 +295,6 @@ public class EnemyFSM : MonoBehaviour
 
 
         damageText.text = "";
-
-       
-            
        
     }
 
@@ -339,12 +333,8 @@ public class EnemyFSM : MonoBehaviour
             m_State = EnemyState.Damaged;
             print("Any State -> Damaged");
             
-           
-           
            // 피격 애니메이션 
            anim.SetTrigger("Damaged");
-            
-
             
         }
         
@@ -372,13 +362,6 @@ public class EnemyFSM : MonoBehaviour
     void Die()
     {
        
-        
-        //StopAllCoroutines();
-
-        //죽음 
-        
-        
-
         //죽음 상태 처리
         StartCoroutine(DieProcess());
         // 현재 위치에 아이템을 소환

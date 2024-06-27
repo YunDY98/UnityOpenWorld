@@ -46,7 +46,7 @@ public class PlayerStats : MonoBehaviour
         {
             _level = value;
             textLevel.text = _level.ToString();
-            maxExp += (_level*1000);
+            maxExp = (_level*2000);
         }
     }
     private int _exp;
@@ -56,7 +56,8 @@ public class PlayerStats : MonoBehaviour
         set
         {
             _exp = value;
-            expSlider.value = (float)_exp/(float)maxExp;
+            expSlider.@value = (float)_exp/(float)maxExp;
+            
            
         }
     }
@@ -198,13 +199,12 @@ public class PlayerStats : MonoBehaviour
         if(playerData != null)
         {
             Level = playerData.level;
-            //SetLevel(playerData.level);
-            //SetExp(playerData.exp); 
+           
             Exp = playerData.exp;
-            //SetGold(playerData.gold);
+           
+            
             Gold = playerData.gold;
-            // masaAtk1Level = GetSkillLevel("Masa","Atk1",playerData.skills);
-            // masaAtk3Level = GetSkillLevel("Masa","Atk3",playerData.skills);
+            
             int _skillsLength = playerData.skills.Length;
 
             for(int i=0;i<_skillsLength;i++)
@@ -229,6 +229,7 @@ public class PlayerStats : MonoBehaviour
     // Uwwwwwpdate is called once per frame
     void Update()
     {   
+        print(maxExp);
         // 솔저로 
         if(Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.Alpha1))
         {
@@ -317,10 +318,12 @@ public class PlayerStats : MonoBehaviour
     {
         Exp += _exp;
        
+        if(Exp >= maxExp)
+        {
+            LevelUp();
+        }
 
-        LevelUp();
-
-        //expSlider.value = (float)Exp/(float)maxExp;
+       
 
     }
 
@@ -328,20 +331,22 @@ public class PlayerStats : MonoBehaviour
     private void LevelUp()
     {
         
-        if(Exp >= maxExp)
+        while(Exp >= maxExp)
         {
-            
             Exp -= maxExp;
             Level++;
-
-            maxExp += Level*1000;
-            textLevel.text = Level.ToString();
-            expSlider.value = (float)Exp/(float)maxExp;
             AddGold(Level*1000);
             AtkDamage += (int)(Level * 1.1f);
-            
-            DataManager.dataManager.SavePlayerData();
         }
+        textLevel.text = Level.ToString();
+        expSlider.value = (float)Exp/(float)maxExp;
+      
+       
+        
+        
+        //레벨업시 알려주기 
+        DataManager.dataManager.SavePlayerData();
+        
     }
 
     // 현재 고른 캐릭터 

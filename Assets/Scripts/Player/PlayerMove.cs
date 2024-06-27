@@ -12,14 +12,14 @@ public class PlayerMove : MonoBehaviour
     // 캐릭터 컨트롤러 변수
     CharacterController cc; 
     //중력 변수
-    public float gravity = -9f;
+    public float gravity = -9.8f;
     float yVelocity = 0;
 
     public GameObject hitEffect;
 
-    public int hp = 10000;
+    public int hp = 1000;
 
-    int maxHp = 10000;
+    int maxHp = 1000;
 
     public Slider hpSlider;
 
@@ -77,7 +77,7 @@ public class PlayerMove : MonoBehaviour
                 yVelocity = 0;
                 PlayerStats.playerStats.IsFly = !PlayerStats.playerStats.IsFly;
             }
-            if(PlayerStats.playerStats.IsFly && Fly() > 5f)
+            if(PlayerStats.playerStats.IsFly && Fly() > 4f)
             {
                 anim.SetBool("isGrounded",false);
                 
