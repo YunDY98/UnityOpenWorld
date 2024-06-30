@@ -94,7 +94,7 @@ public class PlayerStats : MonoBehaviour
         }
     }
 
-    private int _hp;
+    private int _hp = 1000;
     //체력 
     public int HP
     {
@@ -366,6 +366,7 @@ public class PlayerStats : MonoBehaviour
       
         GameManager.gameManager.StartUI(levelUp);
         
+        HP = maxHp;
         
         //레벨업시 알려주기 
         DataManager.dataManager.SavePlayerData();

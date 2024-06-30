@@ -43,20 +43,25 @@ public class GameManager : MonoBehaviour
     // esc
     public GameObject esc;
     public RectTransform rectESC;
+
+    // 옵션창
     public GameObject option;
     public RectTransform rectOption;
 
+    //키셋팅 키보드
     public GameObject keyboard;
     public  RectTransform rectKeyboard;
+
+    // 스킬
     public GameObject skill;
     public RectTransform rectSkill;
 
+    //인벤토리
     public GameObject inventory;
     public RectTransform rectInventory;
 
+    //마우스 감도 
     public Slider rotSpeedSlider;
-
-  
     public TextMeshProUGUI rotSpeedText;
 
     public Text gameText;
@@ -64,9 +69,13 @@ public class GameManager : MonoBehaviour
     public bool isUI;
     
     public PlayerMove player;
-
+    
+    //UI가 on인지 체크 
     private Stack<bool> uiStack = new Stack<bool>();
     
+    //UI 코루틴
+    private Coroutine uiCoroutine;
+
    
    
     //움직임 관련 일시정지
@@ -309,18 +318,24 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(1);
     }
 
-    public void StartUI(GameObject _warning)
+    public void StartUI(GameObject _ui)
     {
-        StartCoroutine(UIEnum(_warning));
+        if(uiCoroutine != null)
+        {
+            StopCoroutine(uiCoroutine);
+        }
+
+        uiCoroutine = StartCoroutine(UIEnum(_ui));
     }
-    IEnumerator UIEnum(GameObject _warning)
+    IEnumerator UIEnum(GameObject _ui)
     {
-        _warning.SetActive(true);
+        _ui.SetActive(true);
        
         yield return new WaitForSecondsRealtime(2f);
 
        
-        _warning.SetActive(false);
+        _ui.SetActive(false);
+        uiCoroutine = null;
 
        
     }
