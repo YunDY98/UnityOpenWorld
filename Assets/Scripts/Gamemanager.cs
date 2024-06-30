@@ -144,7 +144,7 @@ public class GameManager : MonoBehaviour
     //     if(gState != GameState.Run)
     //         return;
        
-        if(player.hp <= 0)
+        if(PlayerStats.playerStats.HP <= 0)
         {
             player.GetComponentInChildren<Animator>().SetFloat("MoveMotion",0f);
 

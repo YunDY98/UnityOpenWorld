@@ -27,6 +27,9 @@ public class PlayerStats : MonoBehaviour
 
     public GameObject levelUp;
 
+    public GameObject hitEffect;
+
+
     GameManager gm = GameManager.gameManager;
 
     public PlayerData playerData;
@@ -90,6 +93,21 @@ public class PlayerStats : MonoBehaviour
             _atkDamage = value;
         }
     }
+
+    private int _hp;
+    //체력 
+    public int HP
+    {
+        get { return _hp; }
+        set
+        {
+            _hp = HP;
+        }
+    }
+
+    int maxHp = 1000;
+    public Slider hpSlider;
+
 
     
 
@@ -272,6 +290,9 @@ public class PlayerStats : MonoBehaviour
            Gold += 300;
         }
 
+
+        // 현재 플레이어의 hp%
+        hpSlider.value = (float)_hp/(float)maxHp;
       
     }
 
@@ -571,6 +592,30 @@ public class PlayerStats : MonoBehaviour
 
 
         return _initDamage;
+    }
+
+
+    public void DamageAction(int damage)
+    {
+        // 에너미의 공격력 만큼 
+        HP -= damage;
+
+        // 피격 효과 
+        if(_hp > 0)
+        {
+            StartCoroutine(PlayHitEffect());
+        }
+
+    }
+
+    IEnumerator PlayHitEffect()
+    {
+        // 피격 ui
+        hitEffect.SetActive(true);
+
+        yield return new WaitForSeconds(0.3f);
+
+        hitEffect.SetActive(false);
     }
 
     enum SkillText

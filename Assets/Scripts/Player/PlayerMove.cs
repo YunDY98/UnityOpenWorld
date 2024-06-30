@@ -15,16 +15,8 @@ public class PlayerMove : MonoBehaviour
     public float gravity = -9.8f;
     float yVelocity = 0;
 
-    public GameObject hitEffect;
-
-    public int hp = 1000;
-
-    int maxHp = 1000;
-
-    public Slider hpSlider;
-
-
-    //비행중인지 체크 
+    
+    
     
 
     //점프
@@ -164,34 +156,12 @@ public class PlayerMove : MonoBehaviour
         }
         
 
-        // 현재 플레이어의 hp%
-        hpSlider.value = (float)hp/(float)maxHp;
+       
           
         
     }
 
-    public void DamageAction(int damage)
-    {
-        // 에너미의 공격력 만큼 
-        hp -= damage;
-
-        // 피격 효과 
-        if(hp > 0)
-        {
-            StartCoroutine(PlayHitEffect());
-        }
-
-    }
-
-    IEnumerator PlayHitEffect()
-    {
-        // 피격 ui
-        hitEffect.SetActive(true);
-
-        yield return new WaitForSeconds(0.3f);
-
-        hitEffect.SetActive(false);
-    }
+    
 
     public void CharacterReset()
     {
