@@ -230,7 +230,7 @@ public class PlayerStats : MonoBehaviour
             for(int i=0;i<_skillsLength;i++)
             {
                 Skill _skill = playerData.skills[i];
-                print("level" + _skill.level);
+                //print("level" + _skill.level);
                 SetSkillLevel(_skill);
        
             }

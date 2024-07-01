@@ -132,13 +132,14 @@ public class SoldierFire : MonoBehaviour
                     break;
             }
         }
-        if(Input.GetKeyUp(KeyCode.Alpha4))
+        if(Input.GetKeyUp(KeyCode.Alpha1))
         {
             Rifle();
 
 
+
         }
-        else if(Input.GetKeyUp(KeyCode.Alpha5))
+        if(Input.GetKeyUp(KeyCode.Alpha2))
         {   
             WModeTxt.text = "Sniper";
             useBullets = 5 * playerStats.Level;

@@ -49,7 +49,7 @@ public class EnemyFSM : MonoBehaviour
 
     Animator anim;
     //누적 시간 
-    private float currentTime = 0;
+    private float currentTime = 0f;
     private float attackDelay = 2f;
     // 에너미 상태 변수
     EnemyState m_State;
@@ -173,7 +173,7 @@ public class EnemyFSM : MonoBehaviour
            
             m_State = EnemyState.Attack;
             //print("Move -> Attack");
-            currentTime = attackDelay;
+           
 
             //공격 대기 애니메이션 플레이 
             anim.SetTrigger("MoveToAttackDelay");
@@ -184,18 +184,21 @@ public class EnemyFSM : MonoBehaviour
     void Attack()
     {
         
+
         //일정한 시간 마다 플레이러를 공격
         currentTime += Time.deltaTime;
-        if(currentTime > attackDelay)
+       
+        if(currentTime >= attackDelay)
         {
+            
             // 플레이어가 공격 범위 이내에 있다면 공격 
             if(Vector3.Distance(transform.position,player.position) < attackDistance)
             {
                
-                
                 currentTime = 0;
+                
                 //공격 애니메이션 플레이 
-                anim.SetTrigger("StartAttck");
+                anim.SetTrigger("StartAttack");
 
                 
                 
@@ -212,7 +215,6 @@ public class EnemyFSM : MonoBehaviour
             m_State = EnemyState.Move;
             //  print("Attack -> Move");
             
-            currentTime = 0;
             //이동 
             anim.SetTrigger("AttackToMove");
 
@@ -302,16 +304,16 @@ public class EnemyFSM : MonoBehaviour
 
     public void HitEnemy(int _damaged)
     {
+        if(m_State == EnemyState.Die)
+            return;
+
         if(damageDisplay != null)
             StopCoroutine(damageDisplay);
+
         damageDisplay = StartCoroutine(DamageDisplay(_damaged));
 
         RouteReset();
 
-        if(m_State == EnemyState.Die)
-        {
-            return;
-        }
         //플레이어의 공격력만큼 에너미 체력 감소 
         hp -= _damaged;
         
@@ -400,17 +402,10 @@ public class EnemyFSM : MonoBehaviour
         anim.Rebind();
 
         anim.SetTrigger("Die");
-       
-        
-
-
+    
         //N초후 제거
         yield return new WaitForSeconds(10f);
 
-
-       
-        
-       
     }
 
     
