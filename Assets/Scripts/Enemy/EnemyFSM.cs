@@ -200,8 +200,6 @@ public class EnemyFSM : MonoBehaviour
                 //공격 애니메이션 플레이 
                 anim.SetTrigger("StartAttack");
 
-                
-                
             }
             else
             {

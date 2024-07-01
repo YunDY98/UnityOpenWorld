@@ -101,7 +101,7 @@ public class PlayerStats : MonoBehaviour
         get { return _hp; }
         set
         {
-            _hp = HP;
+            _hp = value;
         }
     }
 
