@@ -27,13 +27,17 @@ public class EnemyFSM : MonoBehaviour
     public float moveDistance = 20f;
 
 
+    //적 HP
     public int hp = 15000;
     public int maxHp = 15000;
-
     public Slider hpSlider;
+
     public TextMeshProUGUI damageText;
+
+    //공격력 
     public int attackPower = 30;
 
+    //드랍 
     public GameObject gold;
     public GameObject[] dropItems;
 
@@ -229,7 +233,7 @@ public class EnemyFSM : MonoBehaviour
 
     void Return()
     {
-        
+        //리턴중 공격거리내 캐릭터가 있을시 
         if(Vector3.Distance(transform.position,originPos) < moveDistance && Vector3.Distance(transform.position,player.position) < attackDistance)
         {
             m_State = EnemyState.Move;

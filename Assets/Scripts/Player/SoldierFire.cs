@@ -57,9 +57,6 @@ public class SoldierFire : MonoBehaviour
         canShoot = true;
     }
 
-  
-
-
     // Update is called once per frame
     void Update()
     {
@@ -67,13 +64,13 @@ public class SoldierFire : MonoBehaviour
         // // 게임 중일때만 동작                                                                                                           
         if((GameManager.gameManager.gState != GameManager.GameState.Run) || (playerStats.selectCharacter != SelectCharacter.Soldier)|| !GameManager.gameManager.isMove)
         {
-           
             return;
         }
        
        
         if(GameManager.gameManager.isUI)
         {
+            print("amkwl");
             return;
         }
         
@@ -95,14 +92,9 @@ public class SoldierFire : MonoBehaviour
                 else
                     StartCoroutine(Shoot(0f));
 
-
-            }
-           
+            } 
             
         }
-
-        
-       
 
         if(Input.GetMouseButtonDown(1))
         {
@@ -163,12 +155,6 @@ public class SoldierFire : MonoBehaviour
             }
            
         }
-        
-        
-        
-
-        
-        
     }
 
     IEnumerator Shoot(float _delay)
@@ -209,11 +195,6 @@ public class SoldierFire : MonoBehaviour
         canShoot = false;
         yield return new WaitForSeconds(_delay);
         canShoot = true;
-
-        
-
-      
-
     }
    
 

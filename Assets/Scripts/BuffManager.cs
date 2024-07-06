@@ -47,6 +47,7 @@ public class BuffManager : MonoBehaviour
     void UseBuff(string _buffName,float _durationMult = 2f,float _buffAmount = 0.5f)
     {
         int _onBuff = StringToEnum(_buffName,typeof(Buff));
+        
         if((buff & _onBuff) != 0 )
         {
             //버프가 켜져있슴

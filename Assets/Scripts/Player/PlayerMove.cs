@@ -15,10 +15,6 @@ public class PlayerMove : MonoBehaviour
     public float gravity = -9.8f;
     float yVelocity = 0;
 
-    
-    
-    
-
     //점프
     float jumpPower = 2.5f;
     bool isJumping = false;

@@ -7,10 +7,6 @@ public class Masa : MonoBehaviour
     
     
     private List<GameObject> enemies = new List<GameObject>(); // 적 배열
-
-    // 유저가 설정한 키를 저장할 변수
-    private KeyCode[] userKeys = new KeyCode[108];
-    
     
     PlayerStats playerStats;
     GameManager gameManager;
@@ -96,7 +92,7 @@ public class Masa : MonoBehaviour
         {
             return;
         }
-        int _skillLevel =   playerStats.GetSkillLevel(_skillName);
+        int _skillLevel = playerStats.GetSkillLevel(_skillName);
         
         if(playerStats.UseGold((int)(_skillLevel*1.1f)))
         {
@@ -116,7 +112,7 @@ public class Masa : MonoBehaviour
             // 주변의 적을 감지
             Collider[] colliders = Physics.OverlapSphere(transform.position, _range);
             enemies.Clear(); // 리스트 초기화
-            foreach (Collider other in colliders)
+            foreach(Collider other in colliders)
             {
                 if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
                 {
@@ -126,9 +122,9 @@ public class Masa : MonoBehaviour
     
             // cnt 수만큼 적 공격 
         
-            foreach (GameObject enemy in enemies)
+            foreach(GameObject enemy in enemies)
             {
-                if (0 < _cnt)
+                if(0 < _cnt)
                 {
                     // EnemyFSM 컴포넌트 가져오기
                     EnemyFSM efsm = enemy.GetComponent<EnemyFSM>();
@@ -147,17 +143,6 @@ public class Masa : MonoBehaviour
         }
 
     }
-
-   
- 
- 
-    
-       
-
-
-        
-        
-    
 
     //애니메이션에서 실행 
     private void SingleAttack()
@@ -182,9 +167,7 @@ public class Masa : MonoBehaviour
                 eFSM.HitEnemy(singleAtkDamage);
                 
             }
-            
         }
-        
     }
 
     public void IsMove()
@@ -215,11 +198,5 @@ public class Masa : MonoBehaviour
     //     ps.camPos.localPosition = _temp;
 
     // }
-
-
-    
-   
-
-
 
 }

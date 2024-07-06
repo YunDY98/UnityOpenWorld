@@ -15,6 +15,7 @@ public class BombAction : MonoBehaviour
 
     private void Bomb()
     {
+        attackPower = PlayerStats.playerStats.InitDamage();
 
         //폭발 반경 내 적 
         Collider[] cols = Physics.OverlapSphere(transform.position, explosionRadius,1 << 8);

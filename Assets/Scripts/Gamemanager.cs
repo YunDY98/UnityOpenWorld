@@ -262,6 +262,8 @@ public class GameManager : MonoBehaviour
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
             Time.timeScale = 0;
+            gState = GameState.Ready;
+            
         }
         else
         {  
@@ -277,6 +279,8 @@ public class GameManager : MonoBehaviour
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
             Time.timeScale = 1;
+            gState = GameState.Run;
+            
         }
 
            
