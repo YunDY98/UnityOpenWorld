@@ -42,7 +42,7 @@ public class SoldierFire : MonoBehaviour
     //발사 무기 공격력
     public int weaponDamage = 10;
 
-    ParticleSystem ps;
+    ParticleSystem bulletParticle;
     void Start ()
     {   
         anim = GetComponentInChildren<Animator>();
@@ -51,7 +51,7 @@ public class SoldierFire : MonoBehaviour
         useBomb = 10;
         playerStats = PlayerStats.playerStats;
         Rifle();
-        ps = bulletEffect.GetComponent<ParticleSystem>();
+        bulletParticle = bulletEffect.GetComponent<ParticleSystem>();
 
         
         canShoot = true;
@@ -188,7 +188,7 @@ public class SoldierFire : MonoBehaviour
                 // 이펙트 로워드 방향을 레이가 부딪힌 지점의 법선 벡터와 일치 시캄
                 bulletEffect.transform.forward = hitInfo.normal;
 
-                ps.Play();
+                bulletParticle.Play();
             }
         }
 

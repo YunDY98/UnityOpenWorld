@@ -22,7 +22,6 @@ public class PlayerMove : MonoBehaviour
 
     public float flyDistance;
 
-    
 
 
 

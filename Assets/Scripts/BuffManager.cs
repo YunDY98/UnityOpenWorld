@@ -15,12 +15,18 @@ public class BuffManager : MonoBehaviour
     public GameObject buffPrefab;
     public Transform contentPanel;
 
+
+    //파티클 
+    ParticleSystem buffParticle;
+    public GameObject buffEffect;
+
     int buff;
     // Start is called before the first frame update
     void Start()
     {
         playerStats = PlayerStats.playerStats;
         gameManager = GameManager.gameManager;
+        buffParticle = buffEffect.GetComponent<ParticleSystem>();
 
         buff = 0;
     }
@@ -47,13 +53,13 @@ public class BuffManager : MonoBehaviour
     void UseBuff(string _buffName,float _durationMult = 2f,float _buffAmount = 0.5f)
     {
         int _onBuff = StringToEnum(_buffName,typeof(Buff));
-        
-        if((buff & _onBuff) != 0 )
-        {
-            //버프가 켜져있슴
-            print("버프가 켜져 있음");
-            return;
-        }
+
+        // if((buff & _onBuff) != 0 )
+        // {
+        //     //버프가 켜져있슴
+        //     print("버프가 켜져 있음");
+        //     return;
+        // }
         
             
 
@@ -64,6 +70,7 @@ public class BuffManager : MonoBehaviour
             return;
         }
         
+     
        
 
         if(playerStats.UseGold((int)(_skillLevel)))
@@ -75,8 +82,7 @@ public class BuffManager : MonoBehaviour
 
         }
     
-
-       
+        buffParticle.Play();
        
        
         
