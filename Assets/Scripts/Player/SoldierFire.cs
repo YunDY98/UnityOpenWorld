@@ -19,7 +19,7 @@ public class SoldierFire : MonoBehaviour
     //public PlayerStats playerStats;
     private int useBullets;
     private int useBomb;
-
+    private int damageRate = 1;
     public TMP_Text WModeTxt;
 
     bool zoomMode = false;
@@ -104,18 +104,17 @@ public class SoldierFire : MonoBehaviour
                 case WeaponMode.Sniper:
                     if(!zoomMode)
                     {
-                        
-                       
-                        weaponDamage = (int)(playerStats.InitDamage() * 5);
+
+                        damageRate = 5;
                         Camera.main.fieldOfView = 15f;
                         zoomMode = true;
-                       
-                       
+                    
                     }
                     else
                     {
                        
                         weaponDamage = (int)(playerStats.InitDamage() * 2);
+                        damageRate = 2;
                         Camera.main.fieldOfView = 60f;
                         zoomMode = false;
                         
@@ -136,7 +135,8 @@ public class SoldierFire : MonoBehaviour
             WModeTxt.text = "Sniper";
             useBullets = 5 * playerStats.Level;
             
-            weaponDamage = (int)(playerStats.InitDamage() * 5);
+            //weaponDamage = (int)(playerStats.InitDamage() * 5);
+            damageRate = 2;
             
             wMode = WeaponMode.Sniper;
         }
@@ -159,6 +159,8 @@ public class SoldierFire : MonoBehaviour
 
     IEnumerator Shoot(float _delay)
     {
+        //총 데미지
+        weaponDamage = (int)(playerStats.InitDamage() * damageRate);
         // 화면의 정중앙 좌표 계산
         Vector3 screenCenter = new Vector3(Screen.width / 2, Screen.height / 2, 0);
 
@@ -211,7 +213,8 @@ public class SoldierFire : MonoBehaviour
 
     void Rifle()
     {
-        weaponDamage = (int)(playerStats.InitDamage() * 2);
+       
+        damageRate = 1;
         wMode = WeaponMode.Rifle;
         WModeTxt.text = "Rifle";
         useBullets = 2 * playerStats.Level;

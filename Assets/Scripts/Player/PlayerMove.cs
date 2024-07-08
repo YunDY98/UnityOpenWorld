@@ -1,7 +1,5 @@
-using System.Collections;
-
 using UnityEngine;
-using UnityEngine.UI;
+
 public class PlayerMove : MonoBehaviour
 {
     Animator anim;
@@ -23,6 +21,8 @@ public class PlayerMove : MonoBehaviour
     public LayerMask groundLayer;
 
     public float flyDistance;
+
+    
 
 
 
