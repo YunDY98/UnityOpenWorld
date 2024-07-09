@@ -3,6 +3,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class BuffManager : MonoBehaviour
 {
@@ -15,7 +17,9 @@ public class BuffManager : MonoBehaviour
     public GameObject buffPrefab;
     public Transform contentPanel;
 
-
+    // 버프 
+    Dictionary<string,Sprite> spriteDic = new();
+    
     //파티클 
     ParticleSystem buffParticle;
     public GameObject buffEffect;
@@ -54,12 +58,12 @@ public class BuffManager : MonoBehaviour
     {
         int _onBuff = StringToEnum(_buffName,typeof(Buff));
 
-        // if((buff & _onBuff) != 0 )
-        // {
-        //     //버프가 켜져있슴
-        //     print("버프가 켜져 있음");
-        //     return;
-        // }
+        if((buff & _onBuff) != 0 )
+        {
+            //버프 삭제 
+            buff -= _onBuff;
+
+        }
         
             
 
@@ -76,9 +80,9 @@ public class BuffManager : MonoBehaviour
         if(playerStats.UseGold((int)(_skillLevel)))
         {   
             float _duration = _skillLevel * _durationMult;
-            float _Amount = _skillLevel * _buffAmount;
+            float _amount = _skillLevel * _buffAmount;
             
-            BuffDuration(_buffName,_duration,_onBuff,_Amount);
+            BuffDuration(_buffName,_duration,_onBuff,_amount);
 
         }
     
@@ -92,9 +96,19 @@ public class BuffManager : MonoBehaviour
     {
         
         GameObject _buffWindow = Instantiate(buffPrefab,contentPanel);
-
+        Sprite _buffSprite;
         // 이미지 로드 및 할당
-        Sprite buffImage = Resources.Load<Sprite>("Sprites/" + _buffName); // 이미지 파일 경로
+        if(!spriteDic.ContainsKey(_buffName))
+        {
+            _buffSprite = Resources.Load<Sprite>("Sprites/" + _buffName); // 이미지 파일 경로
+          
+            spriteDic.Add(_buffName, _buffSprite);
+        }
+        else
+        {
+            _buffSprite = spriteDic[_buffName];
+        }
+       
        
         Image imageComponent = _buffWindow.GetComponent<Image>();
         
@@ -105,9 +119,9 @@ public class BuffManager : MonoBehaviour
        
         if(imageComponent != null)
         {
-            if(buffImage != null)
+            if(_buffSprite != null)
             {
-                imageComponent.sprite = buffImage;
+                imageComponent.sprite = _buffSprite;
             }
         }
 
@@ -126,16 +140,13 @@ public class BuffManager : MonoBehaviour
             
 
         }
-
-       // 버프 지속 시간 동안 타이머 업데이트
-        DOTween.To(() => _duration, x => _duration = x, 0, _duration)
-            .OnUpdate(() => timeText.text = Mathf.CeilToInt(_duration).ToString())
-            .SetEase(Ease.Linear)
-            .OnComplete(() =>
+        // 버프 지속 시간 동안 타이머 업데이트
+        Tween _Tween = DOTween.To(() => _duration, x => _duration = x, 0, _duration);
+        _Tween.OnUpdate(() => 
+        {
+            
+            if((buff & _onBuff) == 0 )
             {
-                // 버프 제거
-                buff -= _onBuff;
-
                 switch(_onBuff)
                 {
                     case (int)Buff.CommonSpdUp:
@@ -144,14 +155,41 @@ public class BuffManager : MonoBehaviour
                     case (int)Buff.CommonAtkUp:
                         playerStats.AtkDamage -= (int)_buffAmount;
                         break;
-
-
-
                 }
+            
                 Destroy(_buffWindow);
-
                 
-            });
+                _Tween.Kill();
+                return;
+                
+            }
+            else
+            {
+
+                print(buff);
+                print(_onBuff);
+            }
+            
+            timeText.text = Mathf.CeilToInt(_duration).ToString();
+        })
+        .SetEase(Ease.Linear)
+        .OnComplete(() =>
+        {
+            // 버프 제거
+            buff -= _onBuff;
+            switch(_onBuff)
+            {
+                case (int)Buff.CommonSpdUp:
+                    playerMove.moveSpeed -= _buffAmount;
+                    break;
+                case (int)Buff.CommonAtkUp:
+                    playerStats.AtkDamage -= (int)_buffAmount;
+                    break;
+            }
+            
+            Destroy(_buffWindow);
+           
+        });
 
        
     }
@@ -166,6 +204,7 @@ public class BuffManager : MonoBehaviour
         return (int)_enumValue;
     }
 
+    
     
 
     enum Buff

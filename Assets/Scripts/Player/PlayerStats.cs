@@ -249,7 +249,7 @@ public class PlayerStats : MonoBehaviour
     // Uwwwwwpdate is called once per frame
     void Update()
     {   
-        print(maxExp);
+        //print(maxExp);
         // 솔저로 
         if(Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.Alpha1))
         {
