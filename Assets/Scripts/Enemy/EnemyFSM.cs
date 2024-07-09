@@ -306,13 +306,16 @@ public class EnemyFSM : MonoBehaviour
 
     public void HitEnemy(int _damaged)
     {
+        
+
         if(m_State == EnemyState.Die)
             return;
-
+        
         if(damageDisplay != null)
             StopCoroutine(damageDisplay);
 
         damageDisplay = StartCoroutine(DamageDisplay(_damaged));
+        
 
         RouteReset();
 
@@ -328,6 +331,7 @@ public class EnemyFSM : MonoBehaviour
             //print("Any State -> Die");
             
             Die();
+            damageDisplay = StartCoroutine(DamageDisplay(_damaged));
             return;
         }
        

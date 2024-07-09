@@ -19,6 +19,7 @@ public class BuffManager : MonoBehaviour
 
     // 버프 
     Dictionary<string,Sprite> spriteDic = new();
+
     
     //파티클 
     ParticleSystem buffParticle;
@@ -41,7 +42,6 @@ public class BuffManager : MonoBehaviour
         //공용 스킬 
         if(Input.GetKeyUp(gameManager.userKeys[(int)SkillEnum.CommonSpdUp]))
         {
-
             UseBuff("CommonSpdUp");
         }
 
@@ -60,12 +60,11 @@ public class BuffManager : MonoBehaviour
 
         if((buff & _onBuff) != 0 )
         {
+            
             //버프 삭제 
             buff -= _onBuff;
-
+            return;
         }
-        
-            
 
         int _skillLevel = playerStats.GetSkillLevel(_buffName);
 
@@ -147,6 +146,7 @@ public class BuffManager : MonoBehaviour
             
             if((buff & _onBuff) == 0 )
             {
+                
                 switch(_onBuff)
                 {
                     case (int)Buff.CommonSpdUp:
@@ -163,12 +163,7 @@ public class BuffManager : MonoBehaviour
                 return;
                 
             }
-            else
-            {
-
-                print(buff);
-                print(_onBuff);
-            }
+            
             
             timeText.text = Mathf.CeilToInt(_duration).ToString();
         })
