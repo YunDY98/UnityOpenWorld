@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEditor;
-public class SoldierFire : MonoBehaviour
+
+public class SoldierFire : Character
 {
+    
+    
+    
     enum WeaponMode
     {
         None,
@@ -35,21 +39,19 @@ public class SoldierFire : MonoBehaviour
     public float throwPower = 15f;
 
     public GameObject bulletEffect;
-    PlayerStats playerStats;
-    Animator anim;
-    
+   
     
     //발사 무기 공격력
     public int weaponDamage = 10;
 
     ParticleSystem bulletParticle;
-    void Start ()
+    protected override void Start ()
     {   
-        anim = GetComponentInChildren<Animator>();
         
-       
+        base.Start ();
+        attackRange = Mathf.Infinity;
         useBomb = 10;
-        playerStats = PlayerStats.playerStats;
+        
         Rifle();
         bulletParticle = bulletEffect.GetComponent<ParticleSystem>();
 
@@ -88,9 +90,18 @@ public class SoldierFire : MonoBehaviour
                 anim.SetTrigger("Attack");
 
                 if(WeaponMode.Sniper == wMode)
+                {
+                    attackDamage = (int)(playerStats.InitDamage() * damageRate);
+                    
                     StartCoroutine(Shoot(3f));
+                }
+                   
                 else
+                {
+                    attackDamage = (int)(playerStats.InitDamage() * damageRate);
                     StartCoroutine(Shoot(0f));
+                }
+                    
 
             } 
             
@@ -157,45 +168,35 @@ public class SoldierFire : MonoBehaviour
         }
     }
 
-    IEnumerator Shoot(float _delay)
+    IEnumerator Shoot(float delay)
     {
-        //총 데미지
-        weaponDamage = (int)(playerStats.InitDamage() * damageRate);
-        // 화면의 정중앙 좌표 계산
-        Vector3 screenCenter = new Vector3(Screen.width / 2, Screen.height / 2, 0);
-
-        // 카메라에서 화면 정중앙을 기준으로 레이 생성
-        Ray ray = Camera.main.ScreenPointToRay(screenCenter);
+        
 
         
-        // 레이 시작점 과 방향 
-        //Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
-        RaycastHit hitInfo = new RaycastHit();
-        if(Physics.Raycast(ray, out hitInfo)) // out키워드는 주소를 복사해 가져옮, 반드시 함수안에서 파라미터 값을 할당할 것을 요구 
+       
+        RaycastHit _hitInfo = RaycastAtk();
+    
+        if(_hitInfo.transform.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
-            if(hitInfo.transform.gameObject.layer == LayerMask.NameToLayer("Enemy"))
-            {
-               
-                EnemyFSM eFSM = hitInfo.transform.GetComponent<EnemyFSM>();
-                eFSM.HitEnemy(weaponDamage);
-                
-            }
-            else
-            {
-                // hit 지점에서 이팩트 
-                bulletEffect.transform.position = hitInfo.point;
-
-                // 이펙트 로워드 방향을 레이가 부딪힌 지점의 법선 벡터와 일치 시캄
-                bulletEffect.transform.forward = hitInfo.normal;
-
-                bulletParticle.Play();
-            }
+           
+            EnemyFSM eFSM = _hitInfo.transform.GetComponent<EnemyFSM>();
+            eFSM.HitEnemy(weaponDamage);
+            
         }
+        else
+        {
+            // hit 지점에서 이팩트 
+            bulletEffect.transform.position = _hitInfo.point;
+            // 이펙트 로워드 방향을 레이가 부딪힌 지점의 법선 벡터와 일치 시캄
+            bulletEffect.transform.forward = _hitInfo.normal;
+            bulletParticle.Play();
+        }
+        
 
         StartCoroutine(ShootEffectOn(0.05f));
 
         canShoot = false;
-        yield return new WaitForSeconds(_delay);
+        yield return new WaitForSeconds(delay);
         canShoot = true;
     }
    
@@ -203,6 +204,8 @@ public class SoldierFire : MonoBehaviour
     IEnumerator ShootEffectOn(float duration)
     {
         int num = Random.Range(0,muzzleFlash.Length);
+
+      
 
         muzzleFlash[num].SetActive(true);
 

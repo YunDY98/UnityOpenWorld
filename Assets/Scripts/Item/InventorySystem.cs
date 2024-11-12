@@ -111,11 +111,11 @@ public class InventorySystem : MonoBehaviour
                 _item.sprite = Resources.Load<Sprite>($"Sprites/{dic.Key}" );
                 items[dic.Key].sprite = _item.sprite;
             }
-            else
-            {
+            // else
+            // {
                 
-                _item.sprite = items[dic.Key].sprite;
-            }
+            //     _item.sprite = items[dic.Key].sprite;
+            // }
 
             
 

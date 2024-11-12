@@ -1,32 +1,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Masa : MonoBehaviour
+public class Masa : Character
 {
-    Animator anim;
-    
-    
-    private List<GameObject> enemies = new List<GameObject>(); // 적 배열
-    
-    PlayerStats playerStats;
-    GameManager gameManager;
-    
-    private int singleAtkDamage;
+
    
-    private float singleAtkRange;
-    
-    private int charDamage;
     
     private float cameraDistance = 2f;
 
    
 
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
-        anim = GetComponent<Animator>();
-        playerStats = PlayerStats.playerStats;
-        gameManager = GameManager.gameManager;
+       
+        base.Start();
 
     }
 
@@ -45,6 +33,7 @@ public class Masa : MonoBehaviour
         if(Input.GetKeyUp(gameManager.userKeys[(int)SkillEnum.MasaAtk1]))
         {
             MultiAtk("MasaAtk1");
+            IsMove();
         }
 
         
@@ -52,123 +41,19 @@ public class Masa : MonoBehaviour
         // atk3 
         if(Input.GetKeyUp(gameManager.userKeys[(int)SkillEnum.MasaAtk3]))
         {
-            SingleAtk("MasaAtk3",_damageMult: 3);
-        }
-
-        
-        
-    }
-
-    void SingleAtk(string _skillName,float _rangeMult = 1.5f,int _damageMult = 1,float _goldMult = 0.1f)
-    {
-        int _skillLevel = playerStats.GetSkillLevel(_skillName);
-
-        if(_skillLevel < 0)
-        {
-            return;
-        }
-
-        
-        int _damage = (int)(playerStats.InitDamage() * _skillLevel * _damageMult);
-       
-       
-        singleAtkDamage = _damage;
-        singleAtkRange = _rangeMult * _skillLevel + cameraDistance;
-
-        if(playerStats.UseGold((int)(_skillLevel * _goldMult)))
-        {
+            SingleAtk("MasaAtk3",damageMult: 3,rangeMult : 1.5f+cameraDistance,goldMult : 10f);
             IsMove();
-            anim.SetTrigger(_skillName);
-            
         }
+
+        
+        
     }
+
+
+    
+ 
 
    
-    
-    
-    void MultiAtk(string _skillName,float _rangeMult = 1.5f,int _damageMult = 1,int _cntMult = 1)
-    {
-        if(playerStats.GetSkillLevel(_skillName) < 0)
-        {
-            return;
-        }
-        int _skillLevel = playerStats.GetSkillLevel(_skillName);
-        
-        if(playerStats.UseGold((int)(_skillLevel*1.1f)))
-        {
-            IsMove();
-            anim.SetTrigger(_skillName);
-
-            
-           
-           
-            float _range = _rangeMult * _skillLevel;
-            int _cnt = (int)(_cntMult + (_skillLevel/10));
-
-           
-            int _damage =  playerStats.InitDamage() * _damageMult * _skillLevel;
-           
-
-            // 주변의 적을 감지
-            Collider[] colliders = Physics.OverlapSphere(transform.position, _range);
-            enemies.Clear(); // 리스트 초기화
-            foreach(Collider other in colliders)
-            {
-                if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
-                {
-                    enemies.Add(other.gameObject); // 적을 리스트에 추가
-                }
-            }
-    
-            // cnt 수만큼 적 공격 
-        
-            foreach(GameObject enemy in enemies)
-            {
-                if(0 < _cnt)
-                {
-                    // EnemyFSM 컴포넌트 가져오기
-                    EnemyFSM efsm = enemy.GetComponent<EnemyFSM>();
-                    if (efsm != null)
-                    {
-                        efsm.HitEnemy(_damage);
-                        _cnt--;
-                    }
-                }
-                else
-                {
-                    break; // 최대 공격수에 도달하면 루프 종료
-                }
-            }
-           
-        }
-
-    }
-
-    //애니메이션에서 실행 
-    private void SingleAttack()
-    {
-        // 화면의 정중앙 좌표 계산
-        Vector3 screenCenter = new Vector3(Screen.width / 2, Screen.height / 2, 0);
-
-        // 카메라에서 화면 정중앙을 기준으로 레이 생성
-        Ray ray = Camera.main.ScreenPointToRay(screenCenter);
-
-        // "IgnoreRaycast" 레이어를 제외한 레이어 마스크 생성
-        int layerMask = ~LayerMask.GetMask("Player");
-
-        RaycastHit hitInfo = new RaycastHit();
-        if(Physics.Raycast(ray, out hitInfo,singleAtkRange,layerMask)) // out키워드는 주소를 복사해 가져옮, 반드시 함수안에서 파라미터 값을 할당할 것을 요구 
-        {
-            
-            if(hitInfo.transform.gameObject.layer == LayerMask.NameToLayer("Enemy"))
-            {
-                print(hitInfo.transform.gameObject.name);
-                EnemyFSM eFSM = hitInfo.transform.GetComponent<EnemyFSM>();
-                eFSM.HitEnemy(singleAtkDamage);
-                
-            }
-        }
-    }
 
     public void IsMove()
     {
