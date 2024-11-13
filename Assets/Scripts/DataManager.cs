@@ -154,15 +154,15 @@ public class ItemInfo
     public Sprite sprite;
     public TextMeshProUGUI text;
     
-    public ItemInfo(string _itemName, int _quantity, Sprite _sprite = null, TextMeshProUGUI _text = null)
+    public ItemInfo(string itemName, int quantity, Sprite sprite = null, TextMeshProUGUI text = null)
     {
-        itemName = _itemName;
+        this.itemName = itemName;
         
-        quantity = _quantity;
+        this.quantity = quantity;
 
-        sprite = _sprite;
+        this.sprite = sprite;
 
-        text = _text;
+        this.text = text;
     }
    
 }
@@ -173,11 +173,11 @@ public class SaveItemInfo
     public int quantity;
 
    
-    public SaveItemInfo(string _itemName, int _quantity)
+    public SaveItemInfo(string itemName, int quantity)
     {
-        this.itemName = _itemName;
+        this.itemName = itemName;
         
-        this.quantity = _quantity;
+        this.quantity = quantity;
     }
    
 }
@@ -187,10 +187,10 @@ public class WeaponInfo
 {
     public SelectCharacter whoWeapon;
     public int level;
-    public WeaponInfo(SelectCharacter _whoWeapon, int _level)
+    public WeaponInfo(SelectCharacter whoWeapon, int level)
     {
-        whoWeapon = _whoWeapon;
-        level = _level;
+       this.whoWeapon = whoWeapon;
+        this.level = level;
     }
 }
 
@@ -206,11 +206,11 @@ public class Skill
     
 
 
-    public Skill(string _whoSKill,string _skillName, int _level)
+    public Skill(string whoSKill,string skillName, int level)
     {
-        this.whoSkill = _whoSKill;
-        this.skillName = _skillName;
-        this.level = _level;
+        this.whoSkill = whoSKill;
+        this.skillName = skillName;
+        this.level = level;
     }
    
   

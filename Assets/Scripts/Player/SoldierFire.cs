@@ -40,9 +40,7 @@ public class SoldierFire : Character
 
     public GameObject bulletEffect;
    
-    
-    //발사 무기 공격력
-    public int weaponDamage = 10;
+
 
     ParticleSystem bulletParticle;
     protected override void Start ()
@@ -91,14 +89,14 @@ public class SoldierFire : Character
 
                 if(WeaponMode.Sniper == wMode)
                 {
-                    attackDamage = (int)(playerStats.InitDamage() * damageRate);
+                   
                     
                     StartCoroutine(Shoot(3f));
                 }
                    
                 else
                 {
-                    attackDamage = (int)(playerStats.InitDamage() * damageRate);
+                    
                     StartCoroutine(Shoot(0f));
                 }
                     
@@ -124,7 +122,7 @@ public class SoldierFire : Character
                     else
                     {
                        
-                        weaponDamage = (int)(playerStats.InitDamage() * 2);
+                        attackDamage = (int)(playerStats.InitDamage() * 2);
                         damageRate = 2;
                         Camera.main.fieldOfView = 60f;
                         zoomMode = false;
@@ -146,7 +144,7 @@ public class SoldierFire : Character
             WModeTxt.text = "Sniper";
             useBullets = 5 * playerStats.Level;
             
-            //weaponDamage = (int)(playerStats.InitDamage() * 5);
+            attackDamage = (int)(playerStats.InitDamage() * 5);
             damageRate = 2;
             
             wMode = WeaponMode.Sniper;
@@ -176,21 +174,16 @@ public class SoldierFire : Character
        
         RaycastHit _hitInfo = RaycastAtk();
     
-        if(_hitInfo.transform.gameObject.layer == LayerMask.NameToLayer("Enemy"))
-        {
-           
-            EnemyFSM eFSM = _hitInfo.transform.GetComponent<EnemyFSM>();
-            eFSM.HitEnemy(weaponDamage);
-            
-        }
-        else
+        if(_hitInfo.transform.gameObject.layer != LayerMask.NameToLayer("Enemy"))
         {
             // hit 지점에서 이팩트 
             bulletEffect.transform.position = _hitInfo.point;
             // 이펙트 로워드 방향을 레이가 부딪힌 지점의 법선 벡터와 일치 시캄
             bulletEffect.transform.forward = _hitInfo.normal;
             bulletParticle.Play();
+            
         }
+        
         
 
         StartCoroutine(ShootEffectOn(0.05f));
@@ -203,15 +196,15 @@ public class SoldierFire : Character
 
     IEnumerator ShootEffectOn(float duration)
     {
-        int num = Random.Range(0,muzzleFlash.Length);
+        int _num = Random.Range(0,muzzleFlash.Length);
 
       
 
-        muzzleFlash[num].SetActive(true);
+        muzzleFlash[_num].SetActive(true);
 
         yield return new WaitForSeconds(duration);
 
-        muzzleFlash[num].SetActive(false);
+        muzzleFlash[_num].SetActive(false);
     }
 
     void Rifle()

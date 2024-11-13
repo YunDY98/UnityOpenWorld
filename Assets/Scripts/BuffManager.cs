@@ -54,9 +54,9 @@ public class BuffManager : MonoBehaviour
 
 
 
-    void UseBuff(string _buffName,float _durationMult = 2f,float _buffAmount = 0.5f)
+    void UseBuff(string buffName,float durationMult = 2f,float buffAmount = 0.5f)
     {
-        int _onBuff = StringToEnum(_buffName,typeof(Buff));
+        int _onBuff = StringToEnum(buffName,typeof(Buff));
 
         if((buff & _onBuff) != 0 )
         {
@@ -66,7 +66,7 @@ public class BuffManager : MonoBehaviour
             return;
         }
 
-        int _skillLevel = playerStats.GetSkillLevel(_buffName);
+        int _skillLevel = playerStats.GetSkillLevel(buffName);
 
         if(_skillLevel < 0)
         {
@@ -78,10 +78,10 @@ public class BuffManager : MonoBehaviour
 
         if(playerStats.UseGold((int)(_skillLevel)))
         {   
-            float _duration = _skillLevel * _durationMult;
-            float _amount = _skillLevel * _buffAmount;
+            float _duration = _skillLevel * durationMult;
+            float _amount = _skillLevel * buffAmount;
             
-            BuffDuration(_buffName,_duration,_onBuff,_amount);
+            BuffDuration(buffName,_duration,_onBuff,_amount);
 
         }
     

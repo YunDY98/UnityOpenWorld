@@ -68,29 +68,37 @@ public abstract class Character : MonoBehaviour
         }
         return hitInfo;
     }
-    protected void MultiAtk(string _skillName,float _rangeMult = 1.5f,int _damageMult = 1,int _cntMult = 1)
+    protected void MultiAtk(string skillName,float rangeMult = 1.5f,int damageMult = 1,int cntMult = 1)
     {
-        if(playerStats.GetSkillLevel(_skillName) < 0)
+        if(playerStats.GetSkillLevel(skillName) < 0)
         {
             return;
         }
-        int _skillLevel = playerStats.GetSkillLevel(_skillName);
+        int _skillLevel = playerStats.GetSkillLevel(skillName);
         
         if(playerStats.UseGold((int)(_skillLevel*1.1f)))
         {
             
-            anim.SetTrigger(_skillName);
-
-            
-           
-           
-            float _range = _rangeMult * _skillLevel;
-            int _cnt = (int)(_cntMult + (_skillLevel/10));
+            anim.SetTrigger(skillName);
 
            
-            int _damage =  playerStats.InitDamage() * _damageMult * _skillLevel;
-           
+        }
 
+        MultiRaycastAtk(rangeMult,damageMult,cntMult,_skillLevel);
+       
+
+    }
+
+    protected void MultiRaycastAtk(float rangeMult,int damageMult,int cntMult,int skillLevel)
+    {
+             
+            float _range = rangeMult * skillLevel;
+            int _cnt = (int)(cntMult + (skillLevel/10));
+
+           
+            int _damage =  playerStats.InitDamage() * damageMult * skillLevel;
+           
+           
             // 주변의 적을 감지
             Collider[] colliders = Physics.OverlapSphere(transform.position, _range);
             enemies.Clear(); // 리스트 초기화
@@ -121,9 +129,6 @@ public abstract class Character : MonoBehaviour
                     break; // 최대 공격수에 도달하면 루프 종료
                 }
             }
-           
-        }
-
     }
    
 }

@@ -18,11 +18,11 @@ public class BombAction : MonoBehaviour
         attackPower = PlayerStats.playerStats.InitDamage();
 
         //폭발 반경 내 적 
-        Collider[] cols = Physics.OverlapSphere(transform.position, explosionRadius,1 << 8);
+        Collider[] _cols = Physics.OverlapSphere(transform.position, explosionRadius,1 << 8);
 
-        for(int i=0; i<cols.Length; ++i)
+        for(int i=0; i<_cols.Length; ++i)
         {
-            cols[i].GetComponent<EnemyFSM>().HitEnemy(attackPower);
+            _cols[i].GetComponent<EnemyFSM>().HitEnemy(attackPower);
 
         }
 

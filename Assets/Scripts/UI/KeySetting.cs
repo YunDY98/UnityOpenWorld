@@ -120,16 +120,16 @@ public class KeySetting : MonoBehaviour, IDropHandler
         
     }
 
-    int StringToEnum(string _key, Type _enumType)
+    int StringToEnum(string key, Type enumType)
     {
         
         // "Alpha1"과 같은 형태의 문자열을 생성
-        if (int.TryParse(_key, out int numericKey) && numericKey >= 0 && numericKey <= 9)
+        if (int.TryParse(key, out int numericKey) && numericKey >= 0 && numericKey <= 9)
         {
-            _key = "Alpha" + _key;
+            key = "Alpha" + key;
         }
         
-        object _enumValue = System.Enum.Parse(_enumType, _key);
+        object _enumValue = System.Enum.Parse(enumType, key);
 
         
         

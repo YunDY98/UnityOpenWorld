@@ -25,15 +25,15 @@ public class PlayerTracker : MonoBehaviour
         foreach (var sector in sectors)
         {
 
-            float distance = Vector3.Distance(player.position, sector.transform.position);
+            float _distance = Vector3.Distance(player.position, sector.transform.position);
 
            
-            if(distance < loadDistance && !isLoad[sector.ToString()])
+            if(_distance < loadDistance && !isLoad[sector.ToString()])
             {
                 isLoad[sector.ToString()] = true;
                 sector.LoadSector();
             }
-            else if(distance > loadDistance && isLoad[sector.ToString()])
+            else if(_distance > loadDistance && isLoad[sector.ToString()])
             {
                 isLoad[sector.ToString()] = false;
                 sector.UnloadSector();
