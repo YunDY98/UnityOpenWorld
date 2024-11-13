@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEditor;
 
-public class SoldierFire : Character
+public class SoldierFire : CharacterAtk
 {
     
     

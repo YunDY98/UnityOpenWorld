@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Masa : Character
+public class Masa : CharacterAtk
 {
 
    

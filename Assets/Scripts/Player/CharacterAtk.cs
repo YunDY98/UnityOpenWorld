@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Character : MonoBehaviour
+public abstract class CharacterAtk : MonoBehaviour
 {
     protected List<GameObject> enemies = new List<GameObject>(); // 적 배열
 
@@ -97,7 +97,7 @@ public abstract class Character : MonoBehaviour
 
            
             int _damage =  playerStats.InitDamage() * damageMult * skillLevel;
-           
+            print("InitDamage" + playerStats.InitDamage() +"DamageMult" + damageMult +"SKillLevle" + skillLevel);
            
             // 주변의 적을 감지
             Collider[] colliders = Physics.OverlapSphere(transform.position, _range);

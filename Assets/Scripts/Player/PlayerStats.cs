@@ -51,7 +51,7 @@ public class PlayerStats : MonoBehaviour
         {
             _level = value;
             textLevel.text = _level.ToString();
-            maxExp = (_level*2000);
+            maxExp = _level*2000;
         }
     }
     private int _exp;
@@ -61,7 +61,7 @@ public class PlayerStats : MonoBehaviour
         set
         {
             _exp = value;
-            expSlider.@value = (float)_exp/(float)maxExp;
+            expSlider.@value = (float)_exp/maxExp;
             
            
         }
@@ -173,8 +173,7 @@ public class PlayerStats : MonoBehaviour
             Level = 1;
             Exp = 0;
             Gold = 10000;
-            AtkDamage += (int)(Level * 1.1f);
-
+           
             foreach(SelectCharacter _weapon in Enum.GetValues(typeof(SelectCharacter)))
             {
                
@@ -202,12 +201,15 @@ public class PlayerStats : MonoBehaviour
 
         }
 
+         
+
        
         CreateSkill();
         SetPlayerData();
-       
+        maxExp = Level*2000;
         
-        AtkDamage += (int)(Level * 1.1f);
+        AtkDamage = (int)(Level * 1.1f);
+        print("maxExp"+maxExp);
        
     }
 
@@ -292,7 +294,7 @@ public class PlayerStats : MonoBehaviour
 
 
         // 현재 플레이어의 hp%
-        hpSlider.value = (float)_hp/(float)maxHp;
+        hpSlider.value = (float)_hp/maxHp;
       
     }
 
@@ -359,10 +361,10 @@ public class PlayerStats : MonoBehaviour
             Exp -= maxExp;
             Level++;
             AddGold(Level*1000);
-            AtkDamage += (int)(Level * 1.1f);
+            AtkDamage = (int)(Level * 1.1f);
         }
         textLevel.text = Level.ToString();
-        expSlider.value = (float)Exp/(float)maxExp;
+        expSlider.value = (float)Exp/maxExp;
       
         GameManager.gameManager.StartUI(levelUp);
         
@@ -370,6 +372,7 @@ public class PlayerStats : MonoBehaviour
         
         //레벨업시 알려주기 
         DataManager.dataManager.SavePlayerData();
+        print("maxExp"+maxExp);
         
     }
 
@@ -539,10 +542,10 @@ public class PlayerStats : MonoBehaviour
     }
     
     // 스킬레벨을 세팅 _levelUp == true 이면 스킬레벫업 
-    void SetSkillLevel(Skill _skill,bool _levelUp = false) 
+    void SetSkillLevel(Skill skill,bool levelUp = false) 
     {
         
-        string _key = $"{_skill.whoSkill}{_skill.skillName}";
+        string _key = $"{skill.whoSkill}{skill.skillName}";
         
         GameObject skillWindow = skillObjectDictionary[_key];
 
@@ -550,24 +553,24 @@ public class PlayerStats : MonoBehaviour
         TextMeshProUGUI[] texts = skillWindow.GetComponentsInChildren<TextMeshProUGUI>();
          
         
-        int _gold = (int)(500*_skill.level*_skill.level*2);;
+        int _gold = (int)(500*skill.level*skill.level*2);;
         if(!skillDictionary.ContainsKey(_key))
             return;
-        if(_levelUp && UseGold(_gold))
+        if(levelUp && UseGold(_gold))
         {
             
-            _skill.level += 1;
+            skill.level += 1;
 
             
 
-            _gold = (int)(500*_skill.level*_skill.level*2);
+            _gold = (int)(500*skill.level*skill.level*2);
 
            
-            skillDictionary[_key].level = _skill.level;
+            skillDictionary[_key].level = skill.level;
 
                
             // UI 요소의 텍스트를 변경합니다.
-            texts[(int)SkillText.Level].text = _skill.level.ToString(); // 레벨이 몇인지
+            texts[(int)SkillText.Level].text = skill.level.ToString(); // 레벨이 몇인지
             //texts[2].text = skill.skillName; // 스킬 이름 
             texts[(int)SkillText.Gold].text = _gold.ToString(); // 몇골드 드는지
 
@@ -578,7 +581,7 @@ public class PlayerStats : MonoBehaviour
         else
         {
             
-            texts[(int)SkillText.Level].text = _skill.level.ToString(); // 레벨이 몇인지
+            texts[(int)SkillText.Level].text = skill.level.ToString(); // 레벨이 몇인지
             
             texts[(int)SkillText.Gold].text = _gold.ToString(); // 몇골드 드는지
 
@@ -590,6 +593,7 @@ public class PlayerStats : MonoBehaviour
         int _initDamage;
         // 전체기본공격력에 + 캐릭별 무기 공격력 
         _initDamage = AtkDamage + weaponDictionary[selectCharacter]*2 + Level*2;
+        print("AtkDamage" + AtkDamage + "WeaponDictionary" + weaponDictionary[selectCharacter]*2+ "Level" + Level*2);
 
 
         return _initDamage;
