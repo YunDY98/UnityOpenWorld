@@ -22,19 +22,30 @@ public class PlayerStats : MonoBehaviour
 
     public PlayerMove playerMove;
 
-    public GameObject aim;
-    public GameObject goldShortage;
+    // public GameObject aim;
+    // public GameObject goldShortage;
 
-    public GameObject levelUp;
+    
 
-    public GameObject hitEffect;
+    
 
-
-    GameManager gm = GameManager.gameManager;
+    
+    UiManager um = UiManager.uiManager;
 
     public PlayerData playerData;
 
-    
+    public event Action<int> GoldUpdate;
+    public event Action<bool> AimOnOff;
+    public event Action<GameObject> StartUi;
+
+    public event Action<float> HpSlider;
+    public event Action<float> ExpSlider;
+
+    public event Action<int> LevelText;
+    public event Action LevelUpEvent;
+    public event Action HitEffectEvent;
+
+
     //비행중인지 
     private bool isFly;
     public bool IsFly
@@ -50,7 +61,8 @@ public class PlayerStats : MonoBehaviour
         set
         {
             _level = value;
-            textLevel.text = _level.ToString();
+            //textLevel.text = _level.ToString();
+            LevelText.Invoke(_level);
             maxExp = _level*2000;
         }
     }
@@ -61,7 +73,8 @@ public class PlayerStats : MonoBehaviour
         set
         {
             _exp = value;
-            expSlider.@value = (float)_exp/maxExp;
+            //expSlider.@value = (float)_exp/maxExp;
+            ExpSlider.Invoke((float)_exp/maxExp);
             
            
         }
@@ -75,7 +88,8 @@ public class PlayerStats : MonoBehaviour
         set
         {
             _gold = value;
-            textGold.text = _gold.ToString();
+            
+            GoldUpdate.Invoke(_gold);
            
         }
     }
@@ -102,11 +116,13 @@ public class PlayerStats : MonoBehaviour
         set
         {
             _hp = value;
+            HpSlider.Invoke((float)_hp/maxHp);
+           
         }
     }
 
     int maxHp = 1000;
-    public Slider hpSlider;
+    
 
 
     
@@ -120,14 +136,14 @@ public class PlayerStats : MonoBehaviour
     
     public int sceneNumber;
 
-    public Slider expSlider;
+   
 
 
     private int maxExp = 10000;
 
 
-    public TextMeshProUGUI textGold;
-    public TextMeshProUGUI textLevel;
+    
+    
    
     // 스킬 Ui
     public GameObject skillPrefab;
@@ -232,7 +248,7 @@ public class PlayerStats : MonoBehaviour
             for(int i=0;i<_skillsLength;i++)
             {
                 Skill _skill = playerData.skills[i];
-                //print("level" + _skill.level);
+                
                 SetSkillLevel(_skill);
        
             }
@@ -282,6 +298,7 @@ public class PlayerStats : MonoBehaviour
         if(Input.GetKey(KeyCode.Alpha8))
         {
             Gold = 2147483647;
+            HP = 1;
 
         }
 
@@ -293,8 +310,7 @@ public class PlayerStats : MonoBehaviour
         }
 
 
-        // 현재 플레이어의 hp%
-        hpSlider.value = (float)_hp/maxHp;
+        
       
     }
 
@@ -328,7 +344,8 @@ public class PlayerStats : MonoBehaviour
         {
 
             //골드 부족 
-            GameManager.gameManager.StartUI(goldShortage);
+            //GameManager.gameManager.StartUI(goldShortage);
+            StartUi?.Invoke(um.goldShortage);
             return false;
 
         }
@@ -363,10 +380,15 @@ public class PlayerStats : MonoBehaviour
             AddGold(Level*1000);
             AtkDamage = (int)(Level * 1.1f);
         }
-        textLevel.text = Level.ToString();
-        expSlider.value = (float)Exp/maxExp;
+        //textLevel.text = Level.ToString();
+        LevelText.Invoke(Level);
+        //expSlider.value = (float)Exp/maxExp;
+        ExpSlider.Invoke((float)Exp/maxExp);
       
-        GameManager.gameManager.StartUI(levelUp);
+        //GameManager.gameManager.StartUI(levelUp);
+        //StartUi?.Invoke(levelUp);
+        LevelUpEvent.Invoke();
+
         
         HP = maxHp;
         
@@ -379,8 +401,8 @@ public class PlayerStats : MonoBehaviour
     // 현재 고른 캐릭터 
     public void SetActiveCharacter(int _index)
     {
-        aim.SetActive(false);
-
+        //aim.SetActive(false);
+        AimOnOff?.Invoke(false);
         //카메라 배율 초기화 
         Camera.main.fieldOfView = 60f;
         // 배열에 있는 모든 오브젝트를 비활성화
@@ -398,7 +420,8 @@ public class PlayerStats : MonoBehaviour
 
             if((int)SelectCharacter.Soldier == _index)
             {
-                aim.SetActive(true);
+                // aim.SetActive(true);
+                AimOnOff?.Invoke(true);
             }
            
             
@@ -608,21 +631,13 @@ public class PlayerStats : MonoBehaviour
         // 피격 효과 
         if(_hp > 0)
         {
-            StartCoroutine(PlayHitEffect());
+            // StartCoroutine(PlayHitEffect());
+            HitEffectEvent.Invoke();
         }
 
     }
 
-    IEnumerator PlayHitEffect()
-    {
-        // 피격 ui
-        hitEffect.SetActive(true);
-
-        yield return new WaitForSeconds(0.3f);
-
-        hitEffect.SetActive(false);
-    }
-
+ 
     enum SkillText
     {
         Level = 1,

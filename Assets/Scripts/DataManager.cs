@@ -189,7 +189,7 @@ public class WeaponInfo
     public int level;
     public WeaponInfo(SelectCharacter whoWeapon, int level)
     {
-       this.whoWeapon = whoWeapon;
+        this.whoWeapon = whoWeapon;
         this.level = level;
     }
 }

@@ -7,8 +7,9 @@ public class Shop : MonoBehaviour
 
     
     public GameObject isPurchased;
+    UiManager uiManager;
     string itemName;
-
+  
     int price;
 
     string whoSkill;
@@ -31,6 +32,7 @@ public class Shop : MonoBehaviour
         whoSkill = itemInfo.who;
         skillName = itemInfo.skillName;
 
+        uiManager = UiManager.uiManager;
 
         key = whoSkill + skillName;
 
@@ -70,7 +72,8 @@ public class Shop : MonoBehaviour
             {
                 
                 // 이미 보유중인 아이템입니다 
-                GameManager.gameManager.StartUI(isPurchased);
+                //GameManager.gameManager.StartUI(isPurchased);
+                UiManager.uiManager.StartUI(isPurchased);
                 return;
             }
             

@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
+using System;
+using System.Runtime.CompilerServices;
 
 public class GameManager : MonoBehaviour
 {
@@ -18,7 +20,7 @@ public class GameManager : MonoBehaviour
 
     
     private static GameManager _instance;
-    // Start is called before the first frame update
+    
     
     public static GameManager gameManager
     {
@@ -38,44 +40,16 @@ public class GameManager : MonoBehaviour
 
     // 게임 상태 ui 변수
 
-    public GameObject gameLabel;
+    //public GameObject gameLabel;
 
-    // esc
-    public GameObject esc;
-    public RectTransform rectESC;
-
-    // 옵션창
-    public GameObject option;
-    public RectTransform rectOption;
-
-    //키셋팅 키보드
-    public GameObject keyboard;
-    public  RectTransform rectKeyboard;
-
-    // 스킬
-    public GameObject skill;
-    public RectTransform rectSkill;
-
-    //인벤토리
-    public GameObject inventory;
-    public RectTransform rectInventory;
-
-    //마우스 감도 
-    public Slider rotSpeedSlider;
-    public TextMeshProUGUI rotSpeedText;
-
-    public Text gameText;
-
+   // public delegate void GameState();
+    public event Action<bool> GameLabel;
+    public event Action GameText;
     public bool isUI;
     
     public PlayerMove player;
     
-    //UI가 on인지 체크 
-    private Stack<bool> uiStack = new Stack<bool>();
     
-    //UI 코루틴
-    private Coroutine uiCoroutine;
-
    
    
     //움직임 관련 일시정지
@@ -113,7 +87,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {   
         // 키보드 keysetting Awake실행후 
-        keyboard.SetActive(false);
+        // keyboard.SetActive(false);
 
         //gState = GameState.Ready;
         gState = GameState.Run;
@@ -157,161 +131,21 @@ public class GameManager : MonoBehaviour
         {
             player.GetComponentInChildren<Animator>().SetFloat("MoveMotion",0f);
 
-            gameLabel.SetActive(true);
+            //gameLabel.SetActive(true);
+            GameLabel?.Invoke(true);
+            GameText?.Invoke();
 
-            gameText.text = "Game Over";
-
-            gameText.color = new Color32(255,0,0,255);
-
+            
             gState = GameState.GameOver;
                 
         }
 
-        ESC();
-        SkillWindow();
-        Keyboard();
-        Inventory();
-
-        
-    }
-
-    public void Option()
-    {
-        option.SetActive(!option.activeSelf);
-
-        if(option.activeSelf)
-        {
-            BringToFront(rectOption);
-            if(PlayerPrefs.HasKey("rotSpeed"))
-            {
-                rotSpeedSlider.value = PlayerPrefs.GetInt("rotSpeed");
-            
-            }
-            else
-            {
-                rotSpeedSlider.value = rotSpeed;
-            }
-
-            
-            rotSpeedText.text = rotSpeed.ToString();
-  
-            
-        }
-        else
-        {
-            PlayerPrefs.Save();
-            
-        }
-        
-    }
-    
-    public void MouseSensitivity()
-    {
-        rotSpeed = (int)rotSpeedSlider.value;
        
-        //rotSpeedText.text = $"{rotSpeed}";
-        rotSpeedText.text = rotSpeed.ToString();
-
-        PlayerPrefs.SetInt("rotSpeed", rotSpeed);
+       
         
     }
-    
 
-    public void SkillWindow()
-    {
-        
-        if(Input.GetKeyDown(KeyCode.K))
-        {
-            
-            
-            bool _bool = !skill.activeSelf;
-
-          
-            BringToFront(rectSkill);
-            UiStack(_bool);
-            skill.SetActive(_bool);
-           
-        }
-
-    }
-
-    public void Inventory()
-    {
-        if(Input.GetKeyDown(KeyCode.I))
-        {
-            
-            
-            bool _bool = !inventory.activeSelf;
-            BringToFront(rectInventory);
-
-            UiStack(_bool);
-            inventory.SetActive(_bool);
-           
-        }
-
-    }
-
-    public void UiStack(bool _bool)
-    {
-        
-        if(_bool)
-        {
-            
-            
-            uiStack.Push(_bool);
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
-            Time.timeScale = 0;
-            gState = GameState.Ready;
-            
-        }
-        else
-        {  
-            if(0 != uiStack.Count)
-                uiStack.Pop();
-            
-
-        }
-        
-        if(0 == uiStack.Count)
-        {
-            
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
-            Time.timeScale = 1;
-            gState = GameState.Run;
-            
-        }
-
-           
-    }
-
-    void Keyboard()
-    {
-        if(Input.GetKeyDown(KeyCode.M))
-        {
-            bool _bool = !keyboard.activeSelf;
-            BringToFront(rectKeyboard);
-            UiStack(_bool);
-            keyboard.SetActive(_bool);
-            
-        }
-
-    }
-           
-    
-    public void ESC()
-    {
-        if(Input.GetKeyDown(KeyCode.Escape))
-        {
-            bool _bool = !esc.activeSelf;
-            BringToFront(rectESC);
-            UiStack(_bool);
-            esc.SetActive(_bool);
-            
-        }
-
-    }
+   
 
     public void RestartGame()
     {
@@ -322,34 +156,7 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(1);
     }
 
-    public void StartUI(GameObject _ui)
-    {
-        if(uiCoroutine != null)
-        {
-            StopCoroutine(uiCoroutine);
-        }
 
-        uiCoroutine = StartCoroutine(UIEnum(_ui));
-    }
-    IEnumerator UIEnum(GameObject _ui)
-    {
-        _ui.SetActive(true);
-       
-        yield return new WaitForSecondsRealtime(2f);
-
-       
-        _ui.SetActive(false);
-        uiCoroutine = null;
-
-       
-    }
-    
-
-    // 특정 UI 요소를 최상단에 배치하는 함수
-    public void BringToFront(RectTransform uiElement)
-    {
-        uiElement.SetAsLastSibling();
-    }
 
     public void ExitGame()
     {
@@ -357,5 +164,6 @@ public class GameManager : MonoBehaviour
         Application.Quit();
     }
 
+   
     
 }

@@ -204,14 +204,16 @@ public class InventorySystem : MonoBehaviour
             if(_quantity == 0)
             {
 	            //보유 하지 않은 아이템 
-                GameManager.gameManager.StartUI(itemWarning);
+                //GameManager.gameManager.StartUI(itemWarning);
+                UiManager.uiManager.StartUI(itemWarning);
 	            return false;
 	        }
             int _after = _quantity - _useQuantity;
             if(_after < 0)
             {
                 //아이템 갯수 부족 
-                GameManager.gameManager.StartUI(itemWarning);
+                //GameManager.gameManager.StartUI(itemWarning);
+                UiManager.uiManager.StartUI(itemWarning);
                 return false;
             }
             if(_after == 0)
