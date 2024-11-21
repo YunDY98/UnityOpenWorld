@@ -7,7 +7,7 @@ public class Shop : MonoBehaviour
 
     
     public GameObject isPurchased;
-    UiManager uiManager;
+   
     string itemName;
   
     int price;
@@ -32,7 +32,7 @@ public class Shop : MonoBehaviour
         whoSkill = itemInfo.who;
         skillName = itemInfo.skillName;
 
-        uiManager = UiManager.uiManager;
+        
 
         key = whoSkill + skillName;
 

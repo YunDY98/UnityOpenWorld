@@ -21,16 +21,8 @@ public class PlayerStats : MonoBehaviour
     public SelectCharacter selectCharacter;
 
     public PlayerMove playerMove;
-
-    // public GameObject aim;
-    // public GameObject goldShortage;
-
     
 
-    
-
-    
-    UiManager um = UiManager.uiManager;
 
     public PlayerData playerData;
 
@@ -44,6 +36,8 @@ public class PlayerStats : MonoBehaviour
     public event Action<int> LevelText;
     public event Action LevelUpEvent;
     public event Action HitEffectEvent;
+
+    public event Action GoldShortageEvent;
 
 
     //비행중인지 
@@ -345,7 +339,7 @@ public class PlayerStats : MonoBehaviour
 
             //골드 부족 
             //GameManager.gameManager.StartUI(goldShortage);
-            StartUi?.Invoke(um.goldShortage);
+            GoldShortageEvent.Invoke();
             return false;
 
         }

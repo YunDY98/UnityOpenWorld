@@ -19,8 +19,8 @@ public class UiManager : MonoBehaviour
     [SerializeField] private RectTransform rectESC;
 
     // 옵션창
-   [SerializeField] private GameObject option;
-   [SerializeField] private RectTransform rectOption;
+    [SerializeField] private GameObject option;
+    [SerializeField] private RectTransform rectOption;
 
     //키셋팅 키보드
     [SerializeField] private GameObject keyboard;
@@ -42,32 +42,27 @@ public class UiManager : MonoBehaviour
     [SerializeField] private Slider expSlider;     
     [SerializeField] private GameObject levelUp;
     [SerializeField] private GameObject hitEffect;
+    [SerializeField] private GameObject itemWarning;
 
-
-    public GameObject itemWarning;
-
-  
-
-
-    
     private Coroutine uiCoroutine;
 
     public int rotSpeed = 2000;
    
-
-   
-    
-    
-
-
     private Stack<bool> uiStack = new Stack<bool>();
-
-    
-  
     private PlayerStats playerStats;
     private GameManager gameManager;
 
-  
+    private InventorySystem inventorySystem;
+
+
+
+
+    
+
+
+
+
+
 
     private static UiManager _instance;
     
@@ -79,10 +74,7 @@ public class UiManager : MonoBehaviour
 
             return _instance;
         }
-        set
-        {
-
-        }
+        
     }
  
     
@@ -111,6 +103,8 @@ public class UiManager : MonoBehaviour
        
         playerStats = PlayerStats.playerStats;
         gameManager = GameManager.gameManager;
+        inventorySystem = InventorySystem.inventorySystem;
+
 
         // 이벤트 구독
         playerStats.GoldUpdate += GoldUpdate;  
@@ -120,6 +114,13 @@ public class UiManager : MonoBehaviour
         playerStats.LevelText += LevelText;
         playerStats.LevelUpEvent += LevelUp;
         playerStats.HitEffectEvent += HitEffect;
+        playerStats.GoldShortageEvent += GoldShortage;
+
+        
+
+        
+
+
        
         gameManager.GameLabel += GameLabel;
         gameManager.GameText += GameOver;
@@ -387,6 +388,16 @@ public class UiManager : MonoBehaviour
     public void HitEffect()
     {
         StartUI(hitEffect,0.3f);
+    }
+
+    public void GoldShortage()
+    {
+        StartUI(goldShortage);
+    }
+
+    public void ItemWarning()
+    {
+        StartUI(itemWarning);
     }
     
  
