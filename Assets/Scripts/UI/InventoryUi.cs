@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-public class InventoryUi : MonoBehaviour
+public class InventoryUI : MonoBehaviour
 {
    
 
@@ -45,7 +45,7 @@ public class InventoryUi : MonoBehaviour
             if(_item.sprite == null)
             {   
                
-                _item.sprite = Resources.Load<Sprite>($"Sprites/{dic.Key}" );
+                _item.sprite = Resources.Load<Sprite>($"Sprites/{dic.Key}");
                 items[dic.Key].sprite = _item.sprite;
             }
             // else
@@ -77,6 +77,9 @@ public class InventoryUi : MonoBehaviour
 
     }
 
+   
+  
+   
 
 
 

@@ -73,7 +73,7 @@ public class Shop : MonoBehaviour
                 
                 // 이미 보유중인 아이템입니다 
                 //GameManager.gameManager.StartUI(isPurchased);
-                UiManager.uiManager.StartUI(isPurchased);
+                UIManager.uiManager.StartUI(isPurchased);
                 return;
             }
             

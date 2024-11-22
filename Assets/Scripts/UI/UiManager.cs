@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class UiManager : MonoBehaviour
+public class UIManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI textGold;
     [SerializeField] private TextMeshProUGUI textLevel;
@@ -64,10 +64,10 @@ public class UiManager : MonoBehaviour
 
 
 
-    private static UiManager _instance;
+    private static UIManager _instance;
     
     
-    public static UiManager uiManager
+    public static UIManager uiManager
     {
         get
         {
@@ -150,10 +150,11 @@ public class UiManager : MonoBehaviour
 
         // ESC();
 
-        SkillWindow();
-        Keyboard();
-        ESC();
-        Inventory();
+       
+        UIOnOff(KeyCode.K,skill,rectSkill);
+        UIOnOff(KeyCode.M,keyboard,rectKeyboard);
+        UIOnOff(KeyCode.Escape,esc,rectESC);
+        UIOnOff(KeyCode.I,inventory,rectInventory);
 
     }
 
@@ -169,20 +170,8 @@ public class UiManager : MonoBehaviour
 
     }
 
-    // private void ESC()
-    // {
-    //     if(Input.GetKeyDown(KeyCode.Escape))
-    //     {
-    //         bool _bool = !esc.activeSelf;
-    //         BringToFront(rectESC);
-    //         UiStack(_bool);
-    //         esc.SetActive(_bool);
-    //         //gamestate를 바꿔줘야되나?
-            
-    //     }
-
-    // }
-      // 특정 UI 요소를 최상단에 배치하는 함수
+   
+    // 특정 UI 요소를 최상단에 배치하는 함수
     public void BringToFront(RectTransform uiElement)
     {
         uiElement.SetAsLastSibling();
@@ -236,67 +225,21 @@ public class UiManager : MonoBehaviour
 
     }
 
-    public void SkillWindow()
+
+    public void UIOnOff(KeyCode keyCode,GameObject gameObject,RectTransform rectTransform)
     {
-        
-        if(Input.GetKeyDown(KeyCode.K))
+        if(Input.GetKeyDown(keyCode))
         {
             
             
-            bool _bool = !skill.activeSelf;
+            bool _bool = !gameObject.activeSelf;
+            BringToFront(rectTransform);
 
-          
-            BringToFront(rectSkill);
             UiStack(_bool);
-            skill.SetActive(_bool);
+            gameObject.SetActive(_bool);
            
         }
 
-    }
-
-    void Keyboard()
-    {
-        if(Input.GetKeyDown(KeyCode.M))
-        {
-            bool _bool = !keyboard.activeSelf;
-            BringToFront(rectKeyboard);
-            UiStack(_bool);
-            keyboard.SetActive(_bool);
-            
-
-        }
-
-    }
-
-    public void ESC()
-    {
-        if(Input.GetKeyDown(KeyCode.Escape))
-        {
-            bool _bool = !esc.activeSelf;
-            BringToFront(rectESC);
-            UiStack(_bool);
-            esc.SetActive(_bool);
-            
-        }
-
-    }
-
-
-   
-
-    public void Inventory()
-    {
-        if(Input.GetKeyDown(KeyCode.I))
-        {
-            
-            
-            bool _bool = !inventory.activeSelf;
-            BringToFront(rectInventory);
-
-            UiStack(_bool);
-            inventory.SetActive(_bool);
-           
-        }
 
     }
 
@@ -394,13 +337,5 @@ public class UiManager : MonoBehaviour
     {
         StartUI(goldShortage);
     }
-
-    public void ItemWarning()
-    {
-        StartUI(itemWarning);
-    }
-    
- 
-
 
 }
