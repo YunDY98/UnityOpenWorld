@@ -54,16 +54,6 @@ public class UIManager : MonoBehaviour
 
     private InventorySystem inventorySystem;
 
-
-
-
-    
-
-
-
-
-
-
     private static UIManager _instance;
     
     
@@ -96,11 +86,15 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         keyboard.SetActive(false);
+
+        
     }
 
     private void OnEnable()
     {
        
+        
+      
         playerStats = PlayerStats.playerStats;
         gameManager = GameManager.gameManager;
         inventorySystem = InventorySystem.inventorySystem;
@@ -116,6 +110,8 @@ public class UIManager : MonoBehaviour
         playerStats.HitEffectEvent += HitEffect;
         playerStats.GoldShortageEvent += GoldShortage;
 
+        inventorySystem.ItemWarningEvent += ItemWarning;
+
         
 
         
@@ -124,14 +120,13 @@ public class UIManager : MonoBehaviour
        
         gameManager.GameLabel += GameLabel;
         gameManager.GameText += GameOver;
-
-      
         
            
         
         
     }
 
+  
     void Update()
     {
         // if(PlayerStats.playerStats.HP <= 0)
@@ -151,10 +146,10 @@ public class UIManager : MonoBehaviour
         // ESC();
 
        
-        UIOnOff(KeyCode.K,skill,rectSkill);
-        UIOnOff(KeyCode.M,keyboard,rectKeyboard);
-        UIOnOff(KeyCode.Escape,esc,rectESC);
-        UIOnOff(KeyCode.I,inventory,rectInventory);
+        ToggleUI(KeyCode.K,skill,rectSkill);
+        ToggleUI(KeyCode.M,keyboard,rectKeyboard);
+        ToggleUI(KeyCode.Escape,esc,rectESC);
+        ToggleUI(KeyCode.I,inventory,rectInventory);
 
     }
 
@@ -226,7 +221,7 @@ public class UIManager : MonoBehaviour
     }
 
 
-    public void UIOnOff(KeyCode keyCode,GameObject gameObject,RectTransform rectTransform)
+    public void ToggleUI(KeyCode keyCode,GameObject gameObject,RectTransform rectTransform)
     {
         if(Input.GetKeyDown(keyCode))
         {
@@ -337,5 +332,11 @@ public class UIManager : MonoBehaviour
     {
         StartUI(goldShortage);
     }
+    public void ItemWarning()
+    {
+        StartUI(itemWarning);
+    }
+
+    
 
 }

@@ -14,11 +14,13 @@ public class InventoryUI : MonoBehaviour
 
 
 
-    void Awake()
+    void OnEnable()
     {
         inventorySystem = InventorySystem.inventorySystem;
 
         inventorySystem.InvenUpdateEvent += InvenUpdate;
+        inventorySystem.TextCntEvent += TextCnt;
+       
     }
 
     public void InvenUpdate(Dictionary<string, ItemInfo> items)
@@ -48,11 +50,7 @@ public class InventoryUI : MonoBehaviour
                 _item.sprite = Resources.Load<Sprite>($"Sprites/{dic.Key}");
                 items[dic.Key].sprite = _item.sprite;
             }
-            // else
-            // {
-                
-            //     _item.sprite = items[dic.Key].sprite;
-            // }
+           
 
             
 
@@ -60,24 +58,30 @@ public class InventoryUI : MonoBehaviour
             
             TextMeshProUGUI _itemCnt = _itemObject.GetComponentInChildren<TextMeshProUGUI>();
             items[dic.Key].text = _itemCnt;
-            
-            if(dic.Value.quantity > 999)
-            {
-                _itemCnt.text = "999+";
-            }
-            else
-            {
-                _itemCnt.text = dic.Value.quantity.ToString();
-            }
-            
+
+            TextCnt(items,dic.Key);
+           
               
             
         }
+
+       
 
 
     }
 
    
+   public void TextCnt(Dictionary<string,ItemInfo> items,string itemName)
+   {
+        if(items[itemName].quantity > 999)
+        {
+            items[itemName].text.text = "999+";
+        }
+        else
+        {
+            items[itemName].text.text = items[itemName].quantity.ToString();
+        }
+   }
   
    
 

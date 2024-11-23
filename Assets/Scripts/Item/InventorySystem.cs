@@ -24,6 +24,7 @@ public class InventorySystem : MonoBehaviour
     public event Action ItemWarningEvent;
 
     public event Action<Dictionary<string, ItemInfo>> InvenUpdateEvent;
+    public event Action<Dictionary<string,ItemInfo>,string> TextCntEvent;
    
    
     
@@ -89,35 +90,27 @@ public class InventorySystem : MonoBehaviour
     }
 
 
-    public void AddItem(string _itemName,int _quantity)
+    public void AddItem(string itemName,int _quantity)
     {
         
         //딕셔너리에 아이템이 존재한다면 
-        if(items.ContainsKey(_itemName))
+        if(items.ContainsKey(itemName))
         {
 
-            if(items[_itemName].quantity != 0)
+            if(items[itemName].quantity != 0)
             {
-                items[_itemName].quantity += _quantity;
+                items[itemName].quantity += _quantity;
                
             }
             else
             {
-                items[_itemName].quantity += _quantity;
+                items[itemName].quantity += _quantity;
 
                 // 갯수가 0개라면 업데이트 
                 InvenUpdateEvent(items);
             }
+            TextCntEvent(items,itemName);
             
-            if(items[_itemName].quantity > 999)
-            {
-                items[_itemName].text.text = "999+";
-
-            }
-            else
-            {
-                items[_itemName].text.text = items[_itemName].quantity.ToString();
-            }
             
         }
         else
@@ -126,13 +119,13 @@ public class InventorySystem : MonoBehaviour
             GameObject _itemObject = Instantiate(invenItem,content.transform);  
 
             
-            Sprite _sprite = Resources.Load<Sprite>($"Sprites/{_itemName}"); 
+            Sprite _sprite = Resources.Load<Sprite>($"Sprites/{itemName}"); 
             _itemObject.GetComponent<Image>().sprite = _sprite;
             
              
             TextMeshProUGUI _itemCntText = _itemObject.GetComponentInChildren<TextMeshProUGUI>();
 
-            items.Add(_itemName,new ItemInfo(_itemName,_quantity,_sprite,_itemCntText));
+            items.Add(itemName,new ItemInfo(itemName,_quantity,_sprite,_itemCntText));
             
            
             
@@ -144,11 +137,11 @@ public class InventorySystem : MonoBehaviour
 
     }
 
-    public bool UseItem(string _itemName,int _useQuantity = 1) 
+    public bool UseItem(string itemName,int useQuantity = 1) 
     {
-        if(items.ContainsKey(_itemName))
+        if(items.ContainsKey(itemName))
         {
-            int _quantity = items[_itemName].quantity;
+            int _quantity = items[itemName].quantity;
 
             if(_quantity == 0)
             {
@@ -158,7 +151,7 @@ public class InventorySystem : MonoBehaviour
                 ItemWarningEvent.Invoke();
 	            return false;
 	        }
-            int _after = _quantity - _useQuantity;
+            int _after = _quantity - useQuantity;
             if(_after < 0)
             {
                 //아이템 갯수 부족 
@@ -170,21 +163,16 @@ public class InventorySystem : MonoBehaviour
             if(_after == 0)
             {   
                 //아이템 모두 소모시
-                items[_itemName].quantity = _after;
+                items[itemName].quantity = _after;
 
            
                 InvenUpdateEvent(items);
                 return true;
             }
-            items[_itemName].quantity = _after;
-            if(_after > 999)
-            {
-                items[_itemName].text.text = "999+";
-            }
-            else
-            {
-                items[_itemName].text.text = _after.ToString();
-            }
+            items[itemName].quantity = _after;
+
+            TextCntEvent(items,itemName);
+           
             
 
         }

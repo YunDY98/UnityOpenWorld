@@ -42,6 +42,7 @@ public class Masa : CharacterAtk
         if(Input.GetKeyUp(gameManager.userKeys[(int)SkillEnum.MasaAtk3]))
         {
             SingleAtk("MasaAtk3",damageMult: 3,rangeMult : 1.5f+cameraDistance,goldMult : 10f);
+
             IsMove();
         }
 
@@ -57,7 +58,8 @@ public class Masa : CharacterAtk
 
     public void IsMove()
     {
-        gameManager.isMove = ! gameManager.isMove;
+        if(!gameManager.isMove)
+            gameManager.isMove = !gameManager.isMove;
     }
 
 
