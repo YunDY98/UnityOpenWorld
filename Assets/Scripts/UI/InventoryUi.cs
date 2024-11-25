@@ -20,6 +20,7 @@ public class InventoryUI : MonoBehaviour
 
         inventorySystem.InvenUpdateEvent += InvenUpdate;
         inventorySystem.TextCntEvent += TextCnt;
+        inventorySystem.CreateItemEvnet += CreateItem;
        
     }
 
@@ -40,39 +41,39 @@ public class InventoryUI : MonoBehaviour
             
 
             GameObject _itemObject = Instantiate(invenItem,content.transform);
-
-            ItemInfo _item = dic.Value;
-
-            // sprite가 있는지 체크해서 중복 로드 방지 
-            if(_item.sprite == null)
-            {   
-               
-                _item.sprite = Resources.Load<Sprite>($"Sprites/{dic.Key}");
-                items[dic.Key].sprite = _item.sprite;
-            }
-           
-
+            Sprite _sprite = inventorySystem.LoadSprite(dic.Key);
+            _itemObject.GetComponent<Image>().sprite = _sprite;
             
-
-            _itemObject.GetComponent<Image>().sprite = _item.sprite;
-            
-            TextMeshProUGUI _itemCnt = _itemObject.GetComponentInChildren<TextMeshProUGUI>();
-            items[dic.Key].text = _itemCnt;
+            TextMeshProUGUI _itemCntText = _itemObject.GetComponentInChildren<TextMeshProUGUI>();
+            items[dic.Key].text = _itemCntText;
 
             TextCnt(items,dic.Key);
-           
-              
+        
             
         }
+    }
 
-       
+    public void CreateItem(string itemName,int quantity)
+    {
+        GameObject _itemObject = Instantiate(invenItem,content.transform);  
 
-
+            
+        Sprite _sprite = inventorySystem.LoadSprite(itemName);
+        _itemObject.GetComponent<Image>().sprite = _sprite;
+        
+         
+        TextMeshProUGUI _itemCntText = _itemObject.GetComponentInChildren<TextMeshProUGUI>();
+        _itemCntText.text = quantity.ToString();
+        
+        
+        inventorySystem.ItemDictionaryAdd(itemName,quantity,_sprite,_itemCntText);
     }
 
    
-   public void TextCnt(Dictionary<string,ItemInfo> items,string itemName)
-   {
+
+   
+    public void TextCnt(Dictionary<string,ItemInfo> items,string itemName)
+    {
         if(items[itemName].quantity > 999)
         {
             items[itemName].text.text = "999+";
@@ -81,9 +82,10 @@ public class InventoryUI : MonoBehaviour
         {
             items[itemName].text.text = items[itemName].quantity.ToString();
         }
-   }
-  
-   
+    }
+
+
+ 
 
 
 
