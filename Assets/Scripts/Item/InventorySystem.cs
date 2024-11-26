@@ -17,15 +17,14 @@ public class InventorySystem : MonoBehaviour
     PlayerStats playerStats;
     PlayerData playerData;
 
-    public GameObject content;
-   
-    public GameObject invenItem;
-
     public event Action ItemWarningEvent;
 
     public event Action<Dictionary<string, ItemInfo>> InvenUpdateEvent;
-    public event Action<Dictionary<string,ItemInfo>,string> TextCntEvent;
-    public event Action<string,int> CreateItemEvnet;
+   // public event Action<Dictionary<string,ItemInfo>,string> TextCntEvent;
+   public event Action<ItemInfo> TextCntEvent;
+
+
+    public event Action<string,int> CreateItemEvent;
     //public event Action<TextMeshProUGUI> TextCntEvent;
    
    
@@ -64,8 +63,7 @@ public class InventorySystem : MonoBehaviour
         {
             ItemInfo _item = new ItemInfo(playerData.items[i].itemName,playerData.items[i].quantity);
             items.Add(playerData.items[i].itemName,_item);
-            //items[playerData.items[i].itemName].quantity = playerData.items[i].quantity;
-
+            
         }   
        
        
@@ -111,15 +109,13 @@ public class InventorySystem : MonoBehaviour
                 // 갯수가 0개라면 업데이트 
                 InvenUpdateEvent(items);
             }
-            TextCntEvent(items,itemName);
-            
-            
+            //TextCntEvent(items,itemName);
+            TextCntEvent(items[itemName]);
+                   
         }
         else
         {   
-
-            CreateItemEvnet(itemName,quantity);
-           
+            CreateItemEvent(itemName,quantity);
         }
 
     }
@@ -133,8 +129,7 @@ public class InventorySystem : MonoBehaviour
             if(quantity == 0)
             {
 	            //보유 하지 않은 아이템 
-                //GameManager.gameManager.StartUI(itemWarning);
-                //UiManager.uiManager.StartUI(itemWarning);
+               
                 ItemWarningEvent.Invoke();
 	            return false;
 	        }
@@ -142,8 +137,7 @@ public class InventorySystem : MonoBehaviour
             if(_after < 0)
             {
                 //아이템 갯수 부족 
-                //GameManager.gameManager.StartUI(itemWarning);
-                //UiManager.uiManager.StartUI(itemWarning);
+                
                 ItemWarningEvent.Invoke();
                 return false;
             }
@@ -158,10 +152,8 @@ public class InventorySystem : MonoBehaviour
             }
             items[itemName].quantity = _after;
 
-            TextCntEvent(items,itemName);
            
-            
-
+            TextCntEvent(items[itemName]);
         }
         else
         {
@@ -175,14 +167,17 @@ public class InventorySystem : MonoBehaviour
     public Sprite LoadSprite(string itemName)
     {
         if(items.ContainsKey(itemName))
-            return items[itemName].sprite;
+        {
+            if(items[itemName].sprite != null)
+                return items[itemName].sprite;
+
+        }
+            
         
         return Resources.Load<Sprite>($"Sprites/{itemName}"); 
     }
 
    
-    
-    
 
     public void ItemDictionaryAdd(string itemName,int quantity,Sprite sprite,TextMeshProUGUI text)
     {

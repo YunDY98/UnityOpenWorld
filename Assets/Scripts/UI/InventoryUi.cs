@@ -18,13 +18,21 @@ public class InventoryUI : MonoBehaviour
     {
         inventorySystem = InventorySystem.inventorySystem;
 
-        inventorySystem.InvenUpdateEvent += InvenUpdate;
-        inventorySystem.TextCntEvent += TextCnt;
-        inventorySystem.CreateItemEvnet += CreateItem;
+        inventorySystem.InvenUpdateEvent += InvenUpdateEvent;
+        inventorySystem.TextCntEvent += TextCntEvent;
+      
+        inventorySystem.CreateItemEvent += CreateItemEvent;
        
     }
 
-    public void InvenUpdate(Dictionary<string, ItemInfo> items)
+    void OnDisable()
+    {
+        inventorySystem.InvenUpdateEvent -= InvenUpdateEvent;
+        inventorySystem.TextCntEvent -= TextCntEvent;
+        inventorySystem.CreateItemEvent -= CreateItemEvent;
+    }   
+
+    public void InvenUpdateEvent(Dictionary<string, ItemInfo> items)
     {
         //업데이트를 위해 기존 목록 제거 
         foreach (Transform child in content.transform)
@@ -41,19 +49,20 @@ public class InventoryUI : MonoBehaviour
             
 
             GameObject _itemObject = Instantiate(invenItem,content.transform);
+
             Sprite _sprite = inventorySystem.LoadSprite(dic.Key);
             _itemObject.GetComponent<Image>().sprite = _sprite;
             
             TextMeshProUGUI _itemCntText = _itemObject.GetComponentInChildren<TextMeshProUGUI>();
             items[dic.Key].text = _itemCntText;
 
-            TextCnt(items,dic.Key);
+            //TextCntEvent(items,dic.Key);
+            TextCntEvent(items[dic.Key]);
         
-            
         }
     }
 
-    public void CreateItem(string itemName,int quantity)
+    public void CreateItemEvent(string itemName,int quantity)
     {
         GameObject _itemObject = Instantiate(invenItem,content.transform);  
 
@@ -69,25 +78,16 @@ public class InventoryUI : MonoBehaviour
         inventorySystem.ItemDictionaryAdd(itemName,quantity,_sprite,_itemCntText);
     }
 
-   
-
-   
-    public void TextCnt(Dictionary<string,ItemInfo> items,string itemName)
+    public void TextCntEvent(ItemInfo item)
     {
-        if(items[itemName].quantity > 999)
+        if(item.quantity > 999)
         {
-            items[itemName].text.text = "999+";
+            item.text.text = "999+";
         }
         else
         {
-            items[itemName].text.text = items[itemName].quantity.ToString();
+            item.text.text = item.quantity.ToString();
         }
     }
 
-
- 
-
-
-
-   
 }
