@@ -14,7 +14,7 @@ public class DropItem : MonoBehaviour
     {
         
         //100초후 아이템 파괴 
-        StartCoroutine(Timer(100));
+        StartCoroutine(Timer(5));
     }
 
     // Update is called once per frame

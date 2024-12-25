@@ -5,14 +5,10 @@ using TMPro;
 using UnityEngine.UI;
 public class InventoryUI : MonoBehaviour
 {
-   
-
     public GameObject content;
    
     public GameObject invenItem;
     private InventorySystem inventorySystem;
-
-
 
     void OnEnable()
     {
@@ -20,7 +16,7 @@ public class InventoryUI : MonoBehaviour
 
         inventorySystem.InvenUpdateEvent += InvenUpdateEvent;
         inventorySystem.TextCntEvent += TextCntEvent;
-      
+       
         inventorySystem.CreateItemEvent += CreateItemEvent;
        
     }
@@ -28,7 +24,7 @@ public class InventoryUI : MonoBehaviour
     void OnDisable()
     {
         inventorySystem.InvenUpdateEvent -= InvenUpdateEvent;
-        inventorySystem.TextCntEvent -= TextCntEvent;
+      
         inventorySystem.CreateItemEvent -= CreateItemEvent;
     }   
 

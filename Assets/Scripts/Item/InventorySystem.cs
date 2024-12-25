@@ -11,26 +11,19 @@ public class InventorySystem : MonoBehaviour
     public static InventorySystem inventorySystem { get { return _instance; } }
 
     public Dictionary<string,ItemInfo> items = new();
-    // private Dictionary<string,TextMeshProUGUI> textCache = new();
-    // private Dictionary<string, Sprite> spriteCache = new(); 
-    //ItemData itemData;
     PlayerStats playerStats;
     PlayerData playerData;
 
     public event Action ItemWarningEvent;
 
     public event Action<Dictionary<string, ItemInfo>> InvenUpdateEvent;
-   // public event Action<Dictionary<string,ItemInfo>,string> TextCntEvent;
-   public event Action<ItemInfo> TextCntEvent;
+  
+    public event Action<ItemInfo> TextCntEvent;
 
 
     public event Action<string,int> CreateItemEvent;
-    //public event Action<TextMeshProUGUI> TextCntEvent;
    
-   
-    
-    
-   
+
     void Awake()
     {
         if (_instance == null)

@@ -56,17 +56,13 @@ public class Shop : MonoBehaviour
     
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+   
 
     void Buy()
     {
-        try
+
+        if(PlayerStats.playerStats.skillDictionary.ContainsKey(key))
         {
-            
             skill = PlayerStats.playerStats.skillDictionary[key];
             if(skill != null )
             {
@@ -76,11 +72,11 @@ public class Shop : MonoBehaviour
                 UIManager.uiManager.StartUI(isPurchased);
                 return;
             }
-            
-        }
-        catch
-        {
 
+
+        }
+        else
+        {
             if(!PlayerStats.playerStats.UseGold(price))
             {
                 //돈이 부족합니다 
@@ -91,9 +87,44 @@ public class Shop : MonoBehaviour
 
             PlayerStats.playerStats.AddSkill(skill,key);
             DataManager.dataManager.SavePlayerData();
-            
 
         }
+       
+       
+        // try
+        // {
+        //     skill = PlayerStats.playerStats.skillDictionary[key];
+        //     if(skill != null )
+        //     {
+                
+        //         // 이미 보유중인 아이템입니다 
+        //         //GameManager.gameManager.StartUI(isPurchased);
+        //         UIManager.uiManager.StartUI(isPurchased);
+        //         return;
+        //     }
+
+            
+           
+            
+            
+        // }
+        // catch
+        // {
+        //     if(!PlayerStats.playerStats.UseGold(price))
+        //     {
+        //         //돈이 부족합니다 
+               
+        //         return;
+
+        //     }
+
+        //     PlayerStats.playerStats.AddSkill(skill,key);
+        //     DataManager.dataManager.SavePlayerData();
+
+            
+            
+
+        // }
 
     }
 
