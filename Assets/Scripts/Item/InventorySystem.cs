@@ -89,15 +89,9 @@ public class InventorySystem : MonoBehaviour
         //딕셔너리에 아이템이 존재한다면 
         if(items.ContainsKey(itemName))
         {
-
-            if(items[itemName].quantity != 0)
+            items[itemName].quantity += quantity;
+            if(quantity == 0)
             {
-                items[itemName].quantity += quantity;
-               
-            }
-            else
-            {
-                items[itemName].quantity += quantity;
 
                 // 갯수가 0개라면 업데이트 
                 InvenUpdateEvent(items);

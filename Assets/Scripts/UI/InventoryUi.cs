@@ -21,12 +21,12 @@ public class InventoryUI : MonoBehaviour
        
     }
 
-    void OnDisable()
-    {
-        inventorySystem.InvenUpdateEvent -= InvenUpdateEvent;
+    // void OnDisable()
+    // {
+    //     inventorySystem.InvenUpdateEvent -= InvenUpdateEvent;
       
-        inventorySystem.CreateItemEvent -= CreateItemEvent;
-    }   
+    //     inventorySystem.CreateItemEvent -= CreateItemEvent;
+    // }   
 
     public void InvenUpdateEvent(Dictionary<string, ItemInfo> items)
     {
