@@ -14,21 +14,21 @@ public class InventoryUI : MonoBehaviour
     {
         inventorySystem = InventorySystem.inventorySystem;
 
-        inventorySystem.InvenUpdateEvent += InvenUpdateEvent;
-        inventorySystem.TextCntEvent += TextCntEvent;
+        inventorySystem.InvenUpdateEvent += InvenUpdate;
+        inventorySystem.TextCntEvent += TextCnt;
        
-        inventorySystem.CreateItemEvent += CreateItemEvent;
+        inventorySystem.CreateItemEvent += CreateItem;
        
     }
 
     // void OnDisable()
     // {
-    //     inventorySystem.InvenUpdateEvent -= InvenUpdateEvent;
+    //     inventorySystem.InvenUpdateEvent -= InvenUpdate;
       
-    //     inventorySystem.CreateItemEvent -= CreateItemEvent;
+    //     inventorySystem.CreateItemEvent -= CreateItem;
     // }   
 
-    public void InvenUpdateEvent(Dictionary<string, ItemInfo> items)
+    public void InvenUpdate(Dictionary<string, ItemInfo> items)
     {
         //업데이트를 위해 기존 목록 제거 
         foreach (Transform child in content.transform)
@@ -52,13 +52,13 @@ public class InventoryUI : MonoBehaviour
             TextMeshProUGUI _itemCntText = _itemObject.GetComponentInChildren<TextMeshProUGUI>();
             items[dic.Key].text = _itemCntText;
 
-            //TextCntEvent(items,dic.Key);
-            TextCntEvent(items[dic.Key]);
+            //TextCnt(items,dic.Key);
+            TextCnt(items[dic.Key]);
         
         }
     }
 
-    public void CreateItemEvent(string itemName,int quantity)
+    public void CreateItem(string itemName,int quantity)
     {
         GameObject _itemObject = Instantiate(invenItem,content.transform);  
 
@@ -74,7 +74,7 @@ public class InventoryUI : MonoBehaviour
         inventorySystem.ItemDictionaryAdd(itemName,quantity,_sprite,_itemCntText);
     }
 
-    public void TextCntEvent(ItemInfo item)
+    public void TextCnt(ItemInfo item)
     {
         if(item.quantity > 999)
         {

@@ -23,7 +23,7 @@ public abstract class CharacterAtk : MonoBehaviour
     }
 
     // 기본 단일 공격 메서드
-    protected void SingleAtk(string skillName, float rangeMult = 1.5f, int damageMult = 1, float goldMult = 0.1f)
+    protected virtual void SingleAtk(string skillName, float rangeMult = 1.5f, int damageMult = 1, float goldMult = 0.1f)
     {
         int _skillLevel = playerStats.GetSkillLevel(skillName);
         
@@ -68,7 +68,7 @@ public abstract class CharacterAtk : MonoBehaviour
         }
         return hitInfo;
     }
-    protected void MultiAtk(string skillName,float rangeMult = 1.5f,int damageMult = 1,int cntMult = 1)
+    protected virtual void MultiAtk(string skillName,float rangeMult = 1.5f,int damageMult = 1,int cntMult = 1)
     {
         if(playerStats.GetSkillLevel(skillName) < 0)
         {
@@ -89,7 +89,7 @@ public abstract class CharacterAtk : MonoBehaviour
 
     }
 
-    protected void MultiRaycastAtk(float rangeMult,int damageMult,int cntMult,int skillLevel)
+    protected virtual void MultiRaycastAtk(float rangeMult,int damageMult,int cntMult,int skillLevel)
     {
              
             float _range = rangeMult * skillLevel;
