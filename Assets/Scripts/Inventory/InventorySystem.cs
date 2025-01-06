@@ -66,6 +66,7 @@ public class InventorySystem : MonoBehaviour
     }
     void Update()
     {
+       
         #if UNITY_EDITOR
         if(Input.GetKeyUp(KeyCode.Alpha0))
         {
@@ -102,6 +103,7 @@ public class InventorySystem : MonoBehaviour
         }
         else
         {   
+           
             CreateItemEvent(itemName,quantity);
         }
 

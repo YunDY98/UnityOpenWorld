@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-public class InventoryUI : MonoBehaviour
+public class InventoryUI : MonoBehaviour, IInventoryView
 {
     public GameObject content;
    
@@ -13,22 +13,13 @@ public class InventoryUI : MonoBehaviour
     void OnEnable()
     {
         inventorySystem = InventorySystem.inventorySystem;
-
-        inventorySystem.InvenUpdateEvent += InvenUpdate;
-        inventorySystem.TextCntEvent += TextCnt;
        
-        inventorySystem.CreateItemEvent += CreateItem;
        
     }
 
-    // void OnDisable()
-    // {
-    //     inventorySystem.InvenUpdateEvent -= InvenUpdate;
-      
-    //     inventorySystem.CreateItemEvent -= CreateItem;
-    // }   
+  
 
-    public void InvenUpdate(Dictionary<string, ItemInfo> items)
+    public void ClearItems()
     {
         //업데이트를 위해 기존 목록 제거 
         foreach (Transform child in content.transform)
@@ -36,6 +27,11 @@ public class InventoryUI : MonoBehaviour
             Destroy(child.gameObject);
         }
 
+    }
+    public void InvenUpdate(Dictionary<string, ItemInfo> items)
+    {
+        
+        ClearItems();
 
         foreach(KeyValuePair<string, ItemInfo> dic in items)
         {
@@ -47,7 +43,7 @@ public class InventoryUI : MonoBehaviour
             GameObject _itemObject = Instantiate(invenItem,content.transform);
 
             Sprite _sprite = inventorySystem.LoadSprite(dic.Key);
-            _itemObject.GetComponent<Image>().sprite = _sprite;
+           _itemObject.GetComponent<Image>().sprite = _sprite;
             
             TextMeshProUGUI _itemCntText = _itemObject.GetComponentInChildren<TextMeshProUGUI>();
             items[dic.Key].text = _itemCntText;
@@ -57,6 +53,16 @@ public class InventoryUI : MonoBehaviour
         
         }
     }
+
+    // public TextMeshProUGUI AddItemToUI(string itemName, Sprite sprite, ItemInfo item)
+    // {
+    //     GameObject _itemObject = Instantiate(invenItem,content.transform);
+    //     _itemObject.GetComponent<Image>().sprite = sprite;
+    //     TextMeshProUGUI _itemCntText = _itemObject.GetComponentInChildren<TextMeshProUGUI>();
+        
+    //     _itemCntText.text = item.quantity.ToString();
+    //     return _itemCntText;
+    // }
 
     public void CreateItem(string itemName,int quantity)
     {
@@ -76,6 +82,9 @@ public class InventoryUI : MonoBehaviour
 
     public void TextCnt(ItemInfo item)
     {
+       
+       
+        
         if(item.quantity > 999)
         {
             item.text.text = "999+";
