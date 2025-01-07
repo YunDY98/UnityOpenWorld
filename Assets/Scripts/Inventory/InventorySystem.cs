@@ -3,12 +3,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using System.Net.Sockets;
 
 
 public class InventorySystem : MonoBehaviour
 {
     private static InventorySystem _instance;
-    public static InventorySystem inventorySystem { get { return _instance; } }
+   public static InventorySystem inventorySystem { get { return _instance; } }
 
     public Dictionary<string,ItemInfo> items = new();
     PlayerStats playerStats;
@@ -19,7 +20,6 @@ public class InventorySystem : MonoBehaviour
     public event Action<Dictionary<string, ItemInfo>> InvenUpdateEvent;
   
     public event Action<ItemInfo> TextCntEvent;
-
 
     public event Action<string,int> CreateItemEvent;
    
@@ -60,8 +60,10 @@ public class InventorySystem : MonoBehaviour
         }   
        
        
-        InvenUpdateEvent(items);
-        //InvenUpdate();
+        InvenUpdateEvent?.Invoke(items);
+
+        
+        
         
     }
     void Update()
@@ -77,8 +79,16 @@ public class InventorySystem : MonoBehaviour
 
         if(Input.GetKeyUp(KeyCode.Alpha9))
         {
-            UseItem("ItemMasa",10);
+            if(items["ItemMasa"] != null)
+                if(items["ItemMasa"].quantity > 0)
+                    UseItem("ItemMasa",items["ItemMasa"].quantity);
+            if(items["ItemSoldier"] != null)
+                if(items["ItemSoldier"].quantity > 0)
+                    UseItem("ItemSoldier",items["ItemSoldier"].quantity);
+            
         }
+
+        
         #endif
        
     }
@@ -90,21 +100,32 @@ public class InventorySystem : MonoBehaviour
         //딕셔너리에 아이템이 존재한다면 
         if(items.ContainsKey(itemName))
         {
+            
+            
+            
+            // 아이템 수량 업데이트
             items[itemName].quantity += quantity;
+
+            // 수량이 0에서 증가한 경우에만 이벤트 호출
+            if (items[itemName].quantity == quantity) // quantity가 추가된 후 0에서 증가한 경우
+            {
+                InvenUpdateEvent?.Invoke(items);
+            }   
+                
             if(quantity == 0)
             {
 
                 // 갯수가 0개라면 업데이트 
-                InvenUpdateEvent(items);
+                InvenUpdateEvent?.Invoke(items);
             }
             //TextCntEvent(items,itemName);
-            TextCntEvent(items[itemName]);
+            TextCntEvent?.Invoke(items[itemName]);
                    
         }
         else
         {   
            
-            CreateItemEvent(itemName,quantity);
+            CreateItemEvent?.Invoke(itemName,quantity);
         }
 
     }
@@ -119,7 +140,7 @@ public class InventorySystem : MonoBehaviour
             {
 	            //보유 하지 않은 아이템 
                
-                ItemWarningEvent.Invoke();
+                ItemWarningEvent?.Invoke();
 	            return false;
 	        }
             int _after = quantity - useQuantity;
@@ -127,7 +148,7 @@ public class InventorySystem : MonoBehaviour
             {
                 //아이템 갯수 부족 
                 
-                ItemWarningEvent.Invoke();
+                ItemWarningEvent?.Invoke();
                 return false;
             }
             if(_after == 0)
@@ -136,13 +157,13 @@ public class InventorySystem : MonoBehaviour
                 items[itemName].quantity = _after;
 
            
-                InvenUpdateEvent(items);
+                InvenUpdateEvent?.Invoke(items);
                 return true;
             }
             items[itemName].quantity = _after;
 
            
-            TextCntEvent(items[itemName]);
+            TextCntEvent?.Invoke(items[itemName]);
         }
         else
         {
@@ -168,9 +189,16 @@ public class InventorySystem : MonoBehaviour
 
    
 
-    public void ItemDictionaryAdd(string itemName,int quantity,Sprite sprite,TextMeshProUGUI text)
+    // public void ItemDictionaryAdd(string itemName,int quantity,Sprite sprite,TextMeshProUGUI text)
+    // {
+
+    //     items.Add(itemName,new ItemInfo(itemName,quantity,sprite,text));
+
+    // }
+    public void ItemDictionaryAdd(ItemInfo _itemInfo)
     {
-        items.Add(itemName,new ItemInfo(itemName,quantity,sprite,text));
+        
+        items.Add(_itemInfo.itemName,_itemInfo);
 
     }
    

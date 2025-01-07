@@ -3,21 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System;
+using UnityEditor.Rendering.LookDev;
 public class InventoryUI : MonoBehaviour, IInventoryView
 {
     public GameObject content;
    
     public GameObject invenItem;
-    private InventorySystem inventorySystem;
+    //private InventorySystem inventorySystem;
 
-    void OnEnable()
-    {
-        inventorySystem = InventorySystem.inventorySystem;
-       
-       
-    }
+    //public event Action<string> LoadSpriteEvent;
+    public event IInventoryView.LoadSpriteDelegate LoadSpriteEvent;
 
-  
+    public event Action<ItemInfo> ItemDictionaryAddEvent;
+   
+   
+   
 
     public void ClearItems()
     {
@@ -28,56 +29,62 @@ public class InventoryUI : MonoBehaviour, IInventoryView
         }
 
     }
-    public void InvenUpdate(Dictionary<string, ItemInfo> items)
-    {
-        
-        ClearItems();
-
-        foreach(KeyValuePair<string, ItemInfo> dic in items)
-        {
-            // 아이템수가 0개라면 
-            if(dic.Value.quantity == 0)
-                continue;
-            
-
-            GameObject _itemObject = Instantiate(invenItem,content.transform);
-
-            Sprite _sprite = inventorySystem.LoadSprite(dic.Key);
-           _itemObject.GetComponent<Image>().sprite = _sprite;
-            
-            TextMeshProUGUI _itemCntText = _itemObject.GetComponentInChildren<TextMeshProUGUI>();
-            items[dic.Key].text = _itemCntText;
-
-            //TextCnt(items,dic.Key);
-            TextCnt(items[dic.Key]);
-        
-        }
-    }
-
-    // public TextMeshProUGUI AddItemToUI(string itemName, Sprite sprite, ItemInfo item)
+    // public void InvenUpdate(Dictionary<string, ItemInfo> items)
     // {
-    //     GameObject _itemObject = Instantiate(invenItem,content.transform);
-    //     _itemObject.GetComponent<Image>().sprite = sprite;
-    //     TextMeshProUGUI _itemCntText = _itemObject.GetComponentInChildren<TextMeshProUGUI>();
         
-    //     _itemCntText.text = item.quantity.ToString();
-    //     return _itemCntText;
+    //     ClearItems();
+
+    //     foreach(KeyValuePair<string, ItemInfo> dic in items)
+    //     {
+    //         // 아이템수가 0개라면 
+    //         if(dic.Value.quantity == 0)
+    //             continue;
+            
+
+    //         GameObject _itemObject = Instantiate(invenItem,content.transform);
+
+           
+    //         Sprite _sprite = LoadSpriteEvent?.Invoke(dic.Key);
+           
+    //        _itemObject.GetComponent<Image>().sprite = _sprite;
+            
+    //         TextMeshProUGUI _itemCntText = _itemObject.GetComponentInChildren<TextMeshProUGUI>();
+    //         items[dic.Key].text = _itemCntText;
+
+    //         //TextCnt(items,dic.Key);
+    //         TextCnt(items[dic.Key]);
+        
+    //     }
     // }
+
+    public TextMeshProUGUI AddItemToUI(Sprite sprite, ItemInfo item)
+    {
+        GameObject _itemObject = Instantiate(invenItem,content.transform);
+        _itemObject.GetComponent<Image>().sprite = sprite;
+        TextMeshProUGUI _itemCntText = _itemObject.GetComponentInChildren<TextMeshProUGUI>();
+        
+        _itemCntText.text = item.quantity.ToString();
+        return _itemCntText;
+    }
 
     public void CreateItem(string itemName,int quantity)
     {
         GameObject _itemObject = Instantiate(invenItem,content.transform);  
 
             
-        Sprite _sprite = inventorySystem.LoadSprite(itemName);
+        //Sprite _sprite = inventorySystem.LoadSprite(itemName);
+        Sprite _sprite = LoadSpriteEvent?.Invoke(itemName);
         _itemObject.GetComponent<Image>().sprite = _sprite;
         
          
         TextMeshProUGUI _itemCntText = _itemObject.GetComponentInChildren<TextMeshProUGUI>();
         _itemCntText.text = quantity.ToString();
+
+        ItemInfo _itemInfo = new ItemInfo(itemName,quantity,_sprite,_itemCntText);
         
         
-        inventorySystem.ItemDictionaryAdd(itemName,quantity,_sprite,_itemCntText);
+        //inventorySystem.ItemDictionaryAdd(itemName,quantity,_sprite,_itemCntText);
+        ItemDictionaryAddEvent?.Invoke(_itemInfo);
     }
 
     public void TextCnt(ItemInfo item)

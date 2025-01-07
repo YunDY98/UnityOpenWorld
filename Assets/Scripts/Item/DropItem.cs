@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -8,6 +9,8 @@ public class DropItem : MonoBehaviour
 
     public int gold;
     public int exp;
+
+    public event Action AddItemEvent;
     
     // Start is called before the first frame update
     void Start()
@@ -39,6 +42,7 @@ public class DropItem : MonoBehaviour
             }
             else
             {
+                //AddItemEvent?.Invoke();
                 InventorySystem.inventorySystem.AddItem(itemName,quantity);
 
             }

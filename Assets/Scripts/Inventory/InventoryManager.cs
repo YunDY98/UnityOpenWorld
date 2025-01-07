@@ -16,8 +16,10 @@ public class InventoryManager : MonoBehaviour
         // View 찾기
         inventoryUI = FindObjectOfType<InventoryUI>();
 
+
+
         // Presenter 초기화 및 연결
-        presenter = new InventoryPresenter(inventoryUI, inventorySystem);
+        presenter = new InventoryPresenter(inventorySystem,inventoryUI);
       
 
     }

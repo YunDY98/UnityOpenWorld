@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class InventoryPresenter
 {
@@ -9,51 +10,58 @@ public class InventoryPresenter
    
     private InventorySystem inventorySystem;
    
-    public InventoryPresenter(IInventoryView view,InventorySystem inventorySystem)
+    public InventoryPresenter(InventorySystem inventorySystem,IInventoryView inventoryUI)
     {
         this.inventorySystem = inventorySystem;
-        this.view = view;
 
+        //InventoryUI가 IInventoryView를 상속받음 
+        this.view = inventoryUI;
+        
         
         inventorySystem.TextCntEvent += TextCnt;
-       
         inventorySystem.CreateItemEvent += CreateItem;
         inventorySystem.InvenUpdateEvent += InvenUpdate;
+        view.LoadSpriteEvent += LoadSprite;
+        view.ItemDictionaryAddEvent += ItemDictionaryAdd;
+        
         
        
     }
-    void OnDisable()
+    void Dispose()
     {
-        inventorySystem.InvenUpdateEvent -= InvenUpdate;
-      
-        inventorySystem.CreateItemEvent -= CreateItem;
         inventorySystem.TextCntEvent -= TextCnt;
+        inventorySystem.CreateItemEvent -= CreateItem;
+        inventorySystem.InvenUpdateEvent -= InvenUpdate;
+        view.LoadSpriteEvent -= LoadSprite;
+        view.ItemDictionaryAddEvent -= ItemDictionaryAdd;
+
+        
     }   
-
-    // void InvenUpdate(Dictionary<string, ItemInfo> items)
-    // {
-    //     view.ClearItems();
-
-    //     foreach(KeyValuePair<string, ItemInfo> item in items)
-    //     {
-    //          // 아이템수가 0개라면 
-    //         if(item.Value.quantity == 0)
-    //             continue;
-
-    //         Sprite sprite = inventorySystem.LoadSprite(item.Key);
-    //         items[item.Key].text = view.AddItemToUI(item.Key, sprite, item.Value);
-            
-    //         view.TextCnt(item.Value);
-
-    //     }
-
-    // }
 
     void InvenUpdate(Dictionary<string, ItemInfo> items)
     {
-        view.InvenUpdate(items);
+        view.ClearItems();
+
+        foreach(KeyValuePair<string, ItemInfo> item in items)
+        {
+            
+            if(item.Value.quantity == 0)
+                continue;
+
+            Sprite sprite = inventorySystem.LoadSprite(item.Key);
+            items[item.Key].text = view.AddItemToUI(sprite, item.Value);
+            
+            view.TextCnt(item.Value);
+
+        }
 
     }
+
+    // void InvenUpdate(Dictionary<string, ItemInfo> items)
+    // {
+    //     view.InvenUpdate(items);
+
+    // }
 
     void TextCnt(ItemInfo item)
     {
@@ -64,7 +72,20 @@ public class InventoryPresenter
     {
         view.CreateItem(itemName,quantity);
     }
-    
+
+    Sprite LoadSprite(string itemName)
+    {
+        return inventorySystem.LoadSprite(itemName);
+    }
+
+    // void ItemDictionaryAdd(string itemName,int quantity,Sprite sprite,TextMeshProUGUI text)
+    // {
+    //     inventorySystem.ItemDictionaryAdd(itemName,quantity,sprite,text);
+    // }
+    void ItemDictionaryAdd(ItemInfo itemInfo)
+    {
+        inventorySystem.ItemDictionaryAdd(itemInfo);
+    }
     
 
   
