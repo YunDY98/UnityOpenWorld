@@ -37,10 +37,7 @@ public class EnemyFSM : MonoBehaviour
     //공격력 
     public int attackPower = 30;
 
-    //드랍 
-    public GameObject gold;
-    public GameObject[] dropItems;
-
+    
     //초기 위치 
     Vector3 originPos;
     Quaternion originRot;
@@ -64,10 +61,15 @@ public class EnemyFSM : MonoBehaviour
    
     //플레이어 트랜스폼 
     Transform player;
+
+    //아이템 풀
+    ItemPool itemPool;
     
     // Start is called before the first frame update
     void Start()
     {
+        itemPool = FindObjectOfType<ItemPool>();
+        
         navMeshAgent = GetComponent<NavMeshAgent>();
         m_State = EnemyState.Idle;
         pm = GameObject.Find("Player").GetComponent<PlayerMove>();
@@ -372,29 +374,8 @@ public class EnemyFSM : MonoBehaviour
        
         //죽음 상태 처리
         StartCoroutine(DieProcess());
-        // 현재 위치에 아이템을 소환
-        if (gold != null)
-        {
-            Instantiate(gold, transform.position, transform.rotation);
-        }
-
-        int _per = Random.Range(0, 10);
-        int _dropItemCnt = Random.Range(1,4);
-        int _itemKind = -1;
-
-        if(_per > 5)
-        {
-            for(int i=0; i<_dropItemCnt; ++i)
-            {
-                _itemKind = Random.Range(1,dropItems.Count()+1);
-
-            
-                Instantiate(dropItems[_itemKind - 1],transform.position + new Vector3(0,0,i), transform.rotation);
-
-            }
-           
-        }
-
+        itemPool.GetItem(transform.position);
+       
         
     }
 

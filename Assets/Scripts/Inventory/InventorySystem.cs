@@ -6,7 +6,7 @@ using System;
 using System.Net.Sockets;
 
 
-public class InventorySystem : MonoBehaviour
+public class InventorySystem : MonoBehaviour,IInventoryModel
 {
     private static InventorySystem _instance;
    public static InventorySystem inventorySystem { get { return _instance; } }
@@ -54,7 +54,7 @@ public class InventorySystem : MonoBehaviour
 
         for(int i=0; i< playerData.items.Length; ++i )
         {
-            ItemInfo _item = new ItemInfo(playerData.items[i].itemName,playerData.items[i].quantity);
+            ItemInfo _item = new(playerData.items[i].itemName,playerData.items[i].quantity);
             items.Add(playerData.items[i].itemName,_item);
             
         }   
@@ -106,18 +106,13 @@ public class InventorySystem : MonoBehaviour
             // 아이템 수량 업데이트
             items[itemName].quantity += quantity;
 
-            // 수량이 0에서 증가한 경우에만 이벤트 호출
-            if (items[itemName].quantity == quantity) // quantity가 추가된 후 0에서 증가한 경우
+            //수량이 0이거나 0에서 증가한 경우 
+            if (items[itemName].quantity == quantity || quantity == 0) 
             {
                 InvenUpdateEvent?.Invoke(items);
             }   
-                
-            if(quantity == 0)
-            {
-
-                // 갯수가 0개라면 업데이트 
-                InvenUpdateEvent?.Invoke(items);
-            }
+          
+            
             //TextCntEvent(items,itemName);
             TextCntEvent?.Invoke(items[itemName]);
                    
@@ -201,5 +196,5 @@ public class InventorySystem : MonoBehaviour
         items.Add(_itemInfo.itemName,_itemInfo);
 
     }
-   
+    
 }

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7548725648902835263}
   - component: {fileID: 6266144341385706342}
   - component: {fileID: -2681866326712318057}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: ItemMasa
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -120,9 +120,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: ItemMasa
-  quantity: 100
-  gold: 0
-  exp: 0
+  rate: 0.5
+  quantity: 10
+  gold: 10
+  exp: 10
 --- !u!114 &-2681866326712318057
 MonoBehaviour:
   m_ObjectHideFlags: 0

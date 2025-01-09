@@ -1,42 +1,71 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
-using TMPro;
 
-public class InventoryPresenter
+
+public class InventoryPresenter : MonoBehaviour
 {
 
-    private IInventoryView view;
+    
+    InventorySystem inventorySystem;
+    InventoryUI inventoryUI;
    
-    private InventorySystem inventorySystem;
-   
-    public InventoryPresenter(InventorySystem inventorySystem,IInventoryView inventoryUI)
+    IInventoryModel model;
+    IInventoryView view;
+
+
+  
+    // void Start()
+    // {
+    //      // Model
+    //     inventorySystem =  FindObjectOfType<InventorySystem>();
+
+
+
+    //     // View 찾기
+    //     inventoryUI = FindObjectOfType<InventoryUI>();
+    //     model = inventorySystem;
+    //     view = inventoryUI;
+        
+    //     model.TextCntEvent += TextCnt;
+    //     model.CreateItemEvent += CreateItem;
+    //     model.InvenUpdateEvent += InvenUpdate;
+    //     view.LoadSpriteEvent += LoadSprite;
+    //     view.ItemDictionaryAddEvent += ItemDictionaryAdd;
+    //     //dropItem.AddItemEvent += AddItem;
+        
+    // }
+
+    public InventoryPresenter(IInventoryModel model,IInventoryView inventoryUI)
     {
-        this.inventorySystem = inventorySystem;
+        //model이 IIventoryModel 상속받음
+        this.model = model;
 
         //InventoryUI가 IInventoryView를 상속받음 
         this.view = inventoryUI;
         
         
-        inventorySystem.TextCntEvent += TextCnt;
-        inventorySystem.CreateItemEvent += CreateItem;
-        inventorySystem.InvenUpdateEvent += InvenUpdate;
+        model.TextCntEvent += TextCnt;
+        model.CreateItemEvent += CreateItem;
+        model.InvenUpdateEvent += InvenUpdate;
         view.LoadSpriteEvent += LoadSprite;
         view.ItemDictionaryAddEvent += ItemDictionaryAdd;
-        
+        //dropItem.AddItemEvent += AddItem;
+       
         
        
     }
-    void Dispose()
-    {
-        inventorySystem.TextCntEvent -= TextCnt;
-        inventorySystem.CreateItemEvent -= CreateItem;
-        inventorySystem.InvenUpdateEvent -= InvenUpdate;
-        view.LoadSpriteEvent -= LoadSprite;
-        view.ItemDictionaryAddEvent -= ItemDictionaryAdd;
+    // void Dispose()
+    // {
+    //     model.TextCntEvent -= TextCnt;
+    //     model.CreateItemEvent -= CreateItem;
+    //     model.InvenUpdateEvent -= InvenUpdate;
+    //     view.LoadSpriteEvent -= LoadSprite;
+    //     view.ItemDictionaryAddEvent -= ItemDictionaryAdd;
 
         
-    }   
+    // }   
 
     void InvenUpdate(Dictionary<string, ItemInfo> items)
     {
@@ -48,7 +77,7 @@ public class InventoryPresenter
             if(item.Value.quantity == 0)
                 continue;
 
-            Sprite sprite = inventorySystem.LoadSprite(item.Key);
+            Sprite sprite = model.LoadSprite(item.Key);
             items[item.Key].text = view.AddItemToUI(sprite, item.Value);
             
             view.TextCnt(item.Value);
@@ -57,11 +86,7 @@ public class InventoryPresenter
 
     }
 
-    // void InvenUpdate(Dictionary<string, ItemInfo> items)
-    // {
-    //     view.InvenUpdate(items);
 
-    // }
 
     void TextCnt(ItemInfo item)
     {
@@ -75,18 +100,18 @@ public class InventoryPresenter
 
     Sprite LoadSprite(string itemName)
     {
-        return inventorySystem.LoadSprite(itemName);
+        return model.LoadSprite(itemName);
     }
 
-    // void ItemDictionaryAdd(string itemName,int quantity,Sprite sprite,TextMeshProUGUI text)
-    // {
-    //     inventorySystem.ItemDictionaryAdd(itemName,quantity,sprite,text);
-    // }
     void ItemDictionaryAdd(ItemInfo itemInfo)
     {
-        inventorySystem.ItemDictionaryAdd(itemInfo);
+        model.ItemDictionaryAdd(itemInfo);
     }
     
+    public void AddItem(string itemName,int quantity)
+    {
+        model.AddItem(itemName,quantity);
+    }
 
   
 }

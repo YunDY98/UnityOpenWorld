@@ -14,7 +14,8 @@ GameObject:
   - component: {fileID: 7548725648902835263}
   - component: {fileID: 6266144341385706342}
   - component: {fileID: -2681866326712318057}
-  m_Layer: 8
+  - component: {fileID: -6076424603716931720}
+  m_Layer: 10
   m_Name: ItemSoldier
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -120,9 +121,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: ItemSoldier
-  quantity: 100
-  gold: 0
-  exp: 0
+  rate: 1
+  quantity: 10
+  gold: 10
+  exp: 10
 --- !u!114 &-2681866326712318057
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,3 +138,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attractionDistance: 10
+--- !u!114 &-6076424603716931720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1531953700682219723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74c29e53236084b0dba044a269d85351, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemName: ItemSoldier
+  rate: 1
+  quantity: 100
+  gold: 100
+  exp: 10

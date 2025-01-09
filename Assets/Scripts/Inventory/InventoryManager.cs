@@ -4,19 +4,29 @@ using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
 {
-    private InventoryPresenter presenter;
+    public InventoryPresenter presenter;
     private InventorySystem inventorySystem;
     private InventoryUI inventoryUI;
+
+    
+
+
+
     void Awake()
     {
-        // Model 생성
-        inventorySystem = InventorySystem.inventorySystem;
         
+        
+        // Model
+        inventorySystem =  FindObjectOfType<InventorySystem>();
+
+
 
         // View 찾기
         inventoryUI = FindObjectOfType<InventoryUI>();
 
+        
 
+        
 
         // Presenter 초기화 및 연결
         presenter = new InventoryPresenter(inventorySystem,inventoryUI);

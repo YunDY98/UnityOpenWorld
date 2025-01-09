@@ -2,29 +2,45 @@ using System;
 using System.Collections;
 using UnityEngine;
 
+
 public class DropItem : MonoBehaviour
 {
-    public string itemName = "none";
-    public int quantity = 1;
+    
+    
+    public string itemName;
 
+    public float rate;
+    public int quantity;
     public int gold;
     public int exp;
 
-    public event Action AddItemEvent;
-    
-    // Start is called before the first frame update
+
+   
+
+   
+    InventoryPresenter inventoryPresenter;
+    InventoryManager inventoryManager;
+
+    ItemPool itemPool;
     void Start()
     {
         
-        //100초후 아이템 파괴 
+        itemPool = FindObjectOfType<ItemPool>();
+        inventoryManager = FindObjectOfType<InventoryManager>();
+
+        inventoryPresenter = inventoryManager.presenter;
+    }
+    
+ 
+    void OnEnable()
+    {
+        
+        
+        //N초후 아이템 파괴 
         StartCoroutine(Timer(5));
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+  
 
     void OnTriggerEnter(Collider other)
     {
@@ -42,11 +58,17 @@ public class DropItem : MonoBehaviour
             }
             else
             {
-                //AddItemEvent?.Invoke();
-                InventorySystem.inventorySystem.AddItem(itemName,quantity);
+
+                inventoryPresenter.AddItem(itemName, quantity);
+                
+
+                //itemPool.AddItem(itemName,quantity);
+               
+                
 
             }
-            Destroy(gameObject);
+            itemPool.ReturnItem(itemPool.GetDropedItem());
+            
 
           
         }
@@ -58,7 +80,8 @@ public class DropItem : MonoBehaviour
     {
 
         yield return new WaitForSeconds(_time);
-        Destroy(gameObject);
+        itemPool.ReturnItem(itemPool.GetDropedItem());
+        
     }
 
 }
