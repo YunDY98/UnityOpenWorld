@@ -13,6 +13,8 @@ public class DataManager : MonoBehaviour
 
     private string keyWord = "wutheringwaves";
 
+    InventorySystem inventorySystem;
+
     void Awake()
     {
         if (_instance != null && _instance != this)
@@ -27,6 +29,8 @@ public class DataManager : MonoBehaviour
 
         // 데이터 파일 경로 설정
         dataFilePath = $"{Application.persistentDataPath}/data.json";
+
+        inventorySystem = FindObjectOfType<InventorySystem>();
     }
    
    
@@ -47,7 +51,7 @@ public class DataManager : MonoBehaviour
         // 스킬 총 갯수 
         int _skillCount = PlayerStats.playerStats.skillDictionary.Count;
         // 아이템 갯수 
-        int _itemCount = InventorySystem.inventorySystem.items.Count;
+        int _itemCount = inventorySystem.items.Count;
 
         int _weaponCount = PlayerStats.playerStats.weaponDictionary.Count;
 
@@ -64,7 +68,7 @@ public class DataManager : MonoBehaviour
         }
         _index = 0;
         
-        foreach(var _item in InventorySystem.inventorySystem.items)
+        foreach(var _item in inventorySystem.items)
         {
             
             _pd.items[_index++] = new SaveItemInfo(_item.Key, _item.Value.quantity);

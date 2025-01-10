@@ -22,32 +22,46 @@ public class DropItem : MonoBehaviour
     InventoryManager inventoryManager;
 
     ItemPool itemPool;
+    
     void Start()
     {
         
-        itemPool = FindObjectOfType<ItemPool>();
-        inventoryManager = FindObjectOfType<InventoryManager>();
+        itemPool = ItemPool.Instance;
+        inventoryManager = InventoryManager.Instance;
 
         inventoryPresenter = inventoryManager.presenter;
+
+        
     }
     
  
     void OnEnable()
     {
-        
-        
         //N초후 아이템 파괴 
-        StartCoroutine(Timer(5));
+        StartCoroutine(Timer(500));
     }
 
   
 
-    void OnTriggerEnter(Collider other)
-    {
+    // void OnTriggerEnter(Collider other)
+    // {
+        
+    //     ItemTrigger(other);
         
 
+       
+    // }
+
+    void OnTriggerStay(Collider other)
+    {
+        ItemTrigger(other);
+    }
+
+    void ItemTrigger(Collider other)
+    {
         if(other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
+            
 
             if(itemName == "Gold")
             {
@@ -67,20 +81,19 @@ public class DropItem : MonoBehaviour
                 
 
             }
-            itemPool.ReturnItem(itemPool.GetDropedItem());
+            itemPool.ReturnItem(this.gameObject);
             
 
           
         }
 
-       
     }
 
     IEnumerator Timer(float _time)
     {
 
         yield return new WaitForSeconds(_time);
-        itemPool.ReturnItem(itemPool.GetDropedItem());
+        itemPool.ReturnItem(this.gameObject);
         
     }
 

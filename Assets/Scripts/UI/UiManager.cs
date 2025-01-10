@@ -97,7 +97,7 @@ public class UIManager : MonoBehaviour
       
         playerStats = PlayerStats.playerStats;
         gameManager = GameManager.gameManager;
-        inventorySystem = InventorySystem.inventorySystem;
+        inventorySystem = FindObjectOfType<InventorySystem>();
 
 
         // 이벤트 구독

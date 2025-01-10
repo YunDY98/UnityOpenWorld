@@ -19,26 +19,31 @@ public class AddItemInfo
 }
 public class ItemPool : MonoBehaviour
 {
-
+    public static ItemPool Instance { get; private set; }
     
     int cnt = 0;
     int shuffleCnt;
-    //public static ItemPool Instance;
-    
-    //드랍 
-    // private void Awake()
-    // {
-    //     if (Instance == null) Instance = this;
-    // }
+  
     public GameObject[] dropItems;
     
     public event Action<string,int> AddItemEvent;
 
     List<GameObject> itemPool = new();
-    List<GameObject> dropedItem = new();
+   
 
     List<ItemPoolInfo> itemPoolInfos = new();
     // Start is called before the first frame update
+
+    void Awake()
+    {
+        // 싱글톤 초기화
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject); // 이미 인스턴스가 있다면 새로 생성된 것은 제거
+            return;
+        }
+        Instance = this;
+    }
     void Start()
     {   
         foreach(var item in dropItems)
@@ -87,7 +92,7 @@ public class ItemPool : MonoBehaviour
         }
     }
 
-    public GameObject GetItem(Vector3 position)
+    public void GetItem(Vector3 position)
     {
         
         if (itemPool.Count > 0)
@@ -96,13 +101,13 @@ public class ItemPool : MonoBehaviour
             itemPool.RemoveAt(0);
             _item.transform.position = position;
             _item.SetActive(true);
-            dropedItem.Add(_item);
-            return _item;
+           
+           
         }
        
 
        
-        return null;
+        
     }
 
     public void ReturnItem(GameObject item)
@@ -118,16 +123,6 @@ public class ItemPool : MonoBehaviour
         }
     }
 
-    public GameObject GetDropedItem()
-    {
-        
-        GameObject _temp = dropedItem[0];
-        dropedItem.RemoveAt(0);
-
-
-    
-        return _temp;
-    }
 
    
    

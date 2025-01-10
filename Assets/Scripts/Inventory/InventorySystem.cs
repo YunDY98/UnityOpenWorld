@@ -1,16 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 using System;
-using System.Net.Sockets;
+
 
 
 public class InventorySystem : MonoBehaviour,IInventoryModel
 {
-    private static InventorySystem _instance;
-   public static InventorySystem inventorySystem { get { return _instance; } }
-
+    
     public Dictionary<string,ItemInfo> items = new();
     PlayerStats playerStats;
     PlayerData playerData;
@@ -22,20 +18,6 @@ public class InventorySystem : MonoBehaviour,IInventoryModel
     public event Action<ItemInfo> TextCntEvent;
 
     public event Action<string,int> CreateItemEvent;
-   
-
-    void Awake()
-    {
-        if (_instance == null)
-        {
-            _instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else if (_instance != this)
-        {
-            Destroy(gameObject);
-        }
-    }
 
 
    

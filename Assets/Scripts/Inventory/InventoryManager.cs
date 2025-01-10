@@ -8,21 +8,31 @@ public class InventoryManager : MonoBehaviour
     private InventorySystem inventorySystem;
     private InventoryUI inventoryUI;
 
-    
+    public static InventoryManager Instance { get; private set; }
+
 
 
 
     void Awake()
     {
-        
+        // 싱글톤 초기화
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject); // 이미 인스턴스가 있다면 새로 생성된 것은 제거
+            return;
+        }
+        Instance = this;
+
         
         // Model
         inventorySystem =  FindObjectOfType<InventorySystem>();
+       
 
 
 
         // View 찾기
         inventoryUI = FindObjectOfType<InventoryUI>();
+      
 
         
 
