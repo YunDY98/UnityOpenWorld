@@ -17,5 +17,9 @@ public interface IInventoryView
     void TextCnt(ItemInfo item);
 
     TextMeshProUGUI AddItemToUI(Sprite sprite, ItemInfo item);
+
+    void InvenUpdate(Dictionary<string, ItemInfo> items);
+
+   // public void Initialize(InventoryPresenter inventoryPresenter);
    
 }

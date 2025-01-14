@@ -14,7 +14,11 @@ public class WeaponUpgrade : MonoBehaviour
 
     public TextMeshProUGUI useItem;
    
-    InventorySystem inventorySystem;
+    
+
+    InventoryPresenter presenter;
+  
+
 
 
     int level = 0;
@@ -25,7 +29,7 @@ public class WeaponUpgrade : MonoBehaviour
         playerStats = PlayerStats.playerStats;
         who = playerStats.selectCharacter;
         level = playerStats.weaponDictionary[who];
-        inventorySystem = FindAnyObjectByType<InventorySystem>();
+        presenter = InventoryManager.Instance.presenter;
         UpdateUI(level);
 
     }
@@ -40,7 +44,7 @@ public class WeaponUpgrade : MonoBehaviour
         
         if(playerStats.UseGold(level * _mult))
         {
-            if(!inventorySystem.UseItem($"Item{who}",level))
+            if(!presenter.UseItem($"Item{who}",level))
             {
                 // 아이템 부족
                 //사용골드 반환 

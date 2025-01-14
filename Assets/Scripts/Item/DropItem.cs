@@ -14,11 +14,11 @@ public class DropItem : MonoBehaviour
     public int gold;
     public int exp;
 
-
+   
    
 
    
-    InventoryPresenter inventoryPresenter;
+    InventoryPresenter presenter;
     InventoryManager inventoryManager;
 
     ItemPool itemPool;
@@ -29,7 +29,7 @@ public class DropItem : MonoBehaviour
         itemPool = ItemPool.Instance;
         inventoryManager = InventoryManager.Instance;
 
-        inventoryPresenter = inventoryManager.presenter;
+        presenter = inventoryManager.presenter;
 
         
     }
@@ -38,7 +38,7 @@ public class DropItem : MonoBehaviour
     void OnEnable()
     {
         //N초후 아이템 파괴 
-        StartCoroutine(Timer(500));
+        StartCoroutine(Timer(5));
     }
 
   
@@ -73,8 +73,8 @@ public class DropItem : MonoBehaviour
             else
             {
 
-                inventoryPresenter.AddItem(itemName, quantity);
-                
+                presenter.AddItem(itemName, quantity);
+               
 
                 //itemPool.AddItem(itemName,quantity);
                

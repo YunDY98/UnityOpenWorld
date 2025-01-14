@@ -1,15 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 
-public class InventoryPresenter : MonoBehaviour
+public class InventoryPresenter
 {
 
     
-    InventorySystem inventorySystem;
-    InventoryUI inventoryUI;
+
    
     IInventoryModel model;
     IInventoryView view;
@@ -51,7 +51,8 @@ public class InventoryPresenter : MonoBehaviour
         model.InvenUpdateEvent += InvenUpdate;
         view.LoadSpriteEvent += LoadSprite;
         view.ItemDictionaryAddEvent += ItemDictionaryAdd;
-        //dropItem.AddItemEvent += AddItem;
+        
+        //view.Initialize(this);
        
         
        
@@ -67,27 +68,6 @@ public class InventoryPresenter : MonoBehaviour
         
     // }   
 
-    void InvenUpdate(Dictionary<string, ItemInfo> items)
-    {
-        view.ClearItems();
-
-        foreach(KeyValuePair<string, ItemInfo> item in items)
-        {
-            
-            if(item.Value.quantity == 0)
-                continue;
-
-            Sprite sprite = model.LoadSprite(item.Key);
-            items[item.Key].text = view.AddItemToUI(sprite, item.Value);
-            
-            view.TextCnt(item.Value);
-
-        }
-
-    }
-
-
-
     void TextCnt(ItemInfo item)
     {
         view.TextCnt(item);
@@ -98,7 +78,7 @@ public class InventoryPresenter : MonoBehaviour
         view.CreateItem(itemName,quantity);
     }
 
-    Sprite LoadSprite(string itemName)
+    public Sprite LoadSprite(string itemName)
     {
         return model.LoadSprite(itemName);
     }
@@ -113,5 +93,33 @@ public class InventoryPresenter : MonoBehaviour
         model.AddItem(itemName,quantity);
     }
 
+    public bool UseItem(string itemName,int useQuantity)
+    {
+        return model.UseItem(itemName,useQuantity);
+    }
+
+    void InvenUpdate(Dictionary<string, ItemInfo> items)
+    {
+        view.InvenUpdate(items);
+    }
+
   
 }
+ // void InvenUpdate(Dictionary<string, ItemInfo> items)
+    // {
+    //     view.ClearItems();
+
+    //     foreach(KeyValuePair<string, ItemInfo> item in items)
+    //     {
+            
+    //         if(item.Value.quantity == 0)
+    //             continue;
+
+    //         Sprite sprite = model.LoadSprite(item.Key);
+    //         items[item.Key].text = view.AddItemToUI(sprite, item.Value);
+            
+    //         view.TextCnt(item.Value);
+
+    //     }
+
+    // }

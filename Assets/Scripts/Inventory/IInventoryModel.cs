@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+
 public interface IInventoryModel 
 {
     public event Action ItemWarningEvent;
@@ -15,6 +16,8 @@ public interface IInventoryModel
     bool UseItem(string itemName,int useQuantity);
     Sprite LoadSprite(string itemName);
     void ItemDictionaryAdd(ItemInfo _itemInfo);
+
+    public Dictionary<string,ItemInfo> GetItemsDictionary();
 
     
     

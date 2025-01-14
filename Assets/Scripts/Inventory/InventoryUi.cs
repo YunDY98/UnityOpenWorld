@@ -10,15 +10,15 @@ public class InventoryUI : MonoBehaviour, IInventoryView
     public GameObject content;
    
     public GameObject invenItem;
-    //private InventorySystem inventorySystem;
 
-    //public event Action<string> LoadSpriteEvent;
     public event IInventoryView.LoadSpriteDelegate LoadSpriteEvent;
 
     public event Action<ItemInfo> ItemDictionaryAddEvent;
+    
+    //InventoryPresenter inventoryPresenter;
    
    
-   
+    
 
     public void ClearItems()
     {
@@ -29,33 +29,33 @@ public class InventoryUI : MonoBehaviour, IInventoryView
         }
 
     }
-    // public void InvenUpdate(Dictionary<string, ItemInfo> items)
-    // {
+    public void InvenUpdate(Dictionary<string, ItemInfo> items)
+    {
         
-    //     ClearItems();
+        ClearItems();
 
-    //     foreach(KeyValuePair<string, ItemInfo> dic in items)
-    //     {
-    //         // 아이템수가 0개라면 
-    //         if(dic.Value.quantity == 0)
-    //             continue;
+        foreach(KeyValuePair<string, ItemInfo> dic in items)
+        {
+            // 아이템수가 0개라면 
+            if(dic.Value.quantity == 0)
+                continue;
             
 
-    //         GameObject _itemObject = Instantiate(invenItem,content.transform);
+            GameObject _itemObject = Instantiate(invenItem,content.transform);
 
            
-    //         Sprite _sprite = LoadSpriteEvent?.Invoke(dic.Key);
+            Sprite _sprite = LoadSpriteEvent?.Invoke(dic.Key);
            
-    //        _itemObject.GetComponent<Image>().sprite = _sprite;
+           _itemObject.GetComponent<Image>().sprite = _sprite;
             
-    //         TextMeshProUGUI _itemCntText = _itemObject.GetComponentInChildren<TextMeshProUGUI>();
-    //         items[dic.Key].text = _itemCntText;
+            TextMeshProUGUI _itemCntText = _itemObject.GetComponentInChildren<TextMeshProUGUI>();
+            items[dic.Key].text = _itemCntText;
 
-    //         //TextCnt(items,dic.Key);
-    //         TextCnt(items[dic.Key]);
+           
+            TextCnt(items[dic.Key]);
         
-    //     }
-    // }
+        }
+    }
 
     public TextMeshProUGUI AddItemToUI(Sprite sprite, ItemInfo item)
     {
@@ -72,8 +72,9 @@ public class InventoryUI : MonoBehaviour, IInventoryView
         GameObject _itemObject = Instantiate(invenItem,content.transform);  
 
             
-        //Sprite _sprite = inventorySystem.LoadSprite(itemName);
+       
         Sprite _sprite = LoadSpriteEvent?.Invoke(itemName);
+        //Sprite _sprite = inventoryPresenter.LoadSprite(itemName);
         _itemObject.GetComponent<Image>().sprite = _sprite;
         
          
@@ -83,15 +84,12 @@ public class InventoryUI : MonoBehaviour, IInventoryView
         ItemInfo _itemInfo = new ItemInfo(itemName,quantity,_sprite,_itemCntText);
         
         
-        //inventorySystem.ItemDictionaryAdd(itemName,quantity,_sprite,_itemCntText);
+        
         ItemDictionaryAddEvent?.Invoke(_itemInfo);
     }
 
     public void TextCnt(ItemInfo item)
     {
-       
-       
-        
         if(item.quantity > 999)
         {
             item.text.text = "999+";

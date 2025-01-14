@@ -10,7 +10,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI textLevel;
     [SerializeField] private GameObject aim;
 
-    [SerializeField] public  GameObject goldShortage;
+    [SerializeField] private GameObject goldShortage;
 
     [SerializeField] private GameObject gameLabel;
     [SerializeField] private Text gameText;

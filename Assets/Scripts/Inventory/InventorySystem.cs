@@ -54,8 +54,8 @@ public class InventorySystem : MonoBehaviour,IInventoryModel
         #if UNITY_EDITOR
         if(Input.GetKeyUp(KeyCode.Alpha0))
         {
-            AddItem("ItemMasa",10);
-            AddItem("ItemSoldier",10);
+            AddItem("ItemMasa",1000);
+            AddItem("ItemSoldier",1000);
            
         }
 
@@ -139,16 +139,18 @@ public class InventorySystem : MonoBehaviour,IInventoryModel
             }
             items[itemName].quantity = _after;
 
-           
+            
             TextCntEvent?.Invoke(items[itemName]);
+            return true;
         }
         else
         {
+            ItemWarningEvent?.Invoke();
             //보유 하지 않은 아이템
             return false;
         }
         
-        return true;
+       
     }
 
     public Sprite LoadSprite(string itemName)
@@ -166,17 +168,16 @@ public class InventorySystem : MonoBehaviour,IInventoryModel
 
    
 
-    // public void ItemDictionaryAdd(string itemName,int quantity,Sprite sprite,TextMeshProUGUI text)
-    // {
-
-    //     items.Add(itemName,new ItemInfo(itemName,quantity,sprite,text));
-
-    // }
     public void ItemDictionaryAdd(ItemInfo _itemInfo)
     {
         
         items.Add(_itemInfo.itemName,_itemInfo);
 
+    }
+
+    public Dictionary<string,ItemInfo> GetItemsDictionary()
+    {
+        return items;
     }
     
 }

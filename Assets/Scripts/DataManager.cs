@@ -11,7 +11,7 @@ public class DataManager : MonoBehaviour
 
     private string dataFilePath;
 
-    private string keyWord = "wutheringwaves";
+    private readonly string keyWord = "wutheringwaves";
 
     InventorySystem inventorySystem;
 

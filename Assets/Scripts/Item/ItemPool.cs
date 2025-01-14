@@ -12,25 +12,15 @@ public class ItemPoolInfo
     
 }
 
-public class AddItemInfo
-{
-    public string itemName;
-    public int quantity;
-}
 public class ItemPool : MonoBehaviour
 {
     public static ItemPool Instance { get; private set; }
     
     int cnt = 0;
     int shuffleCnt;
-  
     public GameObject[] dropItems;
-    
-    public event Action<string,int> AddItemEvent;
-
     List<GameObject> itemPool = new();
    
-
     List<ItemPoolInfo> itemPoolInfos = new();
     // Start is called before the first frame update
 
@@ -84,7 +74,6 @@ public class ItemPool : MonoBehaviour
     {
         for (int i = itemPool.Count - 1; i > 0; i--)
         {
-           
             int _randomIndex = UnityEngine.Random.Range(0, i + 1);
             GameObject _temp = itemPool[i];
             itemPool[i] = itemPool[_randomIndex];
