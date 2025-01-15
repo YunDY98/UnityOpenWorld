@@ -5,20 +5,17 @@ using System;
 
 public interface IInventoryModel 
 {
-    public event Action ItemWarningEvent;
+    event Action ItemWarningEvent;
 
-    public event Action<Dictionary<string, ItemInfo>> InvenUpdateEvent;
+    event Action<Dictionary<string, ItemInfo>> InvenUpdateEvent;
   
-    public event Action<ItemInfo> TextCntEvent;
+    event Action<ItemInfo> TextCntEvent;
 
-    public event Action<string,int> CreateItemEvent;
+    event Action<string,int> CreateItemEvent;
     void AddItem(string itemName,int quantity);
     bool UseItem(string itemName,int useQuantity);
     Sprite LoadSprite(string itemName);
     void ItemDictionaryAdd(ItemInfo _itemInfo);
-
-    public Dictionary<string,ItemInfo> GetItemsDictionary();
-
-    
+    Dictionary<string,ItemInfo> GetItemsDictionary();
     
 }

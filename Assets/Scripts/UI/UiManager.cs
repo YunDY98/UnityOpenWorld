@@ -109,20 +109,8 @@ public class UIManager : MonoBehaviour
         playerStats.LevelUpEvent += LevelUp;
         playerStats.HitEffectEvent += HitEffect;
         playerStats.GoldShortageEvent += GoldShortage;
-
-        inventorySystem.ItemWarningEvent += ItemWarning;
-
-        
-
-        
-
-
-       
         gameManager.GameLabel += GameLabel;
         gameManager.GameText += GameOver;
-        
-           
-        
         
     }
 

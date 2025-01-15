@@ -7,9 +7,9 @@ using System;
 using UnityEditor.Rendering.LookDev;
 public class InventoryUI : MonoBehaviour, IInventoryView
 {
-    public GameObject content;
+    [SerializeField] GameObject content;
    
-    public GameObject invenItem;
+    [SerializeField] GameObject invenItem;
 
     public event IInventoryView.LoadSpriteDelegate LoadSpriteEvent;
 
@@ -57,15 +57,15 @@ public class InventoryUI : MonoBehaviour, IInventoryView
         }
     }
 
-    public TextMeshProUGUI AddItemToUI(Sprite sprite, ItemInfo item)
-    {
-        GameObject _itemObject = Instantiate(invenItem,content.transform);
-        _itemObject.GetComponent<Image>().sprite = sprite;
-        TextMeshProUGUI _itemCntText = _itemObject.GetComponentInChildren<TextMeshProUGUI>();
+    // public TextMeshProUGUI AddItemToUI(Sprite sprite, ItemInfo item)
+    // {
+    //     GameObject _itemObject = Instantiate(invenItem,content.transform);
+    //     _itemObject.GetComponent<Image>().sprite = sprite;
+    //     TextMeshProUGUI _itemCntText = _itemObject.GetComponentInChildren<TextMeshProUGUI>();
         
-        _itemCntText.text = item.quantity.ToString();
-        return _itemCntText;
-    }
+    //     _itemCntText.text = item.quantity.ToString();
+    //     return _itemCntText;
+    // }
 
     public void CreateItem(string itemName,int quantity)
     {

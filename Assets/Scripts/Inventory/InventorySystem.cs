@@ -61,12 +61,11 @@ public class InventorySystem : MonoBehaviour,IInventoryModel
 
         if(Input.GetKeyUp(KeyCode.Alpha9))
         {
-            if(items["ItemMasa"] != null)
-                if(items["ItemMasa"].quantity > 0)
-                    UseItem("ItemMasa",items["ItemMasa"].quantity);
-            if(items["ItemSoldier"] != null)
-                if(items["ItemSoldier"].quantity > 0)
-                    UseItem("ItemSoldier",items["ItemSoldier"].quantity);
+            
+            if(items.ContainsKey("ItemMasa"))
+                UseItem("ItemMasa",items["ItemMasa"].quantity);
+            if(items.ContainsKey("ItemSoldier"))
+                UseItem("ItemSoldier",items["ItemSoldier"].quantity);
             
         }
 
@@ -88,13 +87,11 @@ public class InventorySystem : MonoBehaviour,IInventoryModel
             // 아이템 수량 업데이트
             items[itemName].quantity += quantity;
 
-            //수량이 0이거나 0에서 증가한 경우 
-            if (items[itemName].quantity == quantity || quantity == 0) 
+            //0에서 증가한 경우 
+            if (items[itemName].quantity == quantity) 
             {
                 InvenUpdateEvent?.Invoke(items);
             }   
-          
-            
             //TextCntEvent(items,itemName);
             TextCntEvent?.Invoke(items[itemName]);
                    

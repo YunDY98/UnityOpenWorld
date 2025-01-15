@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -8,42 +9,15 @@ using UnityEngine;
 public class InventoryPresenter
 {
 
-    
-
-   
     IInventoryModel model;
     IInventoryView view;
 
-
-  
-    // void Start()
-    // {
-    //      // Model
-    //     inventorySystem =  FindObjectOfType<InventorySystem>();
-
-
-
-    //     // View 찾기
-    //     inventoryUI = FindObjectOfType<InventoryUI>();
-    //     model = inventorySystem;
-    //     view = inventoryUI;
-        
-    //     model.TextCntEvent += TextCnt;
-    //     model.CreateItemEvent += CreateItem;
-    //     model.InvenUpdateEvent += InvenUpdate;
-    //     view.LoadSpriteEvent += LoadSprite;
-    //     view.ItemDictionaryAddEvent += ItemDictionaryAdd;
-    //     //dropItem.AddItemEvent += AddItem;
-        
-    // }
-
-    public InventoryPresenter(IInventoryModel model,IInventoryView inventoryUI)
+    public InventoryPresenter(IInventoryModel model,IInventoryView view)
     {
-        //model이 IIventoryModel 상속받음
+       
         this.model = model;
 
-        //InventoryUI가 IInventoryView를 상속받음 
-        this.view = inventoryUI;
+        this.view = view;
         
         
         model.TextCntEvent += TextCnt;
@@ -51,6 +25,7 @@ public class InventoryPresenter
         model.InvenUpdateEvent += InvenUpdate;
         view.LoadSpriteEvent += LoadSprite;
         view.ItemDictionaryAddEvent += ItemDictionaryAdd;
+        model.ItemWarningEvent += ItemWarning;
         
         //view.Initialize(this);
        
@@ -101,6 +76,11 @@ public class InventoryPresenter
     void InvenUpdate(Dictionary<string, ItemInfo> items)
     {
         view.InvenUpdate(items);
+    }
+
+    void ItemWarning()
+    {
+        UIManager.uiManager.ItemWarning();
     }
 
   

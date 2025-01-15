@@ -26,7 +26,6 @@ public class DragUI : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointer
         rectTransform = GetComponent<RectTransform>();
         canvas = GetComponentInParent<Canvas>();
         
-
         parentRectTransform = canvas.GetComponent<RectTransform>();
     }
 
@@ -37,14 +36,10 @@ public class DragUI : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointer
         image = GetComponent<Image>();
         if(image.sprite == null)
         {   
-           
-           
             return;
         }
 
-        
-       
-
+    
         RectTransformUtility.ScreenPointToLocalPointInRectangle(parentRectTransform, eventData.position, eventData.pressEventCamera, out originalPointerPosition);
         originalRectTransformPosition = rectTransform.anchoredPosition;
        
@@ -56,25 +51,21 @@ public class DragUI : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointer
             
             
             copiedObject = Instantiate(gameObject,parentRectTransform);
+
             
-        
-            
-           
-           
             rectTransform = copiedObject.GetComponent<RectTransform>();
 
             if(RectTransformUtility.ScreenPointToLocalPointInRectangle(parentRectTransform, eventData.position, eventData.pressEventCamera, out localPointerPosition))
             {
-                rectTransform.anchoredPosition = localPointerPosition;
-              
 
+                rectTransform.anchoredPosition = localPointerPosition;
+            
             }
 
             copiedObject.GetComponent<Image>().raycastTarget = false;
 
             if(delete)
             {
-                
                 KeySetting keySetting = GetComponent<KeySetting>();
                 keySetting.Drop();
             }
@@ -101,9 +92,7 @@ public class DragUI : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointer
             
             if(RectTransformUtility.ScreenPointToLocalPointInRectangle(parentRectTransform, eventData.position, eventData.pressEventCamera, out localPointerPosition))
             {
-                rectTransform.anchoredPosition =   localPointerPosition;
-
-               
+                rectTransform.anchoredPosition = localPointerPosition;
             }
             
         }
