@@ -74,11 +74,6 @@ public class DropItem : MonoBehaviour
             {
 
                 presenter.AddItem(itemName, quantity);
-               
-
-                //itemPool.AddItem(itemName,quantity);
-               
-                
 
             }
             itemPool.ReturnItem(this.gameObject);

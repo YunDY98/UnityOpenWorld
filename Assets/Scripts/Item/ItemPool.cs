@@ -47,9 +47,10 @@ public class ItemPool : MonoBehaviour
             itemPoolInfos.Add(_itemPoolInfo);
         }
 
-        shuffleCnt = itemPoolInfos.Count;
+        
     
         InitializePool();
+        shuffleCnt = itemPool.Count;
     }
 
     private void InitializePool()
@@ -102,11 +103,12 @@ public class ItemPool : MonoBehaviour
     public void ReturnItem(GameObject item)
     {
         cnt++;
-       
+        print($"{cnt}");
         item.SetActive(false);
         itemPool.Add(item);
         if(cnt >= shuffleCnt)
         {
+            print("clear");
             cnt = 0;
             ShufflePool();
         }
