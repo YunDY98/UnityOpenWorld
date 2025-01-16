@@ -17,5 +17,7 @@ public interface IInventoryModel
     Sprite LoadSprite(string itemName);
     void ItemDictionaryAdd(ItemInfo _itemInfo);
     Dictionary<string,ItemInfo> GetItemsDictionary();
+
+    int GetItemCount();
     
 }

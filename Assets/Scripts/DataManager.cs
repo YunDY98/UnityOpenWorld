@@ -13,7 +13,7 @@ public class DataManager : MonoBehaviour
 
     private readonly string keyWord = "wutheringwaves";
 
-    InventorySystem inventorySystem;
+    IInventoryModel inventory;
 
     void Awake()
     {
@@ -30,8 +30,10 @@ public class DataManager : MonoBehaviour
         // 데이터 파일 경로 설정
         dataFilePath = $"{Application.persistentDataPath}/data.json";
 
-        inventorySystem = FindObjectOfType<InventorySystem>();
+        inventory = FindObjectOfType<Inventory>();
     }
+
+   
    
    
 
@@ -51,7 +53,7 @@ public class DataManager : MonoBehaviour
         // 스킬 총 갯수 
         int _skillCount = PlayerStats.playerStats.skillDictionary.Count;
         // 아이템 갯수 
-        int _itemCount = inventorySystem.items.Count;
+        int _itemCount = inventory.GetItemCount();
 
         int _weaponCount = PlayerStats.playerStats.weaponDictionary.Count;
 
@@ -61,24 +63,24 @@ public class DataManager : MonoBehaviour
        
         int _index = 0;
 
-        foreach(var _skill in PlayerStats.playerStats.skillDictionary)
+        foreach(var skill in PlayerStats.playerStats.skillDictionary)
         {
-            _pd.skills[_index++] = _skill.Value;
+            _pd.skills[_index++] = skill.Value;
             
         }
         _index = 0;
         
-        foreach(var _item in inventorySystem.items)
+        foreach(var item in inventory.GetItemsDictionary())
         {
             
-            _pd.items[_index++] = new SaveItemInfo(_item.Key, _item.Value.quantity);
+            _pd.items[_index++] = new SaveItemInfo(item.Key, item.Value.quantity);
             
     
         }
         _index = 0;
-        foreach(var _weapon in PlayerStats.playerStats.weaponDictionary)
+        foreach(var weapon in PlayerStats.playerStats.weaponDictionary)
         {
-            WeaponInfo _weaponInfo = new(_weapon.Key,_weapon.Value);
+            WeaponInfo _weaponInfo = new(weapon.Key,weapon.Value);
            
             _pd.weapons[_index++] = _weaponInfo;
             

@@ -17,9 +17,6 @@ public class InventoryUI : MonoBehaviour, IInventoryView
     
     //InventoryPresenter inventoryPresenter;
    
-   
-    
-
     public void ClearItems()
     {
         //업데이트를 위해 기존 목록 제거 
@@ -71,19 +68,14 @@ public class InventoryUI : MonoBehaviour, IInventoryView
     {
         GameObject _itemObject = Instantiate(invenItem,content.transform);  
 
-            
-       
         Sprite _sprite = LoadSpriteEvent?.Invoke(itemName);
-        //Sprite _sprite = inventoryPresenter.LoadSprite(itemName);
+       
         _itemObject.GetComponent<Image>().sprite = _sprite;
         
-         
         TextMeshProUGUI _itemCntText = _itemObject.GetComponentInChildren<TextMeshProUGUI>();
         _itemCntText.text = quantity.ToString();
 
         ItemInfo _itemInfo = new ItemInfo(itemName,quantity,_sprite,_itemCntText);
-        
-        
         
         ItemDictionaryAddEvent?.Invoke(_itemInfo);
     }

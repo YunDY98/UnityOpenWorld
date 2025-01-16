@@ -13,14 +13,8 @@ public class WeaponUpgrade : MonoBehaviour
     public TextMeshProUGUI useGold;
 
     public TextMeshProUGUI useItem;
-   
-    
 
     InventoryPresenter presenter;
-  
-
-
-
     int level = 0;
     
     PlayerStats playerStats;
@@ -49,8 +43,7 @@ public class WeaponUpgrade : MonoBehaviour
                 // 아이템 부족
                 //사용골드 반환 
                 playerStats.AddGold(level*_mult);
-                
-               
+    
                 return;
 
             }

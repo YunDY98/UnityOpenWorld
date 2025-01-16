@@ -4,7 +4,7 @@ using System;
 
 
 
-public class InventorySystem : MonoBehaviour,IInventoryModel
+public class Inventory : MonoBehaviour,IInventoryModel
 {
     
     public Dictionary<string,ItemInfo> items = new();
@@ -42,10 +42,7 @@ public class InventorySystem : MonoBehaviour,IInventoryModel
         }   
        
        
-        InvenUpdateEvent?.Invoke(items);
-
-        
-        
+        InvenUpdateEvent?.Invoke(items);   
         
     }
     void Update()
@@ -98,7 +95,7 @@ public class InventorySystem : MonoBehaviour,IInventoryModel
         }
         else
         {   
-           
+            // 아이템 생성
             CreateItemEvent?.Invoke(itemName,quantity);
         }
 
@@ -113,7 +110,6 @@ public class InventorySystem : MonoBehaviour,IInventoryModel
             if(quantity == 0)
             {
 	            //보유 하지 않은 아이템 
-               
                 ItemWarningEvent?.Invoke();
 	            return false;
 	        }
@@ -146,8 +142,6 @@ public class InventorySystem : MonoBehaviour,IInventoryModel
             //보유 하지 않은 아이템
             return false;
         }
-        
-       
     }
 
     public Sprite LoadSprite(string itemName)
@@ -158,13 +152,8 @@ public class InventorySystem : MonoBehaviour,IInventoryModel
                 return items[itemName].sprite;
 
         }
-            
-        
         return Resources.Load<Sprite>($"Sprites/{itemName}"); 
     }
-
-   
-
     public void ItemDictionaryAdd(ItemInfo _itemInfo)
     {
         
@@ -177,4 +166,8 @@ public class InventorySystem : MonoBehaviour,IInventoryModel
         return items;
     }
     
+    public int GetItemCount()
+    {
+        return items.Count;
+    }
 }

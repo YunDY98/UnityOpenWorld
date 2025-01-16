@@ -31,7 +31,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private RectTransform rectSkill;
 
     //인벤토리
-    [SerializeField] private GameObject inventory;
+    [SerializeField] private GameObject inventoryUI;
     [SerializeField] private RectTransform rectInventory;
 
     //마우스 감도 
@@ -52,7 +52,7 @@ public class UIManager : MonoBehaviour
     private PlayerStats playerStats;
     private GameManager gameManager;
 
-    private InventorySystem inventorySystem;
+    private Inventory inventory;
 
     private static UIManager _instance;
     
@@ -97,7 +97,7 @@ public class UIManager : MonoBehaviour
       
         playerStats = PlayerStats.playerStats;
         gameManager = GameManager.gameManager;
-        inventorySystem = FindObjectOfType<InventorySystem>();
+        inventory = FindObjectOfType<Inventory>();
 
 
         // 이벤트 구독
@@ -137,7 +137,7 @@ public class UIManager : MonoBehaviour
         ToggleUI(KeyCode.K,skill,rectSkill);
         ToggleUI(KeyCode.M,keyboard,rectKeyboard);
         ToggleUI(KeyCode.Escape,esc,rectESC);
-        ToggleUI(KeyCode.I,inventory,rectInventory);
+        ToggleUI(KeyCode.I,inventoryUI,rectInventory);
 
     }
 

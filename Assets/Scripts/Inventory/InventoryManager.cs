@@ -5,7 +5,7 @@ using UnityEngine;
 public class InventoryManager : MonoBehaviour
 {
     public InventoryPresenter presenter;
-    //private InventorySystem inventorySystem;
+    private Inventory inventory;
     private InventoryUI inventoryUI;
 
     public static InventoryManager Instance { get; private set; }
@@ -31,7 +31,7 @@ public class InventoryManager : MonoBehaviour
 
         
         // Model
-        //inventorySystem = FindObjectOfType<InventorySystem>();
+        inventory = FindObjectOfType<Inventory>();
        
 
 
@@ -47,7 +47,8 @@ public class InventoryManager : MonoBehaviour
         
 
         // Presenter 초기화 및 연결
-        presenter = new InventoryPresenter(FindObjectOfType<InventorySystem>(),FindObjectOfType<InventoryUI>());
+        presenter = new InventoryPresenter(FindObjectOfType<Inventory>(),FindObjectOfType<InventoryUI>());
+       
 
         //inventoryUI.Initialize(presenter);
       
