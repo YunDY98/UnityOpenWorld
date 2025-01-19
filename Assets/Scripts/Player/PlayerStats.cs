@@ -109,7 +109,7 @@ public class PlayerStats : MonoBehaviour
         get { return _hp; }
         set
         {
-            _hp = value;
+            _hp = Mathf.Clamp(value, 0, maxHp);
             HpSlider.Invoke((float)_hp/maxHp);
            
         }
