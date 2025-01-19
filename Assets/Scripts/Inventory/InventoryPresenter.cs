@@ -27,7 +27,7 @@ public class InventoryPresenter
         view.ItemDictionaryAddEvent += ItemDictionaryAdd;
         model.ItemWarningEvent += ItemWarning;
         
-        //view.Initialize(this);
+       
        
         
        
@@ -46,6 +46,7 @@ public class InventoryPresenter
     void TextCnt(ItemInfo item)
     {
         view.TextCnt(item);
+        
     }
 
     void CreateItem(string itemName,int quantity)
@@ -65,11 +66,13 @@ public class InventoryPresenter
     
     public void AddItem(string itemName,int quantity)
     {
+       
         model.AddItem(itemName,quantity);
     }
 
     public bool UseItem(string itemName,int useQuantity)
     {
+        
         return model.UseItem(itemName,useQuantity);
     }
 

@@ -70,7 +70,7 @@ public class SoldierFire : CharacterAtk
        
         if(GameManager.gameManager.isUI)
         {
-            print("amkwl");
+            
             return;
         }
         

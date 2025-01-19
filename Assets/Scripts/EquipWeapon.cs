@@ -10,7 +10,7 @@ public class EquipWeapon : MonoBehaviour
     {
         if(Input.GetKeyUp(KeyCode.F))
         {
-            Debug.Log("fff");
+            
             // 카메라의 위치와 방향으로 레이를 생성합니다.
             Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
             RaycastHit hitInfo; // 레이캐스트가 충돌한 정보를 담을 구조체

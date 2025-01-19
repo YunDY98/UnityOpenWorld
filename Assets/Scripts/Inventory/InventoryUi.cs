@@ -15,7 +15,6 @@ public class InventoryUI : MonoBehaviour, IInventoryView
 
     public event Action<ItemInfo> ItemDictionaryAddEvent;
     
-    //InventoryPresenter inventoryPresenter;
    
     public void ClearItems()
     {
@@ -92,4 +91,6 @@ public class InventoryUI : MonoBehaviour, IInventoryView
         }
     }
 
+    
+    
 }

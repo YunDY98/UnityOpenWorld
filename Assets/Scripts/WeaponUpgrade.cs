@@ -14,16 +14,25 @@ public class WeaponUpgrade : MonoBehaviour
 
     public TextMeshProUGUI useItem;
 
-    InventoryPresenter presenter;
+    public InventoryPresenter presenter;
     int level = 0;
     
     PlayerStats playerStats;
-    void OnEnable()
+
+    void Awake()
     {
         playerStats = PlayerStats.playerStats;
+        presenter = FindObjectOfType<InventoryManager>().presenter; 
+       
+       
+
+    }
+    void OnEnable()
+    {
+        
         who = playerStats.selectCharacter;
         level = playerStats.weaponDictionary[who];
-        presenter = InventoryManager.Instance.presenter;
+       
         UpdateUI(level);
 
     }

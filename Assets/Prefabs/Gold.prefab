@@ -138,6 +138,8 @@ MonoBehaviour:
   quantity: 1
   gold: 1000000
   exp: 4000
+  a: 10
+  itemPool: {fileID: 0}
 --- !u!114 &8158662921966588960
 MonoBehaviour:
   m_ObjectHideFlags: 0
