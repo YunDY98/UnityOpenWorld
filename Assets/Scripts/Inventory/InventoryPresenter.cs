@@ -72,9 +72,9 @@ public class InventoryPresenter
 
     public bool UseItem(string itemName,int useQuantity)
     {
-        if(itemName == "HP")
+        if(itemName == "UseHPPotion")
         {
-            PlayerStats.playerStats.HP += 100;
+            PlayerStats.playerStats.HP += 10;
         }
         
         return model.UseItem(itemName,useQuantity);

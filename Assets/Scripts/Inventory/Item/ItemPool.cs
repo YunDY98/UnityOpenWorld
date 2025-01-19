@@ -43,11 +43,8 @@ public class ItemPool : MonoBehaviour
     {
         foreach (var dropItem in dropItems)
         {
-           
-           
             float _rate = dropItem.rate;
             
-           
             int _count = Mathf.RoundToInt(_rate * 20); // 확률 기반으로 개수 계산
             for (int i = 0; i < _count; i++)
             {

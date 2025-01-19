@@ -48,7 +48,7 @@ public class InventoryUI : MonoBehaviour, IInventoryView
 
             GameObject _itemObject = Instantiate(invenItem,content.transform);
 
-           // if(dic.Value.isUseItem) _itemObject.AddComponent<DragUI>();
+            
            
             Sprite _sprite = LoadSpriteEvent?.Invoke(dic.Key);
            
@@ -59,7 +59,9 @@ public class InventoryUI : MonoBehaviour, IInventoryView
 
            
             TextCnt(items[dic.Key]);
-        
+
+            AddUseButton(dic.Key,_itemObject);
+            
         }
     }
 
@@ -84,9 +86,11 @@ public class InventoryUI : MonoBehaviour, IInventoryView
         TextMeshProUGUI _itemCntText = _itemObject.GetComponentInChildren<TextMeshProUGUI>();
         _itemCntText.text = quantity.ToString();
 
-        ItemInfo _itemInfo = new ItemInfo(itemName,quantity,_sprite,_itemCntText);
+        ItemInfo _itemInfo = new(itemName,quantity,_sprite,_itemCntText);
         
         ItemDictionaryAddEvent?.Invoke(_itemInfo);
+
+        AddUseButton(itemName,_itemObject);
     }
 
     public void TextCnt(ItemInfo item)
@@ -111,6 +115,16 @@ public class InventoryUI : MonoBehaviour, IInventoryView
 
         presenter.UseItem(itemName,quantity);
 
+    }
+
+    public void AddUseButton(string itemName,GameObject gameObject)
+    {
+        if(itemName[..3] == "Use")
+        {
+            
+            Button itemButton = gameObject.GetComponent<Button>();
+            itemButton.onClick.AddListener(() => UseItem(itemName, 1));
+        }
     }
 
     

@@ -158,9 +158,9 @@ public class ItemInfo
     public int quantity;
     public Sprite sprite;
     public TextMeshProUGUI text;
-    public bool isUseItem;
+    public bool isUsable;
     
-    public ItemInfo(string itemName, int quantity, Sprite sprite = null, TextMeshProUGUI text = null, bool isUseItem = false)
+    public ItemInfo(string itemName, int quantity, Sprite sprite = null, TextMeshProUGUI text = null, bool isUsable = false)
     {
         this.itemName = itemName;
         
@@ -170,7 +170,7 @@ public class ItemInfo
 
         this.text = text;
 
-        this.isUseItem = isUseItem;
+        this.isUsable = isUsable;
     }
    
 }

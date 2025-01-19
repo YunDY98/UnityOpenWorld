@@ -37,6 +37,7 @@ public class Inventory : MonoBehaviour,IInventoryModel
         for(int i=0; i< playerData.items.Length; ++i )
         {
             ItemInfo _item = new(playerData.items[i].itemName,playerData.items[i].quantity);
+
             items.Add(playerData.items[i].itemName,_item);
             
         }   
@@ -95,6 +96,7 @@ public class Inventory : MonoBehaviour,IInventoryModel
         {   
             // 아이템 생성
             CreateItemEvent?.Invoke(itemName,quantity);
+            
         }
 
     }

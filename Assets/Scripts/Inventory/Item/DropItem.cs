@@ -14,7 +14,8 @@ public class DropItem : MonoBehaviour
     public int gold;
     public int exp;
 
-    public bool isUseItem;
+
+   
 
     [HideInInspector]public ItemPool itemPool;
     [HideInInspector]public InventoryPresenter presenter;
