@@ -120,10 +120,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: ItemMasa
-  rate: 0.5
+  rate: 1
   quantity: 10
   gold: 10
   exp: 10
+  itemPool: {fileID: 0}
 --- !u!114 &-2681866326712318057
 MonoBehaviour:
   m_ObjectHideFlags: 0

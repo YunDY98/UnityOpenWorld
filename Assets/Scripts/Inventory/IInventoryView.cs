@@ -14,6 +14,8 @@ public interface IInventoryView
     void TextCnt(ItemInfo item);
     void InvenUpdate(Dictionary<string, ItemInfo> items);
 
+    void ItemWarning();
+
   
    
 }

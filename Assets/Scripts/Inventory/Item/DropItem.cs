@@ -14,11 +14,12 @@ public class DropItem : MonoBehaviour
     public int gold;
     public int exp;
 
-    public int a = 3;
-    public ItemPool itemPool;
-    public InventoryPresenter presenter;
+    public bool isUseItem;
 
-   public InventoryUI  inventoryUI;
+    [HideInInspector]public ItemPool itemPool;
+    [HideInInspector]public InventoryPresenter presenter;
+
+    
     
     
  

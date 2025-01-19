@@ -14,6 +14,15 @@ public class InventoryUI : MonoBehaviour, IInventoryView
     public event IInventoryView.LoadSpriteDelegate LoadSpriteEvent;
 
     public event Action<ItemInfo> ItemDictionaryAddEvent;
+
+    public InventoryPresenter presenter;
+
+    void Start()
+    {
+        presenter = FindObjectOfType<InventoryManager>().presenter;
+
+
+    }
     
    
     public void ClearItems()
@@ -39,6 +48,7 @@ public class InventoryUI : MonoBehaviour, IInventoryView
 
             GameObject _itemObject = Instantiate(invenItem,content.transform);
 
+           // if(dic.Value.isUseItem) _itemObject.AddComponent<DragUI>();
            
             Sprite _sprite = LoadSpriteEvent?.Invoke(dic.Key);
            
@@ -89,6 +99,18 @@ public class InventoryUI : MonoBehaviour, IInventoryView
         {
             item.text.text = item.quantity.ToString();
         }
+    }
+
+    public void ItemWarning()
+    {
+        UIManager.uiManager.ItemWarning();
+    }
+
+    public void UseItem(string itemName,int quantity)
+    {
+
+        presenter.UseItem(itemName,quantity);
+
     }
 
     

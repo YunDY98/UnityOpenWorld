@@ -87,7 +87,7 @@ public class Inventory : MonoBehaviour,IInventoryModel
             {
                 InvenUpdateEvent?.Invoke(items);
             }   
-            //TextCntEvent(items,itemName);
+            
             TextCntEvent?.Invoke(items[itemName]);
                    
         }

@@ -72,6 +72,10 @@ public class InventoryPresenter
 
     public bool UseItem(string itemName,int useQuantity)
     {
+        if(itemName == "HP")
+        {
+            PlayerStats.playerStats.HP += 100;
+        }
         
         return model.UseItem(itemName,useQuantity);
     }
@@ -83,7 +87,7 @@ public class InventoryPresenter
 
     void ItemWarning()
     {
-        UIManager.uiManager.ItemWarning();
+        view.ItemWarning();
     }
 
   
