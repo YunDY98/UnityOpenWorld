@@ -11,6 +11,7 @@ public class ItemPoolInfo
  
     public string itemName;
     public float rate;
+
     
 }
 

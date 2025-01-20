@@ -119,11 +119,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5056c786d3f646f9a212b9b92360062, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: ItemSoldier
   rate: 1
-  quantity: 10
   gold: 10
   exp: 10
+  item:
+    itemName: ItemSoldier
+    quantity: 1
+    type: 2
   itemPool: {fileID: 0}
 --- !u!114 &-2681866326712318057
 MonoBehaviour:

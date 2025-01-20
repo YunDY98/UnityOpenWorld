@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.IO;
 using TMPro;
+using System.ComponentModel;
+using UnityEngine.UIElements;
 
 
 
@@ -58,7 +60,7 @@ public class DataManager : MonoBehaviour
         int _weaponCount = PlayerStats.playerStats.weaponDictionary.Count;
 
         _pd.skills = new Skill[_skillCount];
-        _pd.items = new SaveItemInfo[_itemCount];
+        _pd.items = new ItemInfo[_itemCount];
         _pd.weapons = new WeaponInfo[_weaponCount];
        
         int _index = 0;
@@ -72,8 +74,8 @@ public class DataManager : MonoBehaviour
         
         foreach(var item in inventory.GetItemsDictionary())
         {
-            
-            _pd.items[_index++] = new SaveItemInfo(item.Key, item.Value.quantity);
+           
+            _pd.items[_index++] = item.Value.itemInfo;
             
     
         }
@@ -144,7 +146,7 @@ public class PlayerData
     public int level;
     public int exp;
     public int gold;
-    public SaveItemInfo[] items;
+    public ItemInfo[] items;
     public Skill[] skills;
 
     public WeaponInfo[] weapons;
@@ -152,40 +154,42 @@ public class PlayerData
 }
 
 [System.Serializable]
-public class ItemInfo
+public class ItemData
 {
-    public string itemName;
-    public int quantity;
+    public ItemInfo itemInfo;
     public Sprite sprite;
     public TextMeshProUGUI text;
 
-    
-    public ItemInfo(string itemName, int quantity, Sprite sprite = null, TextMeshProUGUI text = null)
-    {
-        this.itemName = itemName;
-        
-        this.quantity = quantity;
+   
 
+    
+
+    
+    public ItemData(ItemInfo itemInfo, Sprite sprite = null, TextMeshProUGUI text = null)
+    {
+        this.itemInfo = itemInfo;
         this.sprite = sprite;
 
         this.text = text;
 
-       
+        
     }
    
 }
 [System.Serializable]
-public class SaveItemInfo
+public class ItemInfo
 {
     public string itemName;
     public int quantity;
 
-   
-    public SaveItemInfo(string itemName, int quantity)
+    public ItemType type;
+    public ItemInfo(string itemName, int quantity,ItemType type)
     {
         this.itemName = itemName;
         
         this.quantity = quantity;
+
+        this.type = type;
     }
    
 }
@@ -229,6 +233,15 @@ public enum SelectCharacter
 {
     Masa,
     Soldier,
+}
+
+public enum ItemType
+{
+    None,
+    Consumable,
+    ETC,
+
+
 }
     
 

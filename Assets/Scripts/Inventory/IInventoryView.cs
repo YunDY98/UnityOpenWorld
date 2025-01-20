@@ -8,11 +8,11 @@ public interface IInventoryView
     
     delegate Sprite LoadSpriteDelegate(string itemName);  
     event LoadSpriteDelegate LoadSpriteEvent; 
-    event Action<ItemInfo> ItemDictionaryAddEvent;
+    event Action<ItemData> ItemDictionaryAddEvent;
     void ClearItems();
-    void CreateItem(string itemName,int quantity);
-    void TextCnt(ItemInfo item);
-    void InvenUpdate(Dictionary<string, ItemInfo> items);
+    void CreateItem(ItemInfo item);
+    void TextCnt(ItemData item);
+    void InvenUpdate(Dictionary<string, ItemData> items);
 
     void ItemWarning();
 
@@ -20,4 +20,4 @@ public interface IInventoryView
    
 }
  // public void Initialize(InventoryPresenter inventoryPresenter);
- //TextMeshProUGUI AddItemToUI(Sprite sprite, ItemInfo item);
+ //TextMeshProUGUI AddItemToUI(Sprite sprite, ItemData item);

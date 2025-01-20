@@ -7,16 +7,16 @@ public interface IInventoryModel
 {
     event Action ItemWarningEvent;
 
-    event Action<Dictionary<string, ItemInfo>> InvenUpdateEvent;
+    event Action<Dictionary<string, ItemData>> InvenUpdateEvent;
   
-    event Action<ItemInfo> TextCntEvent;
+    event Action<ItemData> TextCntEvent;
 
-    event Action<string,int> CreateItemEvent;
-    void AddItem(string itemName,int quantity);
+    event Action<ItemInfo> CreateItemEvent;
+    void AddItem(ItemInfo item);
     bool UseItem(string itemName,int useQuantity);
     Sprite LoadSprite(string itemName);
-    void ItemDictionaryAdd(ItemInfo _itemInfo);
-    Dictionary<string,ItemInfo> GetItemsDictionary();
+    void ItemDictionaryAdd(ItemData _ItemData);
+    Dictionary<string,ItemData> GetItemsDictionary();
 
     int GetItemCount();
     

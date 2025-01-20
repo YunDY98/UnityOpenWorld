@@ -43,15 +43,15 @@ public class InventoryPresenter
         
     // }   
 
-    void TextCnt(ItemInfo item)
+    void TextCnt(ItemData item)
     {
         view.TextCnt(item);
         
     }
 
-    void CreateItem(string itemName,int quantity)
+    void CreateItem(ItemInfo item)
     {
-        view.CreateItem(itemName,quantity);
+        view.CreateItem(item);
     }
 
     public Sprite LoadSprite(string itemName)
@@ -59,20 +59,20 @@ public class InventoryPresenter
         return model.LoadSprite(itemName);
     }
 
-    void ItemDictionaryAdd(ItemInfo itemInfo)
+    void ItemDictionaryAdd(ItemData itemInfo)
     {
         model.ItemDictionaryAdd(itemInfo);
     }
     
-    public void AddItem(string itemName,int quantity)
+    public void AddItem(ItemInfo item)
     {
        
-        model.AddItem(itemName,quantity);
+        model.AddItem(item);
     }
 
     public bool UseItem(string itemName,int useQuantity)
     {
-        if(itemName == "UseHPPotion")
+        if(itemName == "HPPotion")
         {
             PlayerStats.playerStats.HP += 10;
         }
@@ -80,7 +80,7 @@ public class InventoryPresenter
         return model.UseItem(itemName,useQuantity);
     }
 
-    void InvenUpdate(Dictionary<string, ItemInfo> items)
+    void InvenUpdate(Dictionary<string, ItemData> items)
     {
         view.InvenUpdate(items);
     }

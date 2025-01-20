@@ -18,9 +18,9 @@ public class ItemPresenter
 
     }
 
-    public void AddItem(string itemName,int quantity)
+    public void AddItem(ItemInfo itemInfo)
     {
-        model.AddItem(itemName,quantity);
+        model.AddItem(itemInfo);
 
     }
 

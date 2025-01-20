@@ -13,7 +13,7 @@ public class InventoryUI : MonoBehaviour, IInventoryView
 
     public event IInventoryView.LoadSpriteDelegate LoadSpriteEvent;
 
-    public event Action<ItemInfo> ItemDictionaryAddEvent;
+    public event Action<ItemData> ItemDictionaryAddEvent;
 
     public InventoryPresenter presenter;
 
@@ -34,15 +34,15 @@ public class InventoryUI : MonoBehaviour, IInventoryView
         }
 
     }
-    public void InvenUpdate(Dictionary<string, ItemInfo> items)
+    public void InvenUpdate(Dictionary<string, ItemData> items)
     {
         
         ClearItems();
 
-        foreach(KeyValuePair<string, ItemInfo> dic in items)
+        foreach(KeyValuePair<string, ItemData> dic in items)
         {
             // 아이템수가 0개라면 
-            if(dic.Value.quantity == 0)
+            if(dic.Value.itemInfo.quantity == 0)
                 continue;
             
 
@@ -60,12 +60,12 @@ public class InventoryUI : MonoBehaviour, IInventoryView
            
             TextCnt(items[dic.Key]);
 
-            AddUseButton(dic.Key,_itemObject);
+            AddUseButton(dic.Value.itemInfo,_itemObject);
             
         }
     }
 
-    // public TextMeshProUGUI AddItemToUI(Sprite sprite, ItemInfo item)
+    // public TextMeshProUGUI AddItemToUI(Sprite sprite, ItemData item)
     // {
     //     GameObject _itemObject = Instantiate(invenItem,content.transform);
     //     _itemObject.GetComponent<Image>().sprite = sprite;
@@ -75,33 +75,33 @@ public class InventoryUI : MonoBehaviour, IInventoryView
     //     return _itemCntText;
     // }
 
-    public void CreateItem(string itemName,int quantity)
+    public void CreateItem(ItemInfo item)
     {
         GameObject _itemObject = Instantiate(invenItem,content.transform);  
 
-        Sprite _sprite = LoadSpriteEvent?.Invoke(itemName);
+        Sprite _sprite = LoadSpriteEvent?.Invoke(item.itemName);
        
         _itemObject.GetComponent<Image>().sprite = _sprite;
         
         TextMeshProUGUI _itemCntText = _itemObject.GetComponentInChildren<TextMeshProUGUI>();
-        _itemCntText.text = quantity.ToString();
+        _itemCntText.text = item.quantity.ToString();
 
-        ItemInfo _itemInfo = new(itemName,quantity,_sprite,_itemCntText);
+        ItemData _ItemData = new(item,_sprite,_itemCntText);
         
-        ItemDictionaryAddEvent?.Invoke(_itemInfo);
+        ItemDictionaryAddEvent?.Invoke(_ItemData);
 
-        AddUseButton(itemName,_itemObject);
+        AddUseButton(item,_itemObject);
     }
 
-    public void TextCnt(ItemInfo item)
+    public void TextCnt(ItemData item)
     {
-        if(item.quantity > 999)
+        if(item.itemInfo.quantity > 999)
         {
             item.text.text = "999+";
         }
         else
         {
-            item.text.text = item.quantity.ToString();
+            item.text.text = item.itemInfo.quantity.ToString();
         }
     }
 
@@ -117,13 +117,13 @@ public class InventoryUI : MonoBehaviour, IInventoryView
 
     }
 
-    public void AddUseButton(string itemName,GameObject gameObject)
+    public void AddUseButton(ItemInfo itemInfo,GameObject gameObject)
     {
-        if(itemName[..3] == "Use")
+        if(itemInfo.type == ItemType.Consumable)
         {
             
             Button itemButton = gameObject.GetComponent<Button>();
-            itemButton.onClick.AddListener(() => UseItem(itemName, 1));
+            itemButton.onClick.AddListener(() => UseItem(itemInfo.itemName, 1));
         }
     }
 

@@ -5,15 +5,11 @@ using UnityEngine;
 
 public class DropItem : MonoBehaviour
 {
-    
-    
-    public string itemName;
-
     public float rate;
-    public int quantity;
     public int gold;
     public int exp;
 
+    public ItemInfo item;
 
    
 
@@ -45,7 +41,7 @@ public class DropItem : MonoBehaviour
         if(other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
           
-            if(itemName == "Gold")
+            if(item.itemName == "Gold")
             {
                 PlayerStats.playerStats.AddGold(gold);
                 PlayerStats.playerStats.AddExp(exp);
@@ -55,7 +51,7 @@ public class DropItem : MonoBehaviour
             else
             {
 
-                presenter.AddItem(itemName, quantity);
+                presenter.AddItem(item);
               
 
             }

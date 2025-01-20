@@ -7,17 +7,17 @@ using System;
 public class Inventory : MonoBehaviour,IInventoryModel
 {
     
-    public Dictionary<string,ItemInfo> items = new();
+    public Dictionary<string,ItemData> items = new();
     PlayerStats playerStats;
     PlayerData playerData;
 
     public event Action ItemWarningEvent;
 
-    public event Action<Dictionary<string, ItemInfo>> InvenUpdateEvent;
+    public event Action<Dictionary<string, ItemData>> InvenUpdateEvent;
   
-    public event Action<ItemInfo> TextCntEvent;
+    public event Action<ItemData> TextCntEvent;
 
-    public event Action<string,int> CreateItemEvent;
+    public event Action<ItemInfo> CreateItemEvent;
 
 
    
@@ -36,7 +36,9 @@ public class Inventory : MonoBehaviour,IInventoryModel
 
         for(int i=0; i< playerData.items.Length; ++i )
         {
-            ItemInfo _item = new(playerData.items[i].itemName,playerData.items[i].quantity);
+            // ItemData _item = new(playerData.items[i].itemName,playerData.items[i].quantity);
+            // _item.type = playerData.items[i].type;
+            ItemData _item = new(playerData.items[i]);
 
             items.Add(playerData.items[i].itemName,_item);
             
@@ -52,8 +54,8 @@ public class Inventory : MonoBehaviour,IInventoryModel
         #if UNITY_EDITOR
         if(Input.GetKeyUp(KeyCode.Alpha0))
         {
-            AddItem("ItemMasa",1000);
-            AddItem("ItemSoldier",1000);
+            // AddItem("ItemMasa",1000);
+            // AddItem("ItemSoldier",1000);
            
         }
 
@@ -61,9 +63,9 @@ public class Inventory : MonoBehaviour,IInventoryModel
         {
             
             if(items.ContainsKey("ItemMasa"))
-                UseItem("ItemMasa",items["ItemMasa"].quantity);
+                UseItem("ItemMasa",items["ItemMasa"].itemInfo.quantity);
             if(items.ContainsKey("ItemSoldier"))
-                UseItem("ItemSoldier",items["ItemSoldier"].quantity);
+                UseItem("ItemSoldier",items["ItemSoldier"].itemInfo.quantity);
             
         }
 
@@ -73,29 +75,29 @@ public class Inventory : MonoBehaviour,IInventoryModel
     }
 
 
-    public void AddItem(string itemName,int quantity)
+    public void AddItem(ItemInfo item)
     {
         
         //딕셔너리에 아이템이 존재한다면 
-        if(items.ContainsKey(itemName))
+        if(items.ContainsKey(item.itemName))
         {
     
             // 아이템 수량 업데이트
-            items[itemName].quantity += quantity;
+            items[item.itemName].itemInfo.quantity += item.quantity;
 
             //0에서 증가한 경우 
-            if (items[itemName].quantity == quantity) 
+            if (items[item.itemName].itemInfo.quantity == item.quantity) 
             {
                 InvenUpdateEvent?.Invoke(items);
             }   
             
-            TextCntEvent?.Invoke(items[itemName]);
+            TextCntEvent?.Invoke(items[item.itemName]);
                    
         }
         else
         {   
             // 아이템 생성
-            CreateItemEvent?.Invoke(itemName,quantity);
+            CreateItemEvent?.Invoke(item);
             
         }
 
@@ -105,7 +107,7 @@ public class Inventory : MonoBehaviour,IInventoryModel
     {
         if(items.ContainsKey(itemName))
         {
-            int quantity = items[itemName].quantity;
+            int quantity = items[itemName].itemInfo.quantity;
 
             if(quantity == 0)
             {
@@ -124,13 +126,13 @@ public class Inventory : MonoBehaviour,IInventoryModel
             if(_after == 0)
             {   
                 //아이템 모두 소모시
-                items[itemName].quantity = _after;
+                items[itemName].itemInfo.quantity = _after;
 
            
                 InvenUpdateEvent?.Invoke(items);
                 return true;
             }
-            items[itemName].quantity = _after;
+            items[itemName].itemInfo.quantity = _after;
 
             
             TextCntEvent?.Invoke(items[itemName]);
@@ -154,14 +156,14 @@ public class Inventory : MonoBehaviour,IInventoryModel
         }
         return Resources.Load<Sprite>($"Sprites/{itemName}"); 
     }
-    public void ItemDictionaryAdd(ItemInfo _itemInfo)
+    public void ItemDictionaryAdd(ItemData _ItemData)
     {
         
-        items.Add(_itemInfo.itemName,_itemInfo);
+        items.Add(_ItemData.itemInfo.itemName,_ItemData);
 
     }
 
-    public Dictionary<string,ItemInfo> GetItemsDictionary()
+    public Dictionary<string,ItemData> GetItemsDictionary()
     {
         return items;
     }
