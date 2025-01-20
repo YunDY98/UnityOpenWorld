@@ -1,14 +1,27 @@
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
-public class ItemData : MonoBehaviour
-{
-    TMP_Text tmp_Text;
-    Image image;
 
-    void Start()
+
+
+
+[CreateAssetMenu(fileName = "NewItem", menuName = "SOItem/Item")]
+public class ItemData : ScriptableObject
+{
+    public string itemName;       
+    public Sprite itemIcon;       
+    public ItemType itemType;   
+    
+   
+    public virtual void Use()
     {
-        tmp_Text = GetComponent<TMP_Text>();
-        image = GetComponent<Image>();
+        Debug.Log("Use Item");
     }
+}
+
+public enum ItemType
+{
+    None,
+    Consumable,
+    ETC,
+
+
 }
