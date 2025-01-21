@@ -124,7 +124,7 @@ MonoBehaviour:
   exp: 10
   item:
     itemName: ItemSoldier
-    quantity: 1
+    quantity: 100
     type: 2
   itemPool: {fileID: 0}
 --- !u!114 &-2681866326712318057

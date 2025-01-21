@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4961012221589294119}
   - component: {fileID: 7099498686038899899}
   m_Layer: 10
-  m_Name: UseHPPotion
+  m_Name: HPPotion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -121,12 +121,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5056c786d3f646f9a212b9b92360062, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rate: 10
+  rate: 1
   gold: 0
   exp: 0
   item:
     itemName: HPPotion
-    quantity: 1
+    quantity: 10
     type: 1
   itemPool: {fileID: 0}
 --- !u!114 &7099498686038899899

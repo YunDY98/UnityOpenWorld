@@ -178,15 +178,14 @@ public class KeySetting : MonoBehaviour, IDropHandler
 }
 public enum SkillEnum
 {
-    // 1~50 공격
-    // 51~100 버프
-    // 그외 
+    
     none = 0,
     MasaAtk1,
     MasaAtk2,
     MasaAtk3,
     CommonSpdUp,
     CommonAtkUp,
+    HPPotion,
 
 
 

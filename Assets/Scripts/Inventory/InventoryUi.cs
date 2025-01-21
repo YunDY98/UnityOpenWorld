@@ -23,6 +23,11 @@ public class InventoryUI : MonoBehaviour, IInventoryView
 
 
     }
+
+    void Update()
+    {
+        ShortKey(SkillEnum.HPPotion);
+    }
     
    
     public void ClearItems()
@@ -52,7 +57,7 @@ public class InventoryUI : MonoBehaviour, IInventoryView
            
             Sprite _sprite = LoadSpriteEvent?.Invoke(dic.Key);
            
-           _itemObject.GetComponent<Image>().sprite = _sprite;
+           _itemObject.GetComponentInChildren<Image>().sprite = _sprite;
             
             TextMeshProUGUI _itemCntText = _itemObject.GetComponentInChildren<TextMeshProUGUI>();
             items[dic.Key].text = _itemCntText;
@@ -60,7 +65,7 @@ public class InventoryUI : MonoBehaviour, IInventoryView
            
             TextCnt(items[dic.Key]);
 
-            AddUseButton(dic.Value.itemInfo,_itemObject);
+            IsConsumable(dic.Value.itemInfo,_itemObject);
             
         }
     }
@@ -81,7 +86,7 @@ public class InventoryUI : MonoBehaviour, IInventoryView
 
         Sprite _sprite = LoadSpriteEvent?.Invoke(item.itemName);
        
-        _itemObject.GetComponent<Image>().sprite = _sprite;
+        _itemObject.GetComponentInChildren<Image>().sprite = _sprite;
         
         TextMeshProUGUI _itemCntText = _itemObject.GetComponentInChildren<TextMeshProUGUI>();
         _itemCntText.text = item.quantity.ToString();
@@ -90,7 +95,7 @@ public class InventoryUI : MonoBehaviour, IInventoryView
         
         ItemDictionaryAddEvent?.Invoke(_ItemData);
 
-        AddUseButton(item,_itemObject);
+        IsConsumable(item,_itemObject);
     }
 
     public void TextCnt(ItemData item)
@@ -117,15 +122,32 @@ public class InventoryUI : MonoBehaviour, IInventoryView
 
     }
 
-    public void AddUseButton(ItemInfo itemInfo,GameObject gameObject)
+    public void IsConsumable(ItemInfo itemInfo,GameObject gameObject)
     {
         if(itemInfo.type == ItemType.Consumable)
         {
             
-            Button itemButton = gameObject.GetComponent<Button>();
+            Button itemButton = gameObject.GetComponentInChildren<Button>();
             itemButton.onClick.AddListener(() => UseItem(itemInfo.itemName, 1));
+            gameObject.GetComponentInChildren<SkillInfo>().key = itemInfo.itemName;
+        }
+        else
+        {
+            gameObject.GetComponentInChildren<DragUI>().Destroy();
         }
     }
+
+    void ShortKey(SkillEnum skillEnum)
+    {
+        if(Input.GetKeyUp(GameManager.gameManager.userKeys[(int)skillEnum]))
+        {
+            UseItem(skillEnum.ToString(),1);
+        }
+
+    }
+   
+        
+    
 
     
     

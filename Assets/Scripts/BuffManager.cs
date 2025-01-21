@@ -91,21 +91,21 @@ public class BuffManager : MonoBehaviour
         
     }
 
-    void BuffDuration(string _buffName,float _duration,int _onBuff,float _buffAmount)
+    void BuffDuration(string buffName,float duration,int onBuff,float buffAmount)
     {
         
         GameObject _buffWindow = Instantiate(buffPrefab,contentPanel);
         Sprite _buffSprite;
         // 이미지 로드 및 할당
-        if(!spriteDic.ContainsKey(_buffName))
+        if(!spriteDic.ContainsKey(buffName))
         {
-            _buffSprite = Resources.Load<Sprite>("Sprites/" + _buffName); // 이미지 파일 경로
+            _buffSprite = Resources.Load<Sprite>("Sprites/" + buffName); // 이미지 파일 경로
           
-            spriteDic.Add(_buffName, _buffSprite);
+            spriteDic.Add(buffName, _buffSprite);
         }
         else
         {
-            _buffSprite = spriteDic[_buffName];
+            _buffSprite = spriteDic[buffName];
         }
        
        
@@ -126,34 +126,34 @@ public class BuffManager : MonoBehaviour
 
 
 
-        buff += _onBuff;
-        switch(_onBuff)
+        buff += onBuff;
+        switch(onBuff)
         {
             case (int)Buff.CommonSpdUp:
-                playerMove.moveSpeed += _buffAmount;
+                playerMove.moveSpeed += buffAmount;
                 break;
             case (int)Buff.CommonAtkUp:
-                playerStats.AtkDamage += (int)_buffAmount;
+                playerStats.AtkDamage += (int)buffAmount;
                 break;
                 
             
 
         }
         // 버프 지속 시간 동안 타이머 업데이트
-        Tween _Tween = DOTween.To(() => _duration, x => _duration = x, 0, _duration);
+        Tween _Tween = DOTween.To(() => duration, x => duration = x, 0, duration);
         _Tween.OnUpdate(() => 
         {
             
-            if((buff & _onBuff) == 0 )
+            if((buff & onBuff) == 0 )
             {
                 
-                switch(_onBuff)
+                switch(onBuff)
                 {
                     case (int)Buff.CommonSpdUp:
-                        playerMove.moveSpeed -= _buffAmount;
+                        playerMove.moveSpeed -= buffAmount;
                         break;
                     case (int)Buff.CommonAtkUp:
-                        playerStats.AtkDamage -= (int)_buffAmount;
+                        playerStats.AtkDamage -= (int)buffAmount;
                         break;
                 }
             
@@ -165,20 +165,20 @@ public class BuffManager : MonoBehaviour
             }
             
             
-            timeText.text = Mathf.CeilToInt(_duration).ToString();
+            timeText.text = Mathf.CeilToInt(duration).ToString();
         })
         .SetEase(Ease.Linear)
         .OnComplete(() =>
         {
             // 버프 제거
-            buff -= _onBuff;
-            switch(_onBuff)
+            buff -= onBuff;
+            switch(onBuff)
             {
                 case (int)Buff.CommonSpdUp:
-                    playerMove.moveSpeed -= _buffAmount;
+                    playerMove.moveSpeed -= buffAmount;
                     break;
                 case (int)Buff.CommonAtkUp:
-                    playerStats.AtkDamage -= (int)_buffAmount;
+                    playerStats.AtkDamage -= (int)buffAmount;
                     break;
             }
             
@@ -188,10 +188,10 @@ public class BuffManager : MonoBehaviour
 
        
     }
-    int StringToEnum(string _key, Type _enumType)
+    int StringToEnum(string key, Type enumType)
     {
         
-        object _enumValue = System.Enum.Parse(_enumType, _key);
+        object _enumValue = System.Enum.Parse(enumType, key);
 
         
         

@@ -21,8 +21,11 @@ public class DragUI : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointer
 
     public bool delete;
 
+   
+
     void Start()
     {
+        
         rectTransform = GetComponent<RectTransform>();
         canvas = GetComponentInParent<Canvas>();
         
@@ -34,7 +37,7 @@ public class DragUI : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointer
        
 
         image = GetComponent<Image>();
-        if(image.sprite == null)
+        if(image == null||image.sprite == null)
         {   
             return;
         }
@@ -51,7 +54,6 @@ public class DragUI : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointer
             
             
             copiedObject = Instantiate(gameObject,parentRectTransform);
-
             
             rectTransform = copiedObject.GetComponent<RectTransform>();
 
@@ -99,7 +101,7 @@ public class DragUI : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointer
         else
         {
             
-            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(parentRectTransform, eventData.position, eventData.pressEventCamera, out localPointerPosition))
+            if(RectTransformUtility.ScreenPointToLocalPointInRectangle(parentRectTransform, eventData.position, eventData.pressEventCamera, out localPointerPosition))
             {
                 rectTransform.anchoredPosition = originalRectTransformPosition + localPointerPosition - originalPointerPosition;
             }
@@ -117,5 +119,11 @@ public class DragUI : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointer
             copiedObject = null;
             rectTransform = GetComponent<RectTransform>(); // 원래의 RectTransform으로 복구
         }
+    }
+
+    public void Destroy()
+    {
+        
+        Destroy(this);
     }
 }
