@@ -17,10 +17,9 @@ public class InventoryUI : MonoBehaviour, IInventoryView
 
     public InventoryPresenter presenter;
 
-    void Start()
+    public void Initialize(InventoryPresenter presenter)
     {
-        presenter = FindObjectOfType<InventoryManager>().presenter;
-
+        this.presenter = presenter;
 
     }
 

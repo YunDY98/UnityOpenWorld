@@ -16,7 +16,7 @@ public class InventoryManager : MonoBehaviour
         // Presenter 초기화 및 연결
         presenter = new InventoryPresenter(inventory,InventoryUI);
 
-       
+        InventoryUI.Initialize(presenter);
 
     }
 
