@@ -32,10 +32,16 @@ public class DataManager : MonoBehaviour
         // 데이터 파일 경로 설정
         dataFilePath = $"{Application.persistentDataPath}/data.json";
 
-        inventory = FindObjectOfType<Inventory>();
+        //inventory = FindObjectOfType<Inventory>();
     }
 
-   
+    public void SetInventory(IInventoryModel inventory)
+    {   
+        this.inventory = inventory;
+
+    }
+
+ 
    
    
 

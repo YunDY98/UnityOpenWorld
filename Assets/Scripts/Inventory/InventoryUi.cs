@@ -17,7 +17,7 @@ public class InventoryUI : MonoBehaviour, IInventoryView
 
     public InventoryPresenter presenter;
 
-    public void Initialize(InventoryPresenter presenter)
+    public void SetPresenter(InventoryPresenter presenter)
     {
         this.presenter = presenter;
 
