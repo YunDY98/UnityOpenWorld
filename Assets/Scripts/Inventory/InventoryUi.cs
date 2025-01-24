@@ -13,19 +13,21 @@ public class InventoryUI : MonoBehaviour, IInventoryView
 
     public event IInventoryView.LoadSpriteDelegate LoadSpriteEvent;
 
-    public event Action<ItemData> ItemDictionaryAddEvent;
+    public event Action<ItemData> AddItemDictionaryEvent;
 
     public InventoryPresenter presenter;
+
+   
+
+    void Update()
+    {
+        ShortKey(SkillEnum.HPPotion);
+    }
 
     public void SetPresenter(InventoryPresenter presenter)
     {
         this.presenter = presenter;
 
-    }
-
-    void Update()
-    {
-        ShortKey(SkillEnum.HPPotion);
     }
     
    
@@ -92,7 +94,7 @@ public class InventoryUI : MonoBehaviour, IInventoryView
 
         ItemData _ItemData = new(item,_sprite,_itemCntText);
         
-        ItemDictionaryAddEvent?.Invoke(_ItemData);
+        AddItemDictionaryEvent?.Invoke(_ItemData);
 
         IsConsumable(item,_itemObject);
     }

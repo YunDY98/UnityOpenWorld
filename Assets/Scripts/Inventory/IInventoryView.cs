@@ -8,7 +8,7 @@ public interface IInventoryView
     
     delegate Sprite LoadSpriteDelegate(string itemName);  
     event LoadSpriteDelegate LoadSpriteEvent; 
-    event Action<ItemData> ItemDictionaryAddEvent;
+    event Action<ItemData> AddItemDictionaryEvent;
     void ClearItems();
     void CreateItem(ItemInfo item);
     void TextCnt(ItemData item);

@@ -4,12 +4,10 @@ using System;
 
 
 
-public class Inventory : MonoBehaviour,IInventoryModel
+public class Inventory : IInventoryModel
 {
     
-    public Dictionary<string,ItemData> items = new();
-    PlayerStats playerStats;
-    PlayerData playerData;
+    Dictionary<string,ItemData> items = new();
 
     public event Action ItemWarningEvent;
 
@@ -19,60 +17,6 @@ public class Inventory : MonoBehaviour,IInventoryModel
 
     public event Action<ItemInfo> CreateItemEvent;
 
-
-   
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-        
-        playerStats = PlayerStats.playerStats; // 플레이어의 공격력 , 캐릭터 레벨등 상태
-
-        
-
-        playerData = playerStats.playerData;  // 레벨 경험치 재화 등 데이터 
-        if(playerData == null)
-            return;
-
-        for(int i=0; i< playerData.items.Length; ++i )
-        {
-            // ItemData _item = new(playerData.items[i].itemName,playerData.items[i].quantity);
-            // _item.type = playerData.items[i].type;
-            ItemData _item = new(playerData.items[i]);
-
-            items.Add(playerData.items[i].itemName,_item);
-            
-        }   
-       
-       
-        InvenUpdateEvent?.Invoke(items);   
-        
-    }
-    void Update()
-    {
-       
-        #if UNITY_EDITOR
-        if(Input.GetKeyUp(KeyCode.Alpha0))
-        {
-            AddItem(new("ItemMasa",1000,ItemType.ETC));
-            AddItem(new("ItemSoldier",1000,ItemType.ETC));
-           
-        }
-
-        if(Input.GetKeyUp(KeyCode.Alpha9))
-        {
-            
-            if(items.ContainsKey("ItemMasa"))
-                UseItem("ItemMasa",items["ItemMasa"].itemInfo.quantity);
-            if(items.ContainsKey("ItemSoldier"))
-                UseItem("ItemSoldier",items["ItemSoldier"].itemInfo.quantity);
-            
-        }
-
-        
-        #endif
-       
-    }
 
 
     public void AddItem(ItemInfo item)
@@ -156,7 +100,7 @@ public class Inventory : MonoBehaviour,IInventoryModel
         }
         return Resources.Load<Sprite>($"Sprites/{itemName}"); 
     }
-    public void ItemDictionaryAdd(ItemData _ItemData)
+    public void AddItemDictionary(ItemData _ItemData)
     {
         
         items.Add(_ItemData.itemInfo.itemName,_ItemData);
@@ -168,8 +112,35 @@ public class Inventory : MonoBehaviour,IInventoryModel
         return items;
     }
     
-    public int GetItemCount()
+    public int ItemTypeCount()
     {
         return items.Count;
     }
+    
+    // void Update()
+    // {
+       
+    //     #if UNITY_EDITOR
+    //     if(Input.GetKeyUp(KeyCode.Alpha0))
+    //     {
+    //         AddItem(new("ItemMasa",1000,ItemType.ETC));
+    //         AddItem(new("ItemSoldier",1000,ItemType.ETC));
+           
+    //     }
+
+    //     if(Input.GetKeyUp(KeyCode.Alpha9))
+    //     {
+            
+    //         if(items.ContainsKey("ItemMasa"))
+    //             UseItem("ItemMasa",items["ItemMasa"].itemInfo.quantity);
+    //         if(items.ContainsKey("ItemSoldier"))
+    //             UseItem("ItemSoldier",items["ItemSoldier"].itemInfo.quantity);
+            
+    //     }
+
+        
+    //     #endif
+       
+    // }
+
 }

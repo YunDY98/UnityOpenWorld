@@ -35,6 +35,7 @@ public class DataManager : MonoBehaviour
         //inventory = FindObjectOfType<Inventory>();
     }
 
+   
     public void SetInventory(IInventoryModel inventory)
     {   
         this.inventory = inventory;
@@ -61,7 +62,7 @@ public class DataManager : MonoBehaviour
         // 스킬 총 갯수 
         int _skillCount = PlayerStats.playerStats.skillDictionary.Count;
         // 아이템 갯수 
-        int _itemCount = inventory.GetItemCount();
+        int _itemCount = inventory.ItemTypeCount();
 
         int _weaponCount = PlayerStats.playerStats.weaponDictionary.Count;
 

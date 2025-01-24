@@ -4,6 +4,7 @@ using System.Xml;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.InputSystem.Interactions;
 
 
 public class InventoryPresenter
@@ -11,7 +12,8 @@ public class InventoryPresenter
 
     IInventoryModel model;
     IInventoryView view;
-
+    PlayerStats playerStats;
+    PlayerData playerData;
     public InventoryPresenter(IInventoryModel model,IInventoryView view)
     {
        
@@ -24,13 +26,36 @@ public class InventoryPresenter
         model.CreateItemEvent += CreateItem;
         model.InvenUpdateEvent += InvenUpdate;
         view.LoadSpriteEvent += LoadSprite;
-        view.ItemDictionaryAddEvent += ItemDictionaryAdd;
+        view.AddItemDictionaryEvent += AddItemDictionary;
         model.ItemWarningEvent += ItemWarning;
         
+        
        
        
         
+        
+    }
+
+    public void Init()
+    {
+        playerStats = PlayerStats.playerStats; // 플레이어의 공격력 , 캐릭터 레벨등 상태
+
+        playerData = playerStats.playerData;  // 레벨 경험치 재화 등 데이터 
+
+        if(playerData == null)return;
+
+        for(int i=0; i< playerData.items.Length; ++i )
+        {
+            ItemData _item = new(playerData.items[i]);
+
+            model.AddItemDictionary(_item);
+            
+        }   
        
+       
+        InvenUpdate(model.GetItemsDictionary()); 
+       
+
     }
     // void Dispose()
     // {
@@ -59,9 +84,9 @@ public class InventoryPresenter
         return model.LoadSprite(itemName);
     }
 
-    void ItemDictionaryAdd(ItemData itemInfo)
+    void AddItemDictionary(ItemData itemInfo)
     {
-        model.ItemDictionaryAdd(itemInfo);
+        model.AddItemDictionary(itemInfo);
     }
     
     public void AddItem(ItemInfo item)

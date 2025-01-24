@@ -52,7 +52,7 @@ public class UIManager : MonoBehaviour
     private PlayerStats playerStats;
     private GameManager gameManager;
 
-    private Inventory inventory;
+    private IInventoryModel inventory;
 
     private static UIManager _instance;
     
@@ -97,7 +97,7 @@ public class UIManager : MonoBehaviour
       
         playerStats = PlayerStats.playerStats;
         gameManager = GameManager.gameManager;
-        inventory = FindObjectOfType<Inventory>();
+       
 
 
         // 이벤트 구독
@@ -112,6 +112,11 @@ public class UIManager : MonoBehaviour
         gameManager.GameLabel += GameLabel;
         gameManager.GameText += GameOver;
         
+    }
+
+    public void SetInventory(IInventoryModel inventory)
+    {
+        this.inventory = inventory;
     }
 
   

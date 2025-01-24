@@ -14,22 +14,12 @@ public class DropItem : MonoBehaviour
    
 
     [HideInInspector]public ItemPool itemPool;
-    [HideInInspector]public InventoryPresenter presenter;
-
-    
-    
-    
- 
     void OnEnable()
     {
         //N초후 아이템 파괴 
         StartCoroutine(Timer(5));
         
     }
-
-   
-
-
 
     void OnTriggerStay(Collider other)
     {
@@ -50,8 +40,8 @@ public class DropItem : MonoBehaviour
             }
             else
             {
-
-                presenter.AddItem(item);
+                InventoryPresenter _presenter = itemPool.GetPresenter();
+                _presenter.AddItem(item);
               
 
             }

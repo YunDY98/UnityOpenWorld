@@ -15,9 +15,9 @@ public interface IInventoryModel
     void AddItem(ItemInfo item);
     bool UseItem(string itemName,int useQuantity);
     Sprite LoadSprite(string itemName);
-    void ItemDictionaryAdd(ItemData _ItemData);
+    void AddItemDictionary(ItemData _ItemData);
     Dictionary<string,ItemData> GetItemsDictionary();
 
-    int GetItemCount();
+    int ItemTypeCount();
     
 }

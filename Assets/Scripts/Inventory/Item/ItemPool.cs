@@ -21,7 +21,7 @@ public class ItemPool : MonoBehaviour
     
     int cnt = 0;
     int shuffleCnt;
-    public DropItem[] dropItems;
+    [SerializeField] DropItem[] dropItems;
     List<DropItem> itemPool = new();
    
    
@@ -38,19 +38,17 @@ public class ItemPool : MonoBehaviour
        
     }
 
-
-
     private void InitializePool()
     {
         foreach (var dropItem in dropItems)
         {
             float _rate = dropItem.rate;
             
-            int _count = Mathf.RoundToInt(_rate * 20); // 확률 기반으로 개수 계산
+            int _count = Mathf.RoundToInt(_rate * 10);
             for (int i = 0; i < _count; i++)
             {
                 DropItem item = Instantiate(dropItem,transform);
-                item.presenter = presenter;
+                //item.presenter = presenter;
                 item.itemPool = this;
                 item.gameObject.SetActive(false);
                 itemPool.Add(item);
@@ -70,6 +68,11 @@ public class ItemPool : MonoBehaviour
         }
     }
 
+    public InventoryPresenter GetPresenter()
+    {
+        return presenter;
+    }
+
     public void GetItem(Vector3 position)
     {
         
@@ -87,12 +90,10 @@ public class ItemPool : MonoBehaviour
     public void ReturnItem(DropItem item)
     {
         cnt++;
-        print($"{cnt}");
         item.gameObject.SetActive(false);
         itemPool.Add(item);
         if(cnt >= shuffleCnt)
         {
-            print("clear");
             cnt = 0;
             ShufflePool();
         }
