@@ -113,7 +113,7 @@ public class InventoryUI : MonoBehaviour, IInventoryView
 
     public void ItemWarning()
     {
-        UIManager.uiManager.ItemWarning();
+        UIManager.Instance.ItemWarning();
     }
 
     public void UseItem(string itemName,int quantity)
@@ -140,7 +140,7 @@ public class InventoryUI : MonoBehaviour, IInventoryView
 
     void ShortKey(SkillEnum skillEnum)
     {
-        if(Input.GetKeyUp(GameManager.gameManager.userKeys[(int)skillEnum]))
+        if(Input.GetKeyUp(GameManager.Instance.userKeys[(int)skillEnum]))
         {
             UseItem(skillEnum.ToString(),1);
         }

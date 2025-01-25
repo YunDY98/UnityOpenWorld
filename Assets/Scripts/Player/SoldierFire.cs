@@ -62,13 +62,13 @@ public class SoldierFire : CharacterAtk
     {
        
         // // 게임 중일때만 동작                                                                                                           
-        if((GameManager.gameManager.gState != GameManager.GameState.Run) || (playerStats.selectCharacter != SelectCharacter.Soldier)|| !GameManager.gameManager.isMove)
+        if((GameManager.Instance.gState != GameManager.GameState.Run) || (playerStats.selectCharacter != SelectCharacter.Soldier)|| !GameManager.Instance.isMove)
         {
             return;
         }
        
        
-        if(GameManager.gameManager.isUI)
+        if(GameManager.Instance.isUI)
         {
             
             return;
@@ -155,8 +155,9 @@ public class SoldierFire : CharacterAtk
         
         if(Input.GetKeyUp(KeyCode.Alpha6))
         {
-            if(PlayerStats.playerStats.UseGold(useBomb))
+            if(PlayerStats.Instance.UseGold(useBomb))
             {
+                //풀링으로 바꾸기
                 GameObject bomb = Instantiate(bombFactory);
                 bomb.transform.position = firePosition.transform.position;
                 Rigidbody rb = bomb.GetComponent<Rigidbody>();

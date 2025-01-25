@@ -29,8 +29,8 @@ public class BuffManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerStats = PlayerStats.playerStats;
-        gameManager = GameManager.gameManager;
+        playerStats = PlayerStats.Instance;
+        gameManager = GameManager.Instance;
         buffParticle = buffEffect.GetComponent<ParticleSystem>();
 
         buff = 0;
@@ -53,7 +53,6 @@ public class BuffManager : MonoBehaviour
     }
 
 
-
     void UseBuff(string buffName,float durationMult = 2f,float buffAmount = 0.5f)
     {
         int _onBuff = StringToEnum(buffName,typeof(Buff));
@@ -73,9 +72,6 @@ public class BuffManager : MonoBehaviour
             return;
         }
         
-     
-       
-
         if(playerStats.UseGold((int)(_skillLevel)))
         {   
             float _duration = _skillLevel * durationMult;
@@ -87,8 +83,6 @@ public class BuffManager : MonoBehaviour
     
         buffParticle.Play();
        
-       
-        
     }
 
     void BuffDuration(string buffName,float duration,int onBuff,float buffAmount)
@@ -109,22 +103,17 @@ public class BuffManager : MonoBehaviour
         }
        
        
-        Image imageComponent = _buffWindow.GetComponent<Image>();
+        Image _imageComponent = _buffWindow.GetComponent<Image>();
         
-        TextMeshProUGUI timeText = _buffWindow.GetComponentInChildren<TextMeshProUGUI>();
+        TextMeshProUGUI _timeText = _buffWindow.GetComponentInChildren<TextMeshProUGUI>();
        
-        
-       
-       
-        if(imageComponent != null)
+        if(_imageComponent != null)
         {
             if(_buffSprite != null)
             {
-                imageComponent.sprite = _buffSprite;
+                _imageComponent.sprite = _buffSprite;
             }
         }
-
-
 
         buff += onBuff;
         switch(onBuff)
@@ -135,9 +124,6 @@ public class BuffManager : MonoBehaviour
             case (int)Buff.CommonAtkUp:
                 playerStats.AtkDamage += (int)buffAmount;
                 break;
-                
-            
-
         }
         // 버프 지속 시간 동안 타이머 업데이트
         Tween _Tween = DOTween.To(() => duration, x => duration = x, 0, duration);
@@ -165,7 +151,7 @@ public class BuffManager : MonoBehaviour
             }
             
             
-            timeText.text = Mathf.CeilToInt(duration).ToString();
+            _timeText.text = Mathf.CeilToInt(duration).ToString();
         })
         .SetEase(Ease.Linear)
         .OnComplete(() =>
@@ -193,14 +179,9 @@ public class BuffManager : MonoBehaviour
         
         object _enumValue = System.Enum.Parse(enumType, key);
 
-        
-        
-            
         return (int)_enumValue;
     }
 
-    
-    
 
     enum Buff
     {

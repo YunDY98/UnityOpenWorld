@@ -12,8 +12,8 @@ public class Gold : MonoBehaviour
     {
         if(other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            PlayerStats.playerStats.AddGold(addGold);
-            PlayerStats.playerStats.AddExp(exp);
+            PlayerStats.Instance.AddGold(addGold);
+            PlayerStats.Instance.AddExp(exp);
             
             Destroy(gameObject);
         }

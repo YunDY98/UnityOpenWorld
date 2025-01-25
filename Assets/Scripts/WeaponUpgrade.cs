@@ -21,7 +21,7 @@ public class WeaponUpgrade : MonoBehaviour
 
     void Awake()
     {
-        playerStats = PlayerStats.playerStats;
+        playerStats = PlayerStats.Instance;
         presenter = FindObjectOfType<InventoryManager>().presenter; 
        
        
@@ -83,7 +83,7 @@ public class WeaponUpgrade : MonoBehaviour
         level = playerStats.weaponDictionary[who];
 
         UpdateUI(level);
-        DataManager.dataManager.SavePlayerData();
+        DataManager.Instance.SavePlayerData();
         
 
     }

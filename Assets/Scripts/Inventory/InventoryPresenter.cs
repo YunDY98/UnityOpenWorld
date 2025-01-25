@@ -38,7 +38,7 @@ public class InventoryPresenter
 
     public void Init()
     {
-        playerStats = PlayerStats.playerStats; // 플레이어의 공격력 , 캐릭터 레벨등 상태
+        playerStats = PlayerStats.Instance; // 플레이어의 공격력 , 캐릭터 레벨등 상태
 
         playerData = playerStats.playerData;  // 레벨 경험치 재화 등 데이터 
 
@@ -99,7 +99,7 @@ public class InventoryPresenter
     {
         if(itemName == "HPPotion")
         {
-            PlayerStats.playerStats.HP += 10;
+            PlayerStats.Instance.HP += 10;
         }
         
         return model.UseItem(itemName,useQuantity);

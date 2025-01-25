@@ -57,7 +57,7 @@ public class UIManager : MonoBehaviour
     private static UIManager _instance;
     
     
-    public static UIManager uiManager
+    public static UIManager Instance
     {
         get
         {
@@ -95,8 +95,8 @@ public class UIManager : MonoBehaviour
        
         
       
-        playerStats = PlayerStats.playerStats;
-        gameManager = GameManager.gameManager;
+        playerStats = PlayerStats.Instance;
+        gameManager = GameManager.Instance;
        
 
 

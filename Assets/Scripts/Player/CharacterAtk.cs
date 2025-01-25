@@ -18,8 +18,8 @@ public abstract class CharacterAtk : MonoBehaviour
     protected virtual void Start()
     {
         anim = GetComponent<Animator>();
-        playerStats = PlayerStats.playerStats;
-        gameManager = GameManager.gameManager;
+        playerStats = PlayerStats.Instance;
+        gameManager = GameManager.Instance;
     }
 
     // 기본 단일 공격 메서드
@@ -54,7 +54,7 @@ public abstract class CharacterAtk : MonoBehaviour
         int layerMask = ~LayerMask.GetMask("Player");
 
         RaycastHit hitInfo = new RaycastHit();
-        if(Physics.Raycast(ray, out hitInfo,attackRange,layerMask)) // out키워드는 주소를 복사해 가져옮, 반드시 함수안에서 파라미터 값을 할당할 것을 요구 
+        if(Physics.Raycast(ray, out hitInfo,attackRange,layerMask))
         {
             
             if(hitInfo.transform.gameObject.layer == LayerMask.NameToLayer("Enemy"))

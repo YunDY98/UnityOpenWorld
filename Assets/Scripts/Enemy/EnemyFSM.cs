@@ -229,7 +229,7 @@ public class EnemyFSM : MonoBehaviour
     public void AttackAction()
     {
         if(Vector3.Distance(transform.position,player.position) < attackDistance)
-            PlayerStats.playerStats.DamageAction(attackPower);
+            PlayerStats.Instance.DamageAction(attackPower);
             
     }
 

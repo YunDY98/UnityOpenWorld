@@ -38,7 +38,7 @@ public class PlayerMove : MonoBehaviour
     void Update()
     {
         // 게임 중일때만 동작 
-        if(GameManager.gameManager.gState != GameManager.GameState.Run)
+        if(GameManager.Instance.gState != GameManager.GameState.Run)
         {
             return;
         }
@@ -47,7 +47,7 @@ public class PlayerMove : MonoBehaviour
         if(cc.isGrounded)
         {
             
-            PlayerStats.playerStats.IsFly = false;
+            PlayerStats.Instance.IsFly = false;
             anim.SetBool("isGrounded",true);
             if(isJumping)
             {
@@ -62,9 +62,9 @@ public class PlayerMove : MonoBehaviour
             if(Input.GetKeyDown(KeyCode.LeftShift))
             {
                 yVelocity = 0;
-                PlayerStats.playerStats.IsFly = !PlayerStats.playerStats.IsFly;
+                PlayerStats.Instance.IsFly = !PlayerStats.Instance.IsFly;
             }
-            if(PlayerStats.playerStats.IsFly && Fly() > 4f)
+            if(PlayerStats.Instance.IsFly && Fly() > 4f)
             {
                 anim.SetBool("isGrounded",false);
                 
@@ -81,7 +81,7 @@ public class PlayerMove : MonoBehaviour
         }
 
         
-        if(GameManager.gameManager.isMove)
+        if(GameManager.Instance.isMove)
         {
             float h = Input.GetAxisRaw("Horizontal"); // 미끄러짐 방지 GetAxisRaw  부드러운 움직임은   GetAxix()
             float v = Input.GetAxisRaw("Vertical");

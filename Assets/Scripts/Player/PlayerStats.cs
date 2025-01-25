@@ -9,7 +9,7 @@ public class PlayerStats : MonoBehaviour
 {
     private static PlayerStats _instance;
 
-    public static PlayerStats playerStats
+    public static PlayerStats Instance
     {
         get
         {
@@ -172,7 +172,7 @@ public class PlayerStats : MonoBehaviour
     // 스크립트 실행 순서 조절 가능
     void Start()
     {  
-        playerData = DataManager.dataManager.LoadPlayerData();
+        playerData = DataManager.Instance.LoadPlayerData();
 
         //활성화된 캐릭터 
         selectedIndex = 0;
@@ -387,7 +387,7 @@ public class PlayerStats : MonoBehaviour
         HP = maxHp;
         
         //레벨업시 알려주기 
-        DataManager.dataManager.SavePlayerData();
+        DataManager.Instance.SavePlayerData();
         print("maxExp"+maxExp);
         
     }
@@ -592,7 +592,7 @@ public class PlayerStats : MonoBehaviour
             texts[(int)SkillText.Gold].text = _gold.ToString(); // 몇골드 드는지
 
             //스킬레벨업시 저장 
-            DataManager.dataManager.SavePlayerData();
+            DataManager.Instance.SavePlayerData();
            
         }
         else

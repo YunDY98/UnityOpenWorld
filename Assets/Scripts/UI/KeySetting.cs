@@ -10,7 +10,7 @@ public class KeySetting : MonoBehaviour, IDropHandler
     
     string key;
 
-    string sText;
+    string inputKey;
 
     int keyCode;
 
@@ -21,6 +21,8 @@ public class KeySetting : MonoBehaviour, IDropHandler
 
     Text text;
 
+    GameManager gameManager;
+
     void Awake()
     {
         
@@ -28,9 +30,10 @@ public class KeySetting : MonoBehaviour, IDropHandler
         
         text = GetComponentInChildren<Text>();
 
-        sText = text.text;
-        key = PlayerPrefs.GetString(sText);
-        print(key);
+        inputKey = text.text;
+       
+        key = PlayerPrefs.GetString(inputKey);
+       
         if(key == "")
         {
             
@@ -44,13 +47,23 @@ public class KeySetting : MonoBehaviour, IDropHandler
        
         image.sprite = _skillImage;
 
-        keyCode = StringToEnum(sText,typeof(KeyCode));
+        keyCode = StringToEnumInt(inputKey,typeof(KeyCode));
 
         skillEnum = PlayerPrefs.GetInt(keyCode.ToString());
 
-        GameManager.gameManager.userKeys[skillEnum] = (KeyCode)keyCode;
+       
+        GameManager.Instance.userKeys[skillEnum] = (KeyCode)keyCode;
+       
 
         
+    }
+    void Start()
+    {
+
+        
+        gameManager = GameManager.Instance;
+       
+
     }
 
     public void OnDrop(PointerEventData eventData)
@@ -59,25 +72,24 @@ public class KeySetting : MonoBehaviour, IDropHandler
         // 현재 드래그 중인 UI 요소 가져오기
         GameObject _dragObject = eventData.pointerDrag;
 
-        try
+        
+        if(_dragObject.TryGetComponent(out SkillInfo skillInfo))
         {
-            if(_dragObject.TryGetComponent(out SkillInfo skillInfo))
-            {
-                key = skillInfo.key;
-            }
-            else if(_dragObject.TryGetComponent(out KeySetting keySetting))
-            {
-                key = keySetting.key;
-            }
+            key = skillInfo.key;
         }
-        catch
+        else if(_dragObject.TryGetComponent(out KeySetting keySetting))
+        {
+            key = keySetting.key;
+        }
+        else
         {
             return;
         }
+      
         print("drop" + key);
          
         // 스킬 하나당 하나의 키셋팅 
-        if(GameManager.gameManager.userKeys[StringToEnum(key,typeof(SkillEnum))] != KeyCode.None)
+        if(gameManager.userKeys[StringToEnumInt(key,typeof(SkillEnum))] != KeyCode.None)
         {
             return;
         }
@@ -91,7 +103,7 @@ public class KeySetting : MonoBehaviour, IDropHandler
             if(preKey != null)
             {
                 // 새로 드래그된 스킬로 변경 
-                GameManager.gameManager.userKeys[StringToEnum(preKey,typeof(SkillEnum))] = KeyCode.None;
+                gameManager.userKeys[StringToEnumInt(preKey,typeof(SkillEnum))] = KeyCode.None;
                
             }
 
@@ -101,14 +113,16 @@ public class KeySetting : MonoBehaviour, IDropHandler
             Sprite skillImage = Resources.Load<Sprite>("Sprites/" + key); // 이미지 파일 경로
 
             //이미지 정보 
-            PlayerPrefs.SetString(sText, key);
+            PlayerPrefs.SetString(inputKey, key);
            
-            keyCode = StringToEnum(sText,typeof(KeyCode));
+            keyCode = StringToEnumInt(inputKey,typeof(KeyCode));
+            //Input -> 0 
+            //0~9일경우 Alpha0 -> 48로 반환 
             
-            skillEnum = StringToEnum(key,typeof(SkillEnum));
-            GameManager.gameManager.userKeys[skillEnum] = (KeyCode)keyCode;
+            skillEnum = StringToEnumInt(key,typeof(SkillEnum));
+            gameManager.userKeys[skillEnum] = (KeyCode)keyCode;
 
-            // 키코드 
+            //키세팅값 저장  
             PlayerPrefs.SetInt(keyCode.ToString(),skillEnum);
 
             
@@ -120,7 +134,7 @@ public class KeySetting : MonoBehaviour, IDropHandler
         
     }
 
-    int StringToEnum(string key, Type enumType)
+    int StringToEnumInt(string key, Type enumType)
     {
         
         // "Alpha1"과 같은 형태의 문자열을 생성
@@ -158,7 +172,7 @@ public class KeySetting : MonoBehaviour, IDropHandler
         
         text = GetComponentInChildren<Text>();
 
-        sText = text.text;
+        inputKey = text.text;
        
        
         if(image.sprite == null)
@@ -168,8 +182,8 @@ public class KeySetting : MonoBehaviour, IDropHandler
         image.sprite = null;
         preKey = null;
         
-        GameManager.gameManager.userKeys[StringToEnum(key,typeof(SkillEnum))] = KeyCode.None;
-        PlayerPrefs.DeleteKey(sText);
+        gameManager.userKeys[StringToEnumInt(key,typeof(SkillEnum))] = KeyCode.None;
+        PlayerPrefs.DeleteKey(inputKey);
         PlayerPrefs.DeleteKey(keyCode.ToString());
            
     }

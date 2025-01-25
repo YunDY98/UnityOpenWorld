@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
     private static GameManager _instance;
     
     
-    public static GameManager gameManager
+    public static GameManager Instance
     {
         get
         {
@@ -70,7 +70,7 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
        
-         // 이미 인스턴스가 존재한다면 파괴합니다.
+        // 이미 인스턴스가 존재한다면 파괴합니다.
         if (_instance != null && _instance != this)
         {
             Destroy(this.gameObject);
@@ -86,8 +86,6 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {   
-        // 키보드 keysetting Awake실행후 
-        // keyboard.SetActive(false);
 
         //gState = GameState.Ready;
         gState = GameState.Run;
@@ -127,7 +125,7 @@ public class GameManager : MonoBehaviour
     //     if(gState != GameState.Run)
     //         return;
        
-        if(PlayerStats.playerStats.HP <= 0)
+        if(PlayerStats.Instance.HP <= 0)
         {
             player.GetComponentInChildren<Animator>().SetFloat("MoveMotion",0f);
 
@@ -160,7 +158,7 @@ public class GameManager : MonoBehaviour
 
     public void ExitGame()
     {
-        DataManager.dataManager.SavePlayerData();
+        DataManager.Instance.SavePlayerData();
         Application.Quit();
     }
 

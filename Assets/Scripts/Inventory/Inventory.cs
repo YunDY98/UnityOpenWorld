@@ -117,30 +117,4 @@ public class Inventory : IInventoryModel
         return items.Count;
     }
     
-    // void Update()
-    // {
-       
-    //     #if UNITY_EDITOR
-    //     if(Input.GetKeyUp(KeyCode.Alpha0))
-    //     {
-    //         AddItem(new("ItemMasa",1000,ItemType.ETC));
-    //         AddItem(new("ItemSoldier",1000,ItemType.ETC));
-           
-    //     }
-
-    //     if(Input.GetKeyUp(KeyCode.Alpha9))
-    //     {
-            
-    //         if(items.ContainsKey("ItemMasa"))
-    //             UseItem("ItemMasa",items["ItemMasa"].itemInfo.quantity);
-    //         if(items.ContainsKey("ItemSoldier"))
-    //             UseItem("ItemSoldier",items["ItemSoldier"].itemInfo.quantity);
-            
-    //     }
-
-        
-    //     #endif
-       
-    // }
-
 }

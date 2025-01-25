@@ -61,15 +61,15 @@ public class Shop : MonoBehaviour
     void Buy()
     {
 
-        if(PlayerStats.playerStats.skillDictionary.ContainsKey(key))
+        if(PlayerStats.Instance.skillDictionary.ContainsKey(key))
         {
-            skill = PlayerStats.playerStats.skillDictionary[key];
+            skill = PlayerStats.Instance.skillDictionary[key];
             if(skill != null )
             {
                 
                 // 이미 보유중인 아이템입니다 
                 //GameManager.gameManager.StartUI(isPurchased);
-                UIManager.uiManager.StartUI(isPurchased);
+                UIManager.Instance.StartUI(isPurchased);
                 return;
             }
 
@@ -77,7 +77,7 @@ public class Shop : MonoBehaviour
         }
         else
         {
-            if(!PlayerStats.playerStats.UseGold(price))
+            if(!PlayerStats.Instance.UseGold(price))
             {
                 //돈이 부족합니다 
                
@@ -85,47 +85,13 @@ public class Shop : MonoBehaviour
 
             }
 
-            PlayerStats.playerStats.AddSkill(skill,key);
-            DataManager.dataManager.SavePlayerData();
+            PlayerStats.Instance.AddSkill(skill,key);
+            DataManager.Instance.SavePlayerData();
 
         }
        
        
-        // try
-        // {
-        //     skill = PlayerStats.playerStats.skillDictionary[key];
-        //     if(skill != null )
-        //     {
-                
-        //         // 이미 보유중인 아이템입니다 
-        //         //GameManager.gameManager.StartUI(isPurchased);
-        //         UIManager.uiManager.StartUI(isPurchased);
-        //         return;
-        //     }
-
-            
-           
-            
-            
-        // }
-        // catch
-        // {
-        //     if(!PlayerStats.playerStats.UseGold(price))
-        //     {
-        //         //돈이 부족합니다 
-               
-        //         return;
-
-        //     }
-
-        //     PlayerStats.playerStats.AddSkill(skill,key);
-        //     DataManager.dataManager.SavePlayerData();
-
-            
-            
-
-        // }
-
+        
     }
 
   

@@ -9,7 +9,7 @@ using UnityEngine.UIElements;
 public class DataManager : MonoBehaviour
 {
     private static DataManager _instance;
-    public static DataManager dataManager { get { return _instance; } }
+    public static DataManager Instance { get { return _instance; } }
 
     private string dataFilePath;
 
@@ -54,17 +54,17 @@ public class DataManager : MonoBehaviour
 
         
 
-        _pd.level = PlayerStats.playerStats.Level;
-        _pd.exp = PlayerStats.playerStats.Exp;
-        _pd.gold = PlayerStats.playerStats.Gold;
+        _pd.level = PlayerStats.Instance.Level;
+        _pd.exp = PlayerStats.Instance.Exp;
+        _pd.gold = PlayerStats.Instance.Gold;
         
         
         // 스킬 총 갯수 
-        int _skillCount = PlayerStats.playerStats.skillDictionary.Count;
+        int _skillCount = PlayerStats.Instance.skillDictionary.Count;
         // 아이템 갯수 
         int _itemCount = inventory.ItemTypeCount();
 
-        int _weaponCount = PlayerStats.playerStats.weaponDictionary.Count;
+        int _weaponCount = PlayerStats.Instance.weaponDictionary.Count;
 
         _pd.skills = new Skill[_skillCount];
         _pd.items = new ItemInfo[_itemCount];
@@ -72,7 +72,7 @@ public class DataManager : MonoBehaviour
        
         int _index = 0;
 
-        foreach(var skill in PlayerStats.playerStats.skillDictionary)
+        foreach(var skill in PlayerStats.Instance.skillDictionary)
         {
             _pd.skills[_index++] = skill.Value;
             
@@ -87,7 +87,7 @@ public class DataManager : MonoBehaviour
     
         }
         _index = 0;
-        foreach(var weapon in PlayerStats.playerStats.weaponDictionary)
+        foreach(var weapon in PlayerStats.Instance.weaponDictionary)
         {
             WeaponInfo _weaponInfo = new(weapon.Key,weapon.Value);
            

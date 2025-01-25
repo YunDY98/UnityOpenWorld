@@ -33,17 +33,14 @@ public class DropItem : MonoBehaviour
           
             if(item.itemName == "Gold")
             {
-                PlayerStats.playerStats.AddGold(gold);
-                PlayerStats.playerStats.AddExp(exp);
+                PlayerStats.Instance.AddGold(gold);
+                PlayerStats.Instance.AddExp(exp);
                 
 
             }
             else
             {
-                InventoryPresenter _presenter = itemPool.GetPresenter();
-                _presenter.AddItem(item);
-              
-
+                itemPool.GetPresenter().AddItem(item);
             }
             itemPool.ReturnItem(this);
             

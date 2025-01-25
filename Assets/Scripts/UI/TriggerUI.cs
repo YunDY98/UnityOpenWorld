@@ -3,7 +3,11 @@ using UnityEngine;
 public class TriggerUI : MonoBehaviour
 {
     public GameObject onOffUi;
-
+    GameManager gameManager;
+    void Start()
+    {
+        gameManager = GameManager.Instance;
+    }
     int rotSpeed = 0;
     void OnTriggerEnter(Collider other)
     {  
@@ -28,9 +32,9 @@ public class TriggerUI : MonoBehaviour
     public void On()
     {
         onOffUi.SetActive(!onOffUi.activeSelf);
-        rotSpeed = GameManager.gameManager.rotSpeed;
-        GameManager.gameManager.rotSpeed = 0;
-        GameManager.gameManager.isUI = true;
+        rotSpeed = gameManager.rotSpeed;
+        gameManager.rotSpeed = 0;
+        gameManager.isUI = true;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
 
@@ -40,9 +44,9 @@ public class TriggerUI : MonoBehaviour
     public void Off()
     {
         onOffUi.SetActive(!onOffUi.activeSelf);
-        GameManager.gameManager.rotSpeed = rotSpeed;
+        gameManager.rotSpeed = rotSpeed;
        
-        GameManager.gameManager.isUI = false;
+        gameManager.isUI = false;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
 

@@ -48,7 +48,6 @@ public class ItemPool : MonoBehaviour
             for (int i = 0; i < _count; i++)
             {
                 DropItem item = Instantiate(dropItem,transform);
-                //item.presenter = presenter;
                 item.itemPool = this;
                 item.gameObject.SetActive(false);
                 itemPool.Add(item);
@@ -82,7 +81,7 @@ public class ItemPool : MonoBehaviour
             itemPool.RemoveAt(0);
             _item.transform.position = position;
             _item.gameObject.SetActive(true);
-           
+            //매번 랜덤으로 아이템 활성화후 비활성화로 변경 예정 
            
         } 
     }

@@ -12,12 +12,12 @@ public class CamRotate : MonoBehaviour
     void Update()
     {
         // 게임 중일때만 동작 
-        if(GameManager.gameManager.gState != GameManager.GameState.Run)
+        if(GameManager.Instance.gState != GameManager.GameState.Run)
         {
             return;
         }
 
-        if(GameManager.gameManager.isMove)
+        if(GameManager.Instance.isMove)
         {
             //사용자의 마우스 입력을 받아 물체를 회전시키기
             //1.마우스 입력
@@ -29,8 +29,8 @@ public class CamRotate : MonoBehaviour
             // my -= mouse_Y *GameManager.gameManager.rotSpeed * Time.deltaTime;
 
             // 스무딩을 적용하여 회전 값을 부드럽게 업데이트
-            mx = Mathf.Lerp(mx, mx + mouse_X * GameManager.gameManager.rotSpeed * Time.deltaTime, 0.1f);
-            my = Mathf.Lerp(my, my - mouse_Y * GameManager.gameManager.rotSpeed * Time.deltaTime, 0.1f);
+            mx = Mathf.Lerp(mx, mx + mouse_X * GameManager.Instance.rotSpeed * Time.deltaTime, 0.1f);
+            my = Mathf.Lerp(my, my - mouse_Y * GameManager.Instance.rotSpeed * Time.deltaTime, 0.1f);
 
     
             //1-2. 마우스 상하 이동 회전 변수(my)의 값을 -90 ~90 사이로 제한

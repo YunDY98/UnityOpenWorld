@@ -15,7 +15,7 @@ public class BombAction : MonoBehaviour
 
     private void Bomb()
     {
-        attackPower = PlayerStats.playerStats.InitDamage();
+        attackPower = PlayerStats.Instance.InitDamage();
 
         //폭발 반경 내 적 
         Collider[] _cols = Physics.OverlapSphere(transform.position, explosionRadius,1 << 8);
@@ -25,9 +25,9 @@ public class BombAction : MonoBehaviour
             _cols[i].GetComponent<EnemyFSM>().HitEnemy(attackPower);
 
         }
-
-        GameObject eff = Instantiate(bombEffect);
-        eff.transform.position = transform.position;
+        
+        GameObject _eff = Instantiate(bombEffect);
+        _eff.transform.position = transform.position;
         Destroy(gameObject);
 
     }

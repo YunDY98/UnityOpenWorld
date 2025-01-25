@@ -13,7 +13,7 @@ public class DragUI : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointer
     private RectTransform parentRectTransform;
     private bool isDragging;
 
-    Vector2 localPointerPosition;
+    private Vector2 localPointerPosition;
     private GameObject copiedObject;
     
     //ui 복사 
@@ -59,7 +59,7 @@ public class DragUI : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointer
 
             if(RectTransformUtility.ScreenPointToLocalPointInRectangle(parentRectTransform, eventData.position, eventData.pressEventCamera, out localPointerPosition))
             {
-
+                // 오브젝트를 마우스 포인터로 이동 
                 rectTransform.anchoredPosition = localPointerPosition;
             
             }
@@ -70,6 +70,7 @@ public class DragUI : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointer
             {
                 KeySetting keySetting = GetComponent<KeySetting>();
                 keySetting.Drop();
+               
             }
 
             
@@ -78,6 +79,7 @@ public class DragUI : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointer
         else
         {
             transform.SetAsLastSibling();
+
         }
         isDragging = true;
 
