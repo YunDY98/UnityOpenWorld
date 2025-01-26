@@ -20,7 +20,7 @@ public class InventoryManager : MonoBehaviour
         InventoryUI.SetPresenter(presenter);
 
         DataManager.Instance.SetInventory(inventory);
-        UIManager.Instance.SetInventory(inventory);
+       // UIManager.Instance.SetInventory(inventory);
 
         
 

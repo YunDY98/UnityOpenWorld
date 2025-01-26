@@ -48,11 +48,11 @@ public class UIManager : MonoBehaviour
 
     public int rotSpeed = 2000;
    
-    private Stack<bool> uiStack = new Stack<bool>();
+    private Stack<bool> uiStack = new();
     private PlayerStats playerStats;
     private GameManager gameManager;
 
-    private IInventoryModel inventory;
+    //private IInventoryModel inventory;
 
     private static UIManager _instance;
     
@@ -114,10 +114,10 @@ public class UIManager : MonoBehaviour
         
     }
 
-    public void SetInventory(IInventoryModel inventory)
-    {
-        this.inventory = inventory;
-    }
+    // public void SetInventory(IInventoryModel inventory)
+    // {
+    //     this.inventory = inventory;
+    // }
 
   
     void Update()
@@ -265,8 +265,8 @@ public class UIManager : MonoBehaviour
     {
         rotSpeed = (int)rotSpeedSlider.value;
        
-        //rotSpeedText.text = $"{rotSpeed}";
-        rotSpeedText.text = rotSpeed.ToString();
+        rotSpeedText.text = $"{rotSpeed}";
+        
 
         PlayerPrefs.SetInt("rotSpeed", rotSpeed);
         

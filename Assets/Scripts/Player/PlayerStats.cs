@@ -358,9 +358,6 @@ public class PlayerStats : MonoBehaviour
         {
             LevelUp();
         }
-
-       
-
     }
 
     // 레벨업시 
@@ -393,7 +390,7 @@ public class PlayerStats : MonoBehaviour
     }
 
     // 현재 고른 캐릭터 
-    public void SetActiveCharacter(int _index)
+    public void SetActiveCharacter(int index)
     {
         //aim.SetActive(false);
         AimOnOff?.Invoke(false);
@@ -407,12 +404,12 @@ public class PlayerStats : MonoBehaviour
         }
 
         // 선택된 인덱스가 유효한 경우 해당 오브젝트를 활성화
-        if (_index >= 0 && _index < characterMode.Length)
+        if (index >= 0 && index < characterMode.Length)
         {
-            characterMode[_index].SetActive(true);
-            selectedIndex = _index;
+            characterMode[index].SetActive(true);
+            selectedIndex = index;
 
-            if((int)SelectCharacter.Soldier == _index)
+            if((int)SelectCharacter.Soldier == index)
             {
                 // aim.SetActive(true);
                 AimOnOff?.Invoke(true);

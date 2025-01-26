@@ -50,26 +50,24 @@ public class DataManager : MonoBehaviour
     public void SavePlayerData()
     { 
         print("save");
-        PlayerData _pd = new PlayerData();
 
-        
-
-        _pd.level = PlayerStats.Instance.Level;
-        _pd.exp = PlayerStats.Instance.Exp;
-        _pd.gold = PlayerStats.Instance.Gold;
-        
-        
-        // 스킬 총 갯수 
+         // 스킬 총 갯수 
         int _skillCount = PlayerStats.Instance.skillDictionary.Count;
         // 아이템 갯수 
         int _itemCount = inventory.ItemTypeCount();
 
         int _weaponCount = PlayerStats.Instance.weaponDictionary.Count;
 
-        _pd.skills = new Skill[_skillCount];
-        _pd.items = new ItemInfo[_itemCount];
-        _pd.weapons = new WeaponInfo[_weaponCount];
-       
+        PlayerData _pd = new()
+        {
+            level = PlayerStats.Instance.Level,
+            exp = PlayerStats.Instance.Exp,
+            gold = PlayerStats.Instance.Gold,
+            skills = new Skill[_skillCount],
+            items = new ItemInfo[_itemCount],
+            weapons = new WeaponInfo[_weaponCount]
+        };
+
         int _index = 0;
 
         foreach(var skill in PlayerStats.Instance.skillDictionary)

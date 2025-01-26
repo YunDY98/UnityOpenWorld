@@ -30,20 +30,20 @@ public class Masa : CharacterAtk
 
         
         // atk1 
-        if(Input.GetKeyUp(gameManager.userKeys[(int)SkillEnum.MasaAtk1]))
+        if(Input.GetKeyDown(gameManager.userKeys[(int)SkillEnum.MasaAtk1]))
         {
             MultiAtk("MasaAtk1");
-            IsMove();
+            //IsMove();
         }
 
         
 
         // atk3 
-        if(Input.GetKeyUp(gameManager.userKeys[(int)SkillEnum.MasaAtk3]))
+        if(Input.GetKeyDown(gameManager.userKeys[(int)SkillEnum.MasaAtk3]))
         {
             SingleAtk("MasaAtk3",damageMult: 3,rangeMult : 1.5f+cameraDistance,goldMult : 10f);
 
-            IsMove();
+            //IsMove();
         }
 
         
