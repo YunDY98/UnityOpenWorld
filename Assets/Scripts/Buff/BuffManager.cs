@@ -12,13 +12,13 @@ public class BuffManager : MonoBehaviour
     PlayerStats playerStats;
     GameManager gameManager;
 
-    private PlayerMove playerMove;
-
     public GameObject buffPrefab; //Prefabs 폴더-> BuffImage
     public Transform contentPanel; //Hierachy -> UiManager -> Buff
 
     // 버프 
     Dictionary<string,GameObject> buffDic = new();
+    Dictionary<string,IBuff> buffEffectDic = new();
+    
 
     
     //파티클 
@@ -29,17 +29,21 @@ public class BuffManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerMove = GetComponent<PlayerMove>();
+        
         playerStats = PlayerStats.Instance;
         gameManager = GameManager.Instance;
         //buffParticle = buffEffect.GetComponent<ParticleSystem>();
 
         buff = 0;
+
+        buffEffectDic.Add("CommonSpdUp",new SpeedBuff());
+        buffEffectDic.Add("CommonAtkUp",new AttackBuff());
     }
 
     // Update is called once per frame
     void Update()
     {
+        
         //공용 스킬 
         if(Input.GetKeyUp(gameManager.userKeys[(int)SkillEnum.CommonSpdUp]))
         {
@@ -54,7 +58,7 @@ public class BuffManager : MonoBehaviour
     }
 
 
-    void UseBuff(string buffName,float durationMult = 2f,float buffAmount = 0.5f)
+    void UseBuff(string buffName)
     {
         int _onBuff = StringToEnum(buffName,typeof(Buff));
 
@@ -73,20 +77,23 @@ public class BuffManager : MonoBehaviour
             return;
         }
         
-        if(playerStats.UseGold((int)(_skillLevel)))
+        if(playerStats.UseGold(_skillLevel))
         {   
-            float _duration = _skillLevel * durationMult;
-            float _amount = _skillLevel * buffAmount;
             
-            BuffDuration(buffName,_duration,_onBuff,_amount);
+           
+            
+            BuffDuration(buffName,_onBuff);
 
         }
+
+       
+        print(playerStats.GetSkillLevel(buffName));
     
        // buffParticle.Play();
        
     }
 
-    void BuffDuration(string buffName,float duration,int onBuff,float buffAmount)
+    void BuffDuration(string buffName,int onBuff)
     {
         if(!buffDic.ContainsKey(buffName))
         {
@@ -108,63 +115,43 @@ public class BuffManager : MonoBehaviour
             buffDic[buffName].SetActive(true);
         }
       
-       
+       float _duration = buffEffectDic[buffName].Duration;
        
 
         buff += onBuff;
-        switch(onBuff)
-        {
-            case (int)Buff.CommonSpdUp:
-                playerMove.moveSpeed += buffAmount;
-                break;
-            case (int)Buff.CommonAtkUp:
-                playerStats.AtkDamage += (int)buffAmount;
-                break;
-        }
+
+        buffEffectDic[buffName].Apply();
+    
         // 버프 지속 시간 동안 타이머 업데이트
-        Tween _Tween = DOTween.To(() => duration, x => duration = x, 0, duration);
+        Tween _Tween = DOTween.To(() => _duration, x => _duration = x, 0, _duration);
+        TextMeshProUGUI _timeText = buffDic[buffName].GetComponentInChildren<TextMeshProUGUI>();
         _Tween.OnUpdate(() => 
         {
             
             if((buff & onBuff) == 0 )
             {
-                
-                switch(onBuff)
-                {
-                    case (int)Buff.CommonSpdUp:
-                        playerMove.moveSpeed -= buffAmount;
-                        break;
-                    case (int)Buff.CommonAtkUp:
-                        playerStats.AtkDamage -= (int)buffAmount;
-                        break;
-                }
+                _Tween.Kill();
+                buffEffectDic[buffName].Remove();
             
                 buffDic[buffName].SetActive(false);
                 
-                _Tween.Kill();
+                
                 return;
                 
             }
             
-            TextMeshProUGUI _timeText = buffDic[buffName].GetComponentInChildren<TextMeshProUGUI>();
-            _timeText.text = Mathf.CeilToInt(duration).ToString();
+           
+            _timeText.text = Mathf.CeilToInt(_duration).ToString();
         })
         .SetEase(Ease.Linear)
         .OnComplete(() =>
         {
+            _Tween.Kill();
             // 버프 제거
             buff -= onBuff;
-            switch(onBuff)
-            {
-                case (int)Buff.CommonSpdUp:
-                    playerMove.moveSpeed -= buffAmount;
-                    break;
-                case (int)Buff.CommonAtkUp:
-                    playerStats.AtkDamage -= (int)buffAmount;
-                    break;
-            }
             
             buffDic[buffName].SetActive(false);
+            buffEffectDic[buffName].Remove();
            
         });
 
