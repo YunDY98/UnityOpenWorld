@@ -26,6 +26,7 @@ public class AttackBuff : IBuff
     
     public void Apply()
     {
+    
         Duration = DurationMult * playerStats.GetSkillLevel(buffName);
         Amount = AmountMult * playerStats.GetSkillLevel(buffName);
         playerStats.AtkDamage += (int)Amount;

@@ -15,12 +15,11 @@ public class BuffManager : MonoBehaviour
     public GameObject buffPrefab; //Prefabs 폴더-> BuffImage
     public Transform contentPanel; //Hierachy -> UiManager -> Buff
 
+    BuffFactory buffFactory;
     // 버프 
     Dictionary<string,GameObject> buffDic = new();
-    Dictionary<string,IBuff> buffEffectDic = new();
-    
+    //Dictionary<string,IBuff> buffEffectDic = new();
 
-    
     //파티클 
     //ParticleSystem buffParticle;
     //public GameObject buffEffect;
@@ -29,6 +28,7 @@ public class BuffManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        buffFactory = new ();
         
         playerStats = PlayerStats.Instance;
         gameManager = GameManager.Instance;
@@ -36,8 +36,7 @@ public class BuffManager : MonoBehaviour
 
         buff = 0;
 
-        buffEffectDic.Add("CommonSpdUp",new SpeedBuff());
-        buffEffectDic.Add("CommonAtkUp",new AttackBuff());
+        
     }
 
     // Update is called once per frame
@@ -60,6 +59,7 @@ public class BuffManager : MonoBehaviour
 
     void UseBuff(string buffName)
     {
+        
         int _onBuff = StringToEnum(buffName,typeof(Buff));
 
         if((buff & _onBuff) != 0 )
@@ -81,47 +81,24 @@ public class BuffManager : MonoBehaviour
         {   
             
            
+            BuffUI(buffName);
+            BuffOnOff(buffName,_onBuff);
             
-            BuffDuration(buffName,_onBuff);
-
         }
-
-       
-        print(playerStats.GetSkillLevel(buffName));
     
        // buffParticle.Play();
        
     }
 
-    void BuffDuration(string buffName,int onBuff)
+    void BuffOnOff(string buffName,int onBuff)
     {
-        if(!buffDic.ContainsKey(buffName))
-        {
-            GameObject _buffWindow = Instantiate(buffPrefab,contentPanel);
-            Image _imageComponent = _buffWindow.GetComponent<Image>();
-        
-            
-
-            Sprite _buffSprite;
-
-            _buffSprite = Resources.Load<Sprite>("Sprites/" + buffName); // 이미지 파일 경로
-
-            _imageComponent.sprite = _buffSprite;
-
-            buffDic.Add(buffName,_buffWindow);
-        }
-        else
-        {
-            buffDic[buffName].SetActive(true);
-        }
-      
-       float _duration = buffEffectDic[buffName].Duration;
-       
+        IBuff _IBuff = buffFactory.buffEffectDic[buffName];
+        _IBuff.Apply();
 
         buff += onBuff;
 
-        buffEffectDic[buffName].Apply();
-    
+        float _duration = _IBuff.Duration;
+  
         // 버프 지속 시간 동안 타이머 업데이트
         Tween _Tween = DOTween.To(() => _duration, x => _duration = x, 0, _duration);
         TextMeshProUGUI _timeText = buffDic[buffName].GetComponentInChildren<TextMeshProUGUI>();
@@ -131,7 +108,7 @@ public class BuffManager : MonoBehaviour
             if((buff & onBuff) == 0 )
             {
                 _Tween.Kill();
-                buffEffectDic[buffName].Remove();
+                _IBuff.Remove();
             
                 buffDic[buffName].SetActive(false);
                 
@@ -146,12 +123,13 @@ public class BuffManager : MonoBehaviour
         .SetEase(Ease.Linear)
         .OnComplete(() =>
         {
+           
             _Tween.Kill();
             // 버프 제거
             buff -= onBuff;
             
             buffDic[buffName].SetActive(false);
-            buffEffectDic[buffName].Remove();
+            _IBuff.Remove();
            
         });
 
@@ -165,6 +143,26 @@ public class BuffManager : MonoBehaviour
         return (int)_enumValue;
     }
 
+    void BuffUI(string buffName)
+    {
+        if(!buffDic.ContainsKey(buffName))
+        {
+            GameObject _buffWindow = Instantiate(buffPrefab,contentPanel);
+            Image _imageComponent = _buffWindow.GetComponent<Image>();
+
+            Sprite _buffSprite;
+
+            _buffSprite = Resources.Load<Sprite>("Sprites/" + buffName); // 이미지 파일 경로
+
+            _imageComponent.sprite = _buffSprite;
+
+            buffDic.Add(buffName,_buffWindow);
+        }
+        else
+        {
+            buffDic[buffName].SetActive(true);
+        }
+    }
 
     enum Buff
     {

@@ -10,7 +10,7 @@ public class SpeedBuff : IBuff
     public float AmountMult { get; private set; } = 0.1f;
 
     public float Duration{get;private set;}
-    public float DurationMult { get; private set; } = 0.5f;
+    public float DurationMult { get; private set; } = 1f;
     
 
 
