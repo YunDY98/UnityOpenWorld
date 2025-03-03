@@ -33,7 +33,8 @@ public class SectorLoader : MonoBehaviour
 
     public void UnloadSector()
     {
-        Addressables.ReleaseInstance(handle);
+        if(handle.IsValid())
+            Addressables.ReleaseInstance(handle);
     }
    
 }
