@@ -2,15 +2,20 @@
 using System.Collections.Generic;
 
 
-public class BuffFactory 
+public class BuffPool 
 {
     public Dictionary<string,IBuff> buffEffectDic = new();
 
-    public BuffFactory()
+    public BuffPool()
     {
         buffEffectDic.Add("CommonSpdUp",new SpeedBuff());
         buffEffectDic.Add("CommonAtkUp",new AttackBuff());
 
+    }
+
+    public Dictionary<string,IBuff> GetBuffEffDic()
+    {
+        return buffEffectDic;
     }
    
    

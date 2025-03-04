@@ -5,12 +5,9 @@ using UnityEngine;
 
 public class DropItem : MonoBehaviour
 {
-    public float rate;
-    public int gold;
-    public int exp;
+    
 
-    public ItemInfo item;
-
+    public ItemSO itemSO;
    
 
     [HideInInspector]public ItemPool itemPool;
@@ -31,16 +28,16 @@ public class DropItem : MonoBehaviour
         if(other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
           
-            if(item.itemName == "Gold")
+            if(itemSO.item.itemName == "Gold")
             {
-                PlayerStats.Instance.AddGold(gold);
-                PlayerStats.Instance.AddExp(exp);
+                PlayerStats.Instance.AddGold(itemSO.gold);
+                PlayerStats.Instance.AddExp(itemSO.exp);
                 
 
             }
             else
             {
-                itemPool.GetPresenter().AddItem(item);
+                itemPool.GetPresenter().AddItem(itemSO.item);
             }
             itemPool.ReturnItem(this);
             
@@ -50,10 +47,10 @@ public class DropItem : MonoBehaviour
 
     }
 
-    IEnumerator Timer(float _time)
+    IEnumerator Timer(float time)
     {
 
-        yield return new WaitForSeconds(_time);
+        yield return new WaitForSeconds(time);
         itemPool.ReturnItem(this);
         
     }

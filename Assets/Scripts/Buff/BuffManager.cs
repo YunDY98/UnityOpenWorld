@@ -15,10 +15,10 @@ public class BuffManager : MonoBehaviour
     public GameObject buffPrefab; //Prefabs 폴더-> BuffImage
     public Transform contentPanel; //Hierachy -> UiManager -> Buff
 
-    BuffFactory buffFactory;
+    BuffPool buffPool;
     // 버프 
-    Dictionary<string,GameObject> buffDic = new();
-    //Dictionary<string,IBuff> buffEffectDic = new();
+    Dictionary<string,GameObject> buffUIDic = new();
+    Dictionary<string,IBuff> buffEffDic = new();
 
     //파티클 
     //ParticleSystem buffParticle;
@@ -28,7 +28,8 @@ public class BuffManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        buffFactory = new ();
+        buffPool = new ();
+        buffEffDic = buffPool.GetBuffEffDic();
         
         playerStats = PlayerStats.Instance;
         gameManager = GameManager.Instance;
@@ -92,7 +93,7 @@ public class BuffManager : MonoBehaviour
 
     void BuffOnOff(string buffName,int onBuff)
     {
-        IBuff _IBuff = buffFactory.buffEffectDic[buffName];
+        IBuff _IBuff = buffEffDic[buffName];
         _IBuff.Apply();
 
         buff += onBuff;
@@ -101,7 +102,7 @@ public class BuffManager : MonoBehaviour
   
         // 버프 지속 시간 동안 타이머 업데이트
         Tween _Tween = DOTween.To(() => _duration, x => _duration = x, 0, _duration);
-        TextMeshProUGUI _timeText = buffDic[buffName].GetComponentInChildren<TextMeshProUGUI>();
+        TextMeshProUGUI _timeText = buffUIDic[buffName].GetComponentInChildren<TextMeshProUGUI>();
         _Tween.OnUpdate(() => 
         {
             
@@ -110,7 +111,7 @@ public class BuffManager : MonoBehaviour
                 _Tween.Kill();
                 _IBuff.Remove();
             
-                buffDic[buffName].SetActive(false);
+                buffUIDic[buffName].SetActive(false);
                 
                 
                 return;
@@ -128,7 +129,7 @@ public class BuffManager : MonoBehaviour
             // 버프 제거
             buff -= onBuff;
             
-            buffDic[buffName].SetActive(false);
+            buffUIDic[buffName].SetActive(false);
             _IBuff.Remove();
            
         });
@@ -145,7 +146,7 @@ public class BuffManager : MonoBehaviour
 
     void BuffUI(string buffName)
     {
-        if(!buffDic.ContainsKey(buffName))
+        if(!buffUIDic.ContainsKey(buffName))
         {
             GameObject _buffWindow = Instantiate(buffPrefab,contentPanel);
             Image _imageComponent = _buffWindow.GetComponent<Image>();
@@ -156,11 +157,11 @@ public class BuffManager : MonoBehaviour
 
             _imageComponent.sprite = _buffSprite;
 
-            buffDic.Add(buffName,_buffWindow);
+            buffUIDic.Add(buffName,_buffWindow);
         }
         else
         {
-            buffDic[buffName].SetActive(true);
+            buffUIDic[buffName].SetActive(true);
         }
     }
 

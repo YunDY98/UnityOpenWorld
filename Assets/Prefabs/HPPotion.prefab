@@ -121,13 +121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5056c786d3f646f9a212b9b92360062, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rate: 1
-  gold: 0
-  exp: 0
-  item:
-    itemName: HPPotion
-    quantity: 10
-    type: 1
+  itemSO: {fileID: 11400000, guid: 7ca0423d8531348bc978ba4d5db13a9c, type: 2}
   itemPool: {fileID: 0}
 --- !u!114 &7099498686038899899
 MonoBehaviour:

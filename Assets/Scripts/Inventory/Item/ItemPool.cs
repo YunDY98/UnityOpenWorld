@@ -5,16 +5,6 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 
-public class ItemPoolInfo
-{
-    public DropItem item;
- 
-    public string itemName;
-    public float rate;
-
-    
-}
-
 public class ItemPool : MonoBehaviour
 {
    
@@ -31,7 +21,7 @@ public class ItemPool : MonoBehaviour
     
     void Start()
     {   
-       presenter = FindObjectOfType<InventoryManager>().presenter;
+        presenter = FindObjectOfType<InventoryManager>().presenter;
        
         InitializePool();
         shuffleCnt = itemPool.Count;
@@ -42,9 +32,9 @@ public class ItemPool : MonoBehaviour
     {
         foreach (var dropItem in dropItems)
         {
-            float _rate = dropItem.rate;
+            float _rate = dropItem.itemSO.rate;
             
-            int _count = Mathf.RoundToInt(_rate * 10);
+            int _count = Mathf.RoundToInt(_rate * 100);
             for (int i = 0; i < _count; i++)
             {
                 DropItem item = Instantiate(dropItem,transform);
