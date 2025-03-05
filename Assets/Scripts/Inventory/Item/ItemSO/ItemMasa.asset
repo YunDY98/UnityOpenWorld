@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45d912deb442048b290224bdd43eb26e, type: 3}
   m_Name: ItemMasa
   m_EditorClassIdentifier: 
-  itemName: ItemMasa
-  itemIcon: {fileID: 21300000, guid: a71ad417bf93b493aba7e05379705f13, type: 3}
-  itemType: 0
+  rate: 1
+  gold: 0
+  exp: 0
+  item:
+    itemName: ItemMasa
+    quantity: 1
+    type: 2

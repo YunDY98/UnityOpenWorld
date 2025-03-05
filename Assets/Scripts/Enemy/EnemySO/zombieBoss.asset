@@ -12,10 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0b498a5486cb4b7a90d48d1dbd4e3dc, type: 3}
   m_Name: zombieBoss
   m_EditorClassIdentifier: 
-  attackDistance: 1
-  moveSpeed: 7
+  attackDistance: 5
+  moveSpeed: 10
   findDistance: 10
   moveDistance: 20
-  hp: 15000
-  maxHp: 15000
-  attackPower: 30
+  maxHp: 150000
+  attackPower: 300

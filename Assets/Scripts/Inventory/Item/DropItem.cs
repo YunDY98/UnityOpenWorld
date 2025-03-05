@@ -18,7 +18,7 @@ public class DropItem : MonoBehaviour
         
     }
 
-    void OnTriggerStay(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         ItemTrigger(other);
     }
@@ -28,17 +28,17 @@ public class DropItem : MonoBehaviour
         if(other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
           
-            if(itemSO.Item.itemName == "Gold")
-            {
-                PlayerStats.Instance.AddGold(itemSO.Gold);
-                PlayerStats.Instance.AddExp(itemSO.Exp);
+           
+            PlayerStats.Instance.AddGold(itemSO.Gold);
+            PlayerStats.Instance.AddExp(itemSO.Exp);
                 
 
-            }
-            else
+            
+            if(itemSO.Item.quantity > 0)
             {
                 itemPool.GetPresenter().AddItem(itemSO.Item);
             }
+
             itemPool.ReturnItem(this);
             
 
