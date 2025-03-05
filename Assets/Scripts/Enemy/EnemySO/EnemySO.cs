@@ -16,9 +16,6 @@ public class EnemySO : ScriptableObject
     //이동 가능 범위
     public float moveDistance = 20f;
 
-
-    //적 HP
-    public int hp = 15000;
     public int maxHp = 15000;
 
      //공격력 

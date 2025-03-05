@@ -19,7 +19,7 @@ public class EnemyFSM : MonoBehaviour
     [Header("EnemyInfo")]
     public EnemySO enemySO;
     
-
+    int hp;
 
    
     public Slider hpSlider;
@@ -74,13 +74,15 @@ public class EnemyFSM : MonoBehaviour
 
         anim = transform.GetComponentInChildren<Animator>();
         navMeshAgent.enabled = true;
+
+        hp = enemySO.maxHp;
     }
     
     // Update is called once per frame
     void Update()
     {
         //print(m_State);
-        hpSlider.value = (float)enemySO.hp/(float)enemySO.maxHp;
+        hpSlider.value = (float)hp/(float)enemySO.maxHp;
 
         switch (m_State)
         {
@@ -258,8 +260,8 @@ public class EnemyFSM : MonoBehaviour
             transform.position = originPos;
             transform.rotation = originRot;
 
-            //enemySO.hp 다시 회복 
-            enemySO.hp = enemySO.maxHp;
+            //hp 다시 회복 
+           hp = enemySO.maxHp;
 
             m_State =  EnemyState.Idle;
            // print("Return -> Idle");
@@ -312,10 +314,10 @@ public class EnemyFSM : MonoBehaviour
         RouteReset();
 
         //플레이어의 공격력만큼 에너미 체력 감소 
-        enemySO.hp -= _damaged;
+       hp -= _damaged;
         
     
-        if(enemySO.hp <= 0)
+        if(hp <= 0)
         {
             damageText.text = "";
             m_State = EnemyState.Die;
@@ -328,7 +330,7 @@ public class EnemyFSM : MonoBehaviour
         }
        
         //에너미의 체력이 0보다 크면 피격 상태
-        if(enemySO.hp > 0 && m_State == EnemyState.Idle)
+        if(hp > 0 && m_State == EnemyState.Idle)
         {
             m_State = EnemyState.Damaged;
             print("Any State -> Damaged");
@@ -392,7 +394,7 @@ public class EnemyFSM : MonoBehaviour
         // 적을 초기 위치로 이동시키고 체력을 회복하며 다시 활성화
         transform.position = originPos;
         transform.rotation = originRot;
-        enemySO.hp = enemySO.maxHp;
+       hp = enemySO.maxHp;
         m_State = EnemyState.Idle;
         anim.Play("Idle");
         //anim.SetTrigger("DieToIdle");
