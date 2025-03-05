@@ -28,16 +28,16 @@ public class DropItem : MonoBehaviour
         if(other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
           
-            if(itemSO.item.itemName == "Gold")
+            if(itemSO.Item.itemName == "Gold")
             {
-                PlayerStats.Instance.AddGold(itemSO.gold);
-                PlayerStats.Instance.AddExp(itemSO.exp);
+                PlayerStats.Instance.AddGold(itemSO.Gold);
+                PlayerStats.Instance.AddExp(itemSO.Exp);
                 
 
             }
             else
             {
-                itemPool.GetPresenter().AddItem(itemSO.item);
+                itemPool.GetPresenter().AddItem(itemSO.Item);
             }
             itemPool.ReturnItem(this);
             

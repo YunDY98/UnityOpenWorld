@@ -6,13 +6,22 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewItem", menuName = "ItemSO/Item")]
 public class ItemSO : ScriptableObject
 {
-    public float rate;
-    public int gold;
-    public int exp;
+    [SerializeField]
+    private float rate;
+    public float Rate => rate;
 
+    [SerializeField]
+    private int gold;
+    public int Gold => gold;
 
-    public ItemInfo item; // DataManager
-    
+    [SerializeField]
+    private int exp;
+    public int Exp => exp;
+
+    [SerializeField]
+    private ItemInfo item;
+    public ItemInfo Item => item;
+
 
    
 

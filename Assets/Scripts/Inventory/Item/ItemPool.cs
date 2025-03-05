@@ -32,7 +32,7 @@ public class ItemPool : MonoBehaviour
     {
         foreach (var dropItem in dropItems)
         {
-            float _rate = dropItem.itemSO.rate;
+            float _rate = dropItem.itemSO.Rate;
             
             int _count = Mathf.RoundToInt(_rate * 100);
             for (int i = 0; i < _count; i++)

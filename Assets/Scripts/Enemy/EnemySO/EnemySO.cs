@@ -7,19 +7,23 @@ using UnityEngine;
 public class EnemySO : ScriptableObject
 {
     [Header("EnemyInfo")]
-    public float attackDistance = 1f;
-    public float moveSpeed = 7f;
-
-    // 플레이어 발견 범위
-    public float findDistance = 10f;
-
-    //이동 가능 범위
-    public float moveDistance = 20f;
-
-    public int maxHp = 15000;
-
-     //공격력 
-    public int attackPower = 30;
+    [SerializeField] private float attackDistance = 1f;
+    public float AttackDistance => attackDistance;
+    
+    [SerializeField] private float moveSpeed = 7f;
+    public float MoveSpeed => moveSpeed;
+    
+    [SerializeField] private float findDistance = 10f;
+    public float FindDistance => findDistance;
+    
+    [SerializeField] private float moveDistance = 20f;
+    public float MoveDistance => moveDistance;
+    
+    [SerializeField] private int maxHp = 15000;
+    public int MaxHp => maxHp;
+    
+    [SerializeField] private int attackPower = 30;
+    public int AttackPower => attackPower;
 
    
 
