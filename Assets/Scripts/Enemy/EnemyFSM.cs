@@ -17,26 +17,16 @@ public class EnemyFSM : MonoBehaviour
         Die
     }
     [Header("EnemyInfo")]
-    public float attackDistance = 1f;
-    public float moveSpeed = 7f;
-
-    // 플레이어 발견 범위
-    public float findDistance = 10f;
-
-    //이동 가능 범위
-    public float moveDistance = 20f;
+    public EnemySO enemySO;
+    
 
 
-    //적 HP
-    public int hp = 15000;
-    public int maxHp = 15000;
+   
     public Slider hpSlider;
 
     public TextMeshProUGUI damageText;
 
-    //공격력 
-    public int attackPower = 30;
-
+   
     
     //초기 위치 
     Vector3 originPos;
@@ -90,7 +80,7 @@ public class EnemyFSM : MonoBehaviour
     void Update()
     {
         //print(m_State);
-        hpSlider.value = (float)hp/(float)maxHp;
+        hpSlider.value = (float)enemySO.hp/(float)enemySO.maxHp;
 
         switch (m_State)
         {
@@ -122,7 +112,7 @@ public class EnemyFSM : MonoBehaviour
        
        
         // 플레이어와 거리가 액션 시작범위 이내라면 move 상태로 전환
-        if(Vector3.Distance(transform.position, player.position) < findDistance)
+        if(Vector3.Distance(transform.position, player.position) < enemySO.findDistance)
         {
             m_State = EnemyState.Move;
            // print("Idle -> Move");
@@ -144,14 +134,14 @@ public class EnemyFSM : MonoBehaviour
 
 
         //초기 위치에서 이동 가능 범위를 넘어간다면 
-        if(Vector3.Distance(transform.position,originPos) > moveDistance || Vector3.Distance(transform.position,player.position) > moveDistance)
+        if(Vector3.Distance(transform.position,originPos) > enemySO.moveDistance || Vector3.Distance(transform.position,player.position) > enemySO.moveDistance)
         {
             
             m_State = EnemyState.Return;
             //print("Move -> Return");
         }
         // 플레이어와의 거리가 공격 범위 밖이라면 플레이러를 향해 이동
-        else if(Vector3.Distance(transform.position,player.position) > attackDistance)
+        else if(Vector3.Distance(transform.position,player.position) > enemySO.attackDistance)
         {
             
             // //이동 방향 설정 
@@ -166,7 +156,7 @@ public class EnemyFSM : MonoBehaviour
             RouteReset();
 
             //내비게이션으로 접근하는 최소 거리를 공격 가능 거리로 설정
-            smith.stoppingDistance = attackDistance;
+            smith.stoppingDistance = enemySO.attackDistance;
 
             //내비게이션의 목적지를 플레이어의 위치로 설정
             smith.destination = player.position;
@@ -198,7 +188,7 @@ public class EnemyFSM : MonoBehaviour
         {
             
             // 플레이어가 공격 범위 이내에 있다면 공격 
-            if(Vector3.Distance(transform.position,player.position) < attackDistance)
+            if(Vector3.Distance(transform.position,player.position) < enemySO.attackDistance)
             {
                
                 currentTime = 0;
@@ -228,15 +218,15 @@ public class EnemyFSM : MonoBehaviour
     //플레이어의 스크립트의 데미지 처리 함수를 실행 
     public void AttackAction()
     {
-        if(Vector3.Distance(transform.position,player.position) < attackDistance)
-            PlayerStats.Instance.DamageAction(attackPower);
+        if(Vector3.Distance(transform.position,player.position) < enemySO.attackDistance)
+            PlayerStats.Instance.DamageAction(enemySO.attackPower);
             
     }
 
     void Return()
     {
         //리턴중 공격거리내 캐릭터가 있을시 
-        if(Vector3.Distance(transform.position,originPos) < moveDistance && Vector3.Distance(transform.position,player.position) < attackDistance)
+        if(Vector3.Distance(transform.position,originPos) < enemySO.moveDistance && Vector3.Distance(transform.position,player.position) < enemySO.attackDistance)
         {
             m_State = EnemyState.Move;
             anim.SetTrigger("Move");
@@ -268,8 +258,8 @@ public class EnemyFSM : MonoBehaviour
             transform.position = originPos;
             transform.rotation = originRot;
 
-            //hp 다시 회복 
-            hp = maxHp;
+            //enemySO.hp 다시 회복 
+            enemySO.hp = enemySO.maxHp;
 
             m_State =  EnemyState.Idle;
            // print("Return -> Idle");
@@ -322,10 +312,10 @@ public class EnemyFSM : MonoBehaviour
         RouteReset();
 
         //플레이어의 공격력만큼 에너미 체력 감소 
-        hp -= _damaged;
+        enemySO.hp -= _damaged;
         
     
-        if(hp <= 0)
+        if(enemySO.hp <= 0)
         {
             damageText.text = "";
             m_State = EnemyState.Die;
@@ -338,7 +328,7 @@ public class EnemyFSM : MonoBehaviour
         }
        
         //에너미의 체력이 0보다 크면 피격 상태
-        if(hp > 0 && m_State == EnemyState.Idle)
+        if(enemySO.hp > 0 && m_State == EnemyState.Idle)
         {
             m_State = EnemyState.Damaged;
             print("Any State -> Damaged");
@@ -402,7 +392,7 @@ public class EnemyFSM : MonoBehaviour
         // 적을 초기 위치로 이동시키고 체력을 회복하며 다시 활성화
         transform.position = originPos;
         transform.rotation = originRot;
-        hp = maxHp;
+        enemySO.hp = enemySO.maxHp;
         m_State = EnemyState.Idle;
         anim.Play("Idle");
         //anim.SetTrigger("DieToIdle");

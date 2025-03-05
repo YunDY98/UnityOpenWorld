@@ -165,11 +165,6 @@ public class ItemData
     public Sprite sprite;
     public TextMeshProUGUI text;
 
-   
-
-    
-
-    
     public ItemData(ItemInfo itemInfo, Sprite sprite = null, TextMeshProUGUI text = null)
     {
         this.itemInfo = itemInfo;

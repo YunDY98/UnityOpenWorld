@@ -12623,6 +12623,10 @@ PrefabInstance:
       value: 150000
       objectReference: {fileID: 0}
     - target: {fileID: 1959762493158554918, guid: a650f5001cdb141b0897724ec6cb06c9, type: 3}
+      propertyPath: enemySO
+      value: 
+      objectReference: {fileID: 11400000, guid: 50951cbbf85bc4243b0581987d520fdd, type: 2}
+    - target: {fileID: 1959762493158554918, guid: a650f5001cdb141b0897724ec6cb06c9, type: 3}
       propertyPath: moveSpeed
       value: 10
       objectReference: {fileID: 0}

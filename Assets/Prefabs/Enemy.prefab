@@ -1419,19 +1419,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc854e6cfaa7147ce916b0b57930c066, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackDistance: 2
-  moveSpeed: 5
-  findDistance: 15
-  moveDistance: 20
-  hp: 15000
-  maxHp: 15000
+  enemySO: {fileID: 11400000, guid: 9904179ade2674020b47b0219e2d79be, type: 2}
   hpSlider: {fileID: 3988880614961474742}
   damageText: {fileID: 8096214066134847617}
-  attackPower: 10
-  gold: {fileID: 6292112991115732675, guid: 5f65580ebcf6f4602aab74a5134aca70, type: 3}
-  dropItems:
-  - {fileID: 1531953700682219723, guid: 7f18347d44eac437e8d1b19a0b6519cc, type: 3}
-  - {fileID: 1531953700682219723, guid: c33cd3db3570545819c6b5b9ddea6771, type: 3}
 --- !u!195 &3693898618921198626
 NavMeshAgent:
   m_ObjectHideFlags: 0

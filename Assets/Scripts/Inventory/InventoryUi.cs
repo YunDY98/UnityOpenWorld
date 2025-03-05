@@ -71,15 +71,6 @@ public class InventoryUI : MonoBehaviour, IInventoryView
         }
     }
 
-    // public TextMeshProUGUI AddItemToUI(Sprite sprite, ItemData item)
-    // {
-    //     GameObject _itemObject = Instantiate(invenItem,content.transform);
-    //     _itemObject.GetComponent<Image>().sprite = sprite;
-    //     TextMeshProUGUI _itemCntText = _itemObject.GetComponentInChildren<TextMeshProUGUI>();
-        
-    //     _itemCntText.text = item.quantity.ToString();
-    //     return _itemCntText;
-    // }
 
     public void CreateItem(ItemInfo item)
     {
@@ -92,7 +83,7 @@ public class InventoryUI : MonoBehaviour, IInventoryView
         TextMeshProUGUI _itemCntText = _itemObject.GetComponentInChildren<TextMeshProUGUI>();
         _itemCntText.text = item.quantity.ToString();
 
-        ItemData _ItemData = new(item,_sprite,_itemCntText);
+        ItemData _ItemData = new(item,_sprite);
         
         AddItemDictionaryEvent?.Invoke(_ItemData);
 

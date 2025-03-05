@@ -6,7 +6,7 @@ using System;
 
 public class Inventory : IInventoryModel
 {
-    
+    public ItemSO itemSO;
     Dictionary<string,ItemData> items = new();
 
     public event Action ItemWarningEvent;
@@ -100,6 +100,8 @@ public class Inventory : IInventoryModel
         }
         return Resources.Load<Sprite>($"Sprites/{itemName}"); 
     }
+
+
     public void AddItemDictionary(ItemData _ItemData)
     {
         

@@ -10,8 +10,11 @@ public class ItemSO : ScriptableObject
     public int gold;
     public int exp;
 
-    public ItemInfo item; // DataManager
 
+    public ItemInfo item; // DataManager
+    
+
+   
 
    
     

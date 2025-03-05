@@ -9,13 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45d912deb442048b290224bdd43eb26e, type: 3}
-  m_Name: NewItem
+  m_Script: {fileID: 11500000, guid: c0b498a5486cb4b7a90d48d1dbd4e3dc, type: 3}
+  m_Name: zombieBoss
   m_EditorClassIdentifier: 
-  rate: 0
-  gold: 0
-  exp: 0
-  item:
-    itemName: 
-    quantity: 0
-    type: 0
+  attackDistance: 1
+  moveSpeed: 7
+  findDistance: 10
+  moveDistance: 20
+  hp: 15000
+  maxHp: 15000
+  attackPower: 30
