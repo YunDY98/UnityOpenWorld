@@ -6,7 +6,7 @@ using System;
 
 public class Inventory : IInventoryModel
 {
-    public ItemSO itemSO;
+    
     Dictionary<string,ItemData> items = new();
 
     public event Action ItemWarningEvent;

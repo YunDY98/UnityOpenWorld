@@ -6,7 +6,7 @@ using System.Linq;
 using TMPro;
 public class EnemyFSM : MonoBehaviour
 {
-    NavMeshAgent smith;
+   
     enum EnemyState
     {
         Idle,
@@ -19,7 +19,7 @@ public class EnemyFSM : MonoBehaviour
     [Header("EnemyInfo")]
     public EnemySO enemySO;
     
-    int hp;
+    int currentHp;
 
    
     public Slider hpSlider;
@@ -32,11 +32,7 @@ public class EnemyFSM : MonoBehaviour
     Vector3 originPos;
     Quaternion originRot;
 
-    
-
-    //public CharacterController cc;
-
-    PlayerMove pm;
+   
 
     Animator anim;
     //누적 시간 
@@ -45,7 +41,7 @@ public class EnemyFSM : MonoBehaviour
     // 에너미 상태 변수
     EnemyState m_State;
 
-    NavMeshAgent navMeshAgent;
+    NavMeshAgent agent;
 
     Coroutine damageDisplay;
    
@@ -60,29 +56,27 @@ public class EnemyFSM : MonoBehaviour
     {
         itemPool = FindObjectOfType<ItemPool>();
         
-        navMeshAgent = GetComponent<NavMeshAgent>();
+        agent = GetComponent< NavMeshAgent>();
         m_State = EnemyState.Idle;
-        pm = GameObject.Find("Player").GetComponent<PlayerMove>();
+        
+        player = FindObjectOfType<PlayerMove>().transform;
 
         //자신의 초기 위치 
         originPos = transform.position;
         originRot = transform.rotation;
 
-        smith = GetComponent<NavMeshAgent>();
-
-        player = GameObject.Find("Player").transform;
 
         anim = transform.GetComponentInChildren<Animator>();
-        navMeshAgent.enabled = true;
+        agent.enabled = true;
 
-        hp = enemySO.MaxHp;
+        currentHp = enemySO.MaxHp;
     }
     
     // Update is called once per frame
     void Update()
     {
-        //print(m_State);
-        hpSlider.value = (float)hp/(float)enemySO.MaxHp;
+        
+        hpSlider.value = (float)currentHp/enemySO.MaxHp;
 
         switch (m_State)
         {
@@ -100,9 +94,6 @@ public class EnemyFSM : MonoBehaviour
                 break;
             case EnemyState.Damaged:
                 Damaged();
-                break;
-            case EnemyState.Die:
-                //Die();
                 break;
 
         }
@@ -145,23 +136,14 @@ public class EnemyFSM : MonoBehaviour
         // 플레이어와의 거리가 공격 범위 밖이라면 플레이러를 향해 이동
         else if(Vector3.Distance(transform.position,player.position) > enemySO.AttackDistance)
         {
-            
-            // //이동 방향 설정 
-            // Vector3 dir = (player.position - transform.position).normalized;    
-
-            // //캐릭터 컨트롤러 이용하여 이동 
-            // cc.Move(dir * moveSpeed * Time.deltaTime);
-
-            // //플레이어를 향해 방향 전환 
-            // transform.forward = dir;
 
             RouteReset();
 
             //내비게이션으로 접근하는 최소 거리를 공격 가능 거리로 설정
-            smith.stoppingDistance = enemySO.AttackDistance;
+            agent.stoppingDistance = enemySO.AttackDistance;
 
             //내비게이션의 목적지를 플레이어의 위치로 설정
-            smith.destination = player.position;
+            agent.destination = player.position;
             
 
 
@@ -237,19 +219,12 @@ public class EnemyFSM : MonoBehaviour
         }
         else if(Vector3.Distance(transform.position,originPos) > 0.2f)
         {
-            
-            
-            // Vector3 dir = (originPos - transform.position).normalized;
-            // cc.Move(dir * moveSpeed * currentTime* Time.deltaTime);
-
-            // //방향을 복귀 지점으로 
-            // transform.forward = dir;
-
+        
             //내비게이션의 목적지를 초기 저장된 위치로 설정한다.
-            smith.destination = originPos;
+            agent.destination = originPos;
 
             //내비게이션으로 접근하는 최소 거리를 '0'으로 설정
-            smith.stoppingDistance = 0;
+            agent.stoppingDistance = 0;
 
         }
         else
@@ -261,7 +236,7 @@ public class EnemyFSM : MonoBehaviour
             transform.rotation = originRot;
 
             //hp 다시 회복 
-           hp = enemySO.MaxHp;
+            currentHp = enemySO.MaxHp;
 
             m_State =  EnemyState.Idle;
            // print("Return -> Idle");
@@ -314,10 +289,10 @@ public class EnemyFSM : MonoBehaviour
         RouteReset();
 
         //플레이어의 공격력만큼 에너미 체력 감소 
-       hp -= _damaged;
+        currentHp -= _damaged;
         
     
-        if(hp <= 0)
+        if(currentHp <= 0)
         {
             damageText.text = "";
             m_State = EnemyState.Die;
@@ -330,7 +305,7 @@ public class EnemyFSM : MonoBehaviour
         }
        
         //에너미의 체력이 0보다 크면 피격 상태
-        if(hp > 0 && m_State == EnemyState.Idle)
+        if(currentHp > 0 && m_State == EnemyState.Idle)
         {
             m_State = EnemyState.Damaged;
             print("Any State -> Damaged");
@@ -340,9 +315,6 @@ public class EnemyFSM : MonoBehaviour
             
         }
         
-        
-        
-
     }
 
     void Damaged()
@@ -394,7 +366,7 @@ public class EnemyFSM : MonoBehaviour
         // 적을 초기 위치로 이동시키고 체력을 회복하며 다시 활성화
         transform.position = originPos;
         transform.rotation = originRot;
-       hp = enemySO.MaxHp;
+        currentHp = enemySO.MaxHp;
         m_State = EnemyState.Idle;
         anim.Play("Idle");
         //anim.SetTrigger("DieToIdle");
@@ -407,8 +379,8 @@ public class EnemyFSM : MonoBehaviour
     void RouteReset()
     {
         //내비게이션 에이전트의 이동을 멈추고 경로를 초기화 
-        smith.isStopped = true; 
-        smith.ResetPath();
+        agent.isStopped = true; 
+        agent.ResetPath();
 
     }
 }

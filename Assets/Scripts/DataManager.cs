@@ -12,7 +12,6 @@ public class DataManager : MonoBehaviour
     public static DataManager Instance { get { return _instance; } }
 
     private string dataFilePath;
-
     private readonly string keyWord = "wutheringwaves";
 
     IInventoryModel inventory;
@@ -21,12 +20,12 @@ public class DataManager : MonoBehaviour
     {
         if (_instance != null && _instance != this)
         {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }
         else
         {
             _instance = this;
-            DontDestroyOnLoad(this.gameObject);
+            DontDestroyOnLoad(gameObject);
         }
 
         // 데이터 파일 경로 설정

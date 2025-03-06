@@ -22,7 +22,7 @@ public class ItemSO : ScriptableObject
     private ItemInfo item;
     public ItemInfo Item => item;
 
-
+    
    
 
    
