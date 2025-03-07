@@ -5,6 +5,7 @@ using TMPro;
 using DG.Tweening;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using Yun;
 //Hierarchy -> PlayerStats-> Player에 스크립트 할당
 public class BuffManager : MonoBehaviour
 {
@@ -61,7 +62,7 @@ public class BuffManager : MonoBehaviour
     void UseBuff(string buffName)
     {
         
-        int _onBuff = StringToEnum(buffName,typeof(Buff));
+        int _onBuff = GameUtility.StringToEnumInt(buffName,typeof(Buff));
 
         if((buff & _onBuff) != 0 )
         {
@@ -136,14 +137,7 @@ public class BuffManager : MonoBehaviour
 
        
     }
-    int StringToEnum(string key, Type enumType)
-    {
-        
-        object _enumValue = System.Enum.Parse(enumType, key);
-
-        return (int)_enumValue;
-    }
-
+   
     void BuffUI(string buffName)
     {
         if(!buffUIDic.ContainsKey(buffName))

@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-
+using Yun;
 
 
 public class KeySetting : MonoBehaviour, IDropHandler
@@ -134,6 +134,8 @@ public class KeySetting : MonoBehaviour, IDropHandler
         
     }
 
+   
+
     int StringToEnumInt(string key, Type enumType)
     {
         
@@ -143,12 +145,9 @@ public class KeySetting : MonoBehaviour, IDropHandler
             key = "Alpha" + key;
         }
         
-        object _enumValue = System.Enum.Parse(enumType, key);
 
+        return GameUtility.StringToEnumInt(key, enumType);
         
-        
-            
-        return (int)_enumValue;
     }
 
     // int StringToKeyCode(string _key)

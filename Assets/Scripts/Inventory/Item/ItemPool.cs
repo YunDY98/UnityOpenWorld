@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Transactions;
 using Unity.VisualScripting;
 using UnityEngine;
-
+using Yun;
 
 public class ItemPool : MonoBehaviour
 {
@@ -45,17 +45,9 @@ public class ItemPool : MonoBehaviour
         }
       
 
-        ShufflePool(); // 아이템 섞기
+        GameUtility.Shuffle(itemPool); // 아이템 섞기
     }
-    private void ShufflePool()
-    {
-        for (int i = itemPool.Count - 1; i > 0; i--)
-        {
-            int _randomIndex = UnityEngine.Random.Range(0, i + 1);
-            (itemPool[_randomIndex], itemPool[i]) = (itemPool[i], itemPool[_randomIndex]);
-            
-        }
-    }
+  
 
     public InventoryPresenter GetPresenter()
     {
@@ -71,7 +63,7 @@ public class ItemPool : MonoBehaviour
             itemPool.RemoveAt(0);
             _item.transform.position = position;
             _item.gameObject.SetActive(true);
-            //매번 랜덤으로 아이템 활성화후 비활성화로 변경 예정 
+            
            
         } 
     }
@@ -84,7 +76,7 @@ public class ItemPool : MonoBehaviour
         if(cnt >= shuffleCnt)
         {
             cnt = 0;
-            ShufflePool();
+            GameUtility.Shuffle(itemPool);
         }
     }
 
