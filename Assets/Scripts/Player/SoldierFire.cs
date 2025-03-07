@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEditor;
+using UnityEngine.InputSystem.Processors;
+using System.Data;
 
 public class SoldierFire : CharacterAtk
 {
@@ -19,11 +21,11 @@ public class SoldierFire : CharacterAtk
 
     public GameObject[] muzzleFlash;
 
- 
+    [SerializeField] GameObject scope;
     //public PlayerStats playerStats;
     private int useBullets;
     private int useBomb;
-    private int damageRate = 1;
+    
     public TMP_Text WModeTxt;
 
     bool zoomMode = false;
@@ -31,8 +33,6 @@ public class SoldierFire : CharacterAtk
     //총을 쏠수 있는지 
     bool canShoot;
     public GameObject firePosition;
-
-    public CamRotate camRotate;
 
     public GameObject bombFactory;
 
@@ -50,12 +50,13 @@ public class SoldierFire : CharacterAtk
         attackRange = Mathf.Infinity;
         useBomb = 10;
         
-        Rifle();
+       
         bulletParticle = bulletEffect.GetComponent<ParticleSystem>();
 
         
         canShoot = true;
     }
+
 
     // Update is called once per frame
     void Update()
@@ -79,6 +80,15 @@ public class SoldierFire : CharacterAtk
           
             if(!canShoot)
                 return;
+
+            if(WeaponMode.Sniper == wMode)
+            {
+                useBullets = playerStats.Level * 5;
+            }
+            else
+            {
+                useBullets = playerStats.Level;
+            }
             
 
             if(playerStats.UseGold(useBullets))
@@ -89,14 +99,14 @@ public class SoldierFire : CharacterAtk
 
                 if(WeaponMode.Sniper == wMode)
                 {
-                   
-                    
+                    Sniper();
                     StartCoroutine(Shoot(3f));
                 }
                    
                 else
                 {
                     
+                    Rifle();
                     StartCoroutine(Shoot(0f));
                 }
                     
@@ -107,48 +117,30 @@ public class SoldierFire : CharacterAtk
 
         if(Input.GetMouseButtonDown(1))
         {
-            switch(wMode)
+            zoomMode = !zoomMode;
+            
+            if(zoomMode)
             {
-                
-                case WeaponMode.Sniper:
-                    if(!zoomMode)
-                    {
-
-                        damageRate = 5;
-                        Camera.main.fieldOfView = 15f;
-                        zoomMode = true;
-                    
-                    }
-                    else
-                    {
-                       
-                        attackDamage = (int)(playerStats.InitDamage() * 2);
-                        damageRate = 2;
-                        Camera.main.fieldOfView = 60f;
-                        zoomMode = false;
-                        
-
-                    }
-                    break;
+                scope.SetActive(true);
+               
+                Camera.main.fieldOfView = 15f;
+              
+                wMode = WeaponMode.Sniper;
+   
             }
-        }
-        if(Input.GetKeyUp(KeyCode.Alpha1))
-        {
-            Rifle();
-
-
-
-        }
-        if(Input.GetKeyUp(KeyCode.Alpha2))
-        {   
-            WModeTxt.text = "Sniper";
-            useBullets = 5 * playerStats.Level;
+            else 
+            {
+                scope.SetActive(false);
+               
+                
+                Camera.main.fieldOfView = 60f;
+                zoomMode = false;
+               
+                wMode = WeaponMode.Rifle;
+            }
             
-            attackDamage = (int)(playerStats.InitDamage() * 5);
-            damageRate = 2;
-            
-            wMode = WeaponMode.Sniper;
         }
+    
 
        
        
@@ -210,13 +202,13 @@ public class SoldierFire : CharacterAtk
 
     void Rifle()
     {
-       
-        damageRate = 1;
-        wMode = WeaponMode.Rifle;
-        WModeTxt.text = "Rifle";
-        useBullets = 2 * playerStats.Level;
-        Camera.main.fieldOfView = 60f;
-       
-
+        attackDamage = playerStats.InitDamage();
     }
+
+    void Sniper()
+    {
+        attackDamage = playerStats.InitDamage() * 5;
+    }
+
+
 }
