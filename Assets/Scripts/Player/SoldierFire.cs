@@ -40,8 +40,8 @@ public class SoldierFire : CharacterAtk
 
     public GameObject bulletEffect;
    
-
-
+   
+  
     ParticleSystem bulletParticle;
     protected override void Start ()
     {   
@@ -53,7 +53,13 @@ public class SoldierFire : CharacterAtk
        
         bulletParticle = bulletEffect.GetComponent<ParticleSystem>();
 
-        
+       
+       
+       
+    }
+
+    void OnEnable()
+    {
         canShoot = true;
     }
 
@@ -83,7 +89,7 @@ public class SoldierFire : CharacterAtk
 
             if(WeaponMode.Sniper == wMode)
             {
-                useBullets = playerStats.Level * 5;
+                useBullets = playerStats.Level * 10;
             }
             else
             {
@@ -100,7 +106,7 @@ public class SoldierFire : CharacterAtk
                 if(WeaponMode.Sniper == wMode)
                 {
                     Sniper();
-                    StartCoroutine(Shoot(3f));
+                    StartCoroutine(Shoot(1f));
                 }
                    
                 else
@@ -207,8 +213,9 @@ public class SoldierFire : CharacterAtk
 
     void Sniper()
     {
-        attackDamage = playerStats.InitDamage() * 5;
+        attackDamage = playerStats.InitDamage() * 15;
     }
 
 
+   
 }

@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using UnityEngine;
 
 public class PlayerMove : MonoBehaviour
@@ -31,7 +33,8 @@ public class PlayerMove : MonoBehaviour
         cc = GetComponent<CharacterController>();
         anim = GetComponentInChildren<Animator>();
        
-        
+        transform.position = new Vector3(-388, -6.622408f,-240);
+        StartCoroutine(Gravity());
     }
 
     // Update is called once per frame
@@ -176,5 +179,17 @@ public class PlayerMove : MonoBehaviour
         }
         return Mathf.Infinity; // 지면을 찾지 못했을 경우 무한대 반환
     }
+
+    IEnumerator Gravity()
+    {
+        gravity = 0;
+        while (Fly() == Mathf.Infinity) // 바닥이 로드될 때까지 대기
+        {
+            yield return null;
+        }
+
+        gravity = -9.8f;
+    }
+
    
 }

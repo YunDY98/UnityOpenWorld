@@ -1,10 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System;
-using UnityEditor.Rendering.LookDev;
+
 public class InventoryUI : MonoBehaviour, IInventoryView
 {
     [SerializeField] GameObject content;

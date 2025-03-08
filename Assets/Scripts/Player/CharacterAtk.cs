@@ -20,6 +20,8 @@ public abstract class CharacterAtk : MonoBehaviour
         anim = GetComponent<Animator>();
         playerStats = PlayerStats.Instance;
         gameManager = GameManager.Instance;
+        
+        
     }
 
     // 기본 단일 공격 메서드
