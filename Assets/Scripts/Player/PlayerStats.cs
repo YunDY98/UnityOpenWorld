@@ -182,7 +182,7 @@ public class PlayerStats : MonoBehaviour
         {
             Level = 1;
             Exp = 0;
-            Gold = 10000;
+            Gold = 1000000;
            
             foreach(SelectCharacter _weapon in Enum.GetValues(typeof(SelectCharacter)))
             {

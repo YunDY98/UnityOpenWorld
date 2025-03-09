@@ -33,7 +33,8 @@ public class PlayerMove : MonoBehaviour
         cc = GetComponent<CharacterController>();
         anim = GetComponentInChildren<Animator>();
        
-        transform.position = new Vector3(-388, -6.622408f,-240);
+        //transform.position = new Vector3(-388, -6.622408f,-240);
+        cc.transform.position = new Vector3(-388, -6.622408f,-240);
         StartCoroutine(Gravity());
     }
 
@@ -182,8 +183,9 @@ public class PlayerMove : MonoBehaviour
 
     IEnumerator Gravity()
     {
+        
         gravity = 0;
-        while (!cc.isGrounded) // 바닥이 로드될 때까지 대기
+        while (!cc.isGrounded && Fly()== Mathf.Infinity) // 바닥이 로드될 때까지 대기
         {
             yield return null;
         }

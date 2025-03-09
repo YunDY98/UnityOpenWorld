@@ -16,6 +16,5 @@ MonoBehaviour:
   moveSpeed: 7
   findDistance: 10
   moveDistance: 20
-  hp: 15000
-  maxHp: 15000
+  maxHp: 1500
   attackPower: 30

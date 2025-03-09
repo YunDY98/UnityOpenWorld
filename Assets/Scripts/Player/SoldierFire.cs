@@ -39,6 +39,8 @@ public class SoldierFire : CharacterAtk
     public float throwPower = 15f;
 
     public GameObject bulletEffect;
+
+    public GameObject underbar;
    
    
   
@@ -128,6 +130,7 @@ public class SoldierFire : CharacterAtk
             if(zoomMode)
             {
                 scope.SetActive(true);
+                underbar.SetActive(false);
                
                 Camera.main.fieldOfView = 15f;
               
@@ -137,6 +140,7 @@ public class SoldierFire : CharacterAtk
             else 
             {
                 scope.SetActive(false);
+                underbar.SetActive(true);
                
                 
                 Camera.main.fieldOfView = 60f;
