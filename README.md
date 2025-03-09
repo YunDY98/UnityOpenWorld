@@ -24,7 +24,7 @@
 
 
 ### 🔹 **Mac**  
-
+1. [여기](https://github.com/YunDY98/UnityOpenWorld/releases/download/SiliconMac/MacOS.app.zip)에서 Mac 버전을 다운로드합니다.
 
 
  
