@@ -86,7 +86,7 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         keyboard.SetActive(false);
-
+        
         
     }
 
@@ -143,7 +143,7 @@ public class UIManager : MonoBehaviour
         ToggleUI(KeyCode.M,keyboard,rectKeyboard);
         ToggleUI(KeyCode.Escape,esc,rectESC);
         ToggleUI(KeyCode.I,inventoryUI,rectInventory);
-
+       
     }
 
     // 골드 업데이트
@@ -233,11 +233,12 @@ public class UIManager : MonoBehaviour
 
     public void Option()
     {
+        BringToFront(rectOption);
         option.SetActive(!option.activeSelf);
-
+        
         if(option.activeSelf)
         {
-            BringToFront(rectOption);
+           
             if(PlayerPrefs.HasKey("rotSpeed"))
             {
                 rotSpeedSlider.value = PlayerPrefs.GetInt("rotSpeed");
@@ -264,7 +265,8 @@ public class UIManager : MonoBehaviour
     public void MouseSensitivity()
     {
         rotSpeed = (int)rotSpeedSlider.value;
-       
+        gameManager.rotSpeed = rotSpeed;
+        
         rotSpeedText.text = $"{rotSpeed}";
         
 

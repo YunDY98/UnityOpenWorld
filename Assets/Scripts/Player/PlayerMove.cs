@@ -183,7 +183,7 @@ public class PlayerMove : MonoBehaviour
     IEnumerator Gravity()
     {
         gravity = 0;
-        while (Fly() == Mathf.Infinity) // 바닥이 로드될 때까지 대기
+        while (!cc.isGrounded) // 바닥이 로드될 때까지 대기
         {
             yield return null;
         }
