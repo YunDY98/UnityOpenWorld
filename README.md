@@ -21,10 +21,10 @@
 
 ## 🛠️ 설치 방법  
 ### 🔹 **Windows**  
+[여기](https://github.com/YunDY98/UnityOpenWorld/releases/download/Windows/Windows.zip)에서 windows 64비트 다운로드.
 
-
-### 🔹 **Mac**  
-1. [여기](https://github.com/YunDY98/UnityOpenWorld/releases/download/SiliconMac/MacOS.app.zip)에서 Mac 버전을 다운로드합니다.
+### 🔹 **Silicon Mac**  
+[여기](https://github.com/YunDY98/UnityOpenWorld/releases/download/SiliconMac/MacOS.app.zip)에서 Silicon MacOS 다운로드.
 
 
  
