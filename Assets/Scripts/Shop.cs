@@ -17,14 +17,22 @@ public class Shop : MonoBehaviour
 
     Button btn;
     Skill skill = new("","",1);
-
+    ShopItemInfo itemInfo;
+    TextMeshProUGUI textPrice;
     string key;
-    
+    void Awake()
+    {
+        itemInfo = GetComponent<ShopItemInfo>();
+        // 첫번째 UGUI가 Price
+        textPrice = GetComponentInChildren<TextMeshProUGUI>(); 
+
+        btn = GetComponent<Button>();   
+    }
     // Start is called before the first frame update
     void Start()
     {
        
-        ShopItemInfo itemInfo = GetComponent<ShopItemInfo>();
+        
 
         price = itemInfo.price;
         itemName = itemInfo.itemName;
@@ -39,9 +47,8 @@ public class Shop : MonoBehaviour
         print(key);
 
 
-        // 첫번째 UGUI가 Price
-        TextMeshProUGUI _textPrice = GetComponentInChildren<TextMeshProUGUI>(); 
-        _textPrice.text = price.ToString();
+        
+        textPrice.text = price.ToString();
 
        
         // 스킬 정보 
@@ -50,7 +57,7 @@ public class Shop : MonoBehaviour
         skill.level = 1;
 
         // 버튼 추가 
-        btn = GetComponent<Button>();   
+        
 
         btn.onClick.AddListener(Buy);
     

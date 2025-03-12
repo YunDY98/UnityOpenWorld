@@ -23,7 +23,7 @@ public class DragUI : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointer
 
    
 
-    void Start()
+    void Awake()
     {
         
         rectTransform = GetComponent<RectTransform>();

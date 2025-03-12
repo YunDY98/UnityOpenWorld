@@ -43,8 +43,16 @@ public class SoldierFire : CharacterAtk
     public GameObject underbar;
    
    
-  
+    
     ParticleSystem bulletParticle;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        bulletParticle = bulletEffect.GetComponent<ParticleSystem>();
+
+    }
+
     protected override void Start ()
     {   
         
@@ -53,7 +61,7 @@ public class SoldierFire : CharacterAtk
         useBomb = 10;
         
        
-        bulletParticle = bulletEffect.GetComponent<ParticleSystem>();
+        
 
        
        

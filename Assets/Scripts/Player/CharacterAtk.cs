@@ -14,10 +14,15 @@ public abstract class CharacterAtk : MonoBehaviour
     protected int attackDamage;
     protected float attackRange;
 
+    protected virtual void Awake()
+    {
+        anim = GetComponent<Animator>();
+    }
+
     // 시작 시 공통 초기화
     protected virtual void Start()
     {
-        anim = GetComponent<Animator>();
+       
         playerStats = PlayerStats.Instance;
         gameManager = GameManager.Instance;
         

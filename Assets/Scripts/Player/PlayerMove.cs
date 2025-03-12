@@ -25,13 +25,17 @@ public class PlayerMove : MonoBehaviour
     public float flyDistance;
 
 
-
+    void Awake()
+    {
+        cc = GetComponent<CharacterController>();
+        anim = GetComponentInChildren<Animator>();
+        
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        cc = GetComponent<CharacterController>();
-        anim = GetComponentInChildren<Animator>();
+       
        
         //transform.position = new Vector3(-388, -6.622408f,-240);
         cc.transform.position = new Vector3(-388, -6.622408f,-240);

@@ -50,23 +50,33 @@ public class EnemyFSM : MonoBehaviour
 
     //아이템 풀
     ItemPool itemPool;
-    
-    // Start is called before the first frame update
-    void Start()
+
+    void Awake()
     {
         itemPool = FindObjectOfType<ItemPool>();
         
         agent = GetComponent< NavMeshAgent>();
+
+        player = FindObjectOfType<PlayerMove>().transform;
+
+        anim = transform.GetComponentInChildren<Animator>();
+        
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+       
         m_State = EnemyState.Idle;
         
-        player = FindObjectOfType<PlayerMove>().transform;
+       
 
         //자신의 초기 위치 
         originPos = transform.position;
         originRot = transform.rotation;
 
 
-        anim = transform.GetComponentInChildren<Animator>();
+       
         agent.enabled = true;
 
         currentHp = enemySO.MaxHp;

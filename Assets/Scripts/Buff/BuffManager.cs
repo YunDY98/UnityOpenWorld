@@ -26,12 +26,14 @@ public class BuffManager : MonoBehaviour
     //public GameObject buffEffect;
 
     int buff;
+    
+
     // Start is called before the first frame update
     void Start()
     {
         buffPool = new ();
         buffEffDic = buffPool.GetBuffEffDic();
-        
+       
         playerStats = PlayerStats.Instance;
         gameManager = GameManager.Instance;
         //buffParticle = buffEffect.GetComponent<ParticleSystem>();
