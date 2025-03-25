@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
     public bool isUI;
     
     public PlayerMove player;
-    
+
     
    
    
@@ -79,6 +79,19 @@ public class GameManager : MonoBehaviour
         {
             _instance = this;
             DontDestroyOnLoad(this.gameObject);
+        }
+        
+        if(PlayerPrefs.HasKey("Data"))
+        {
+            Application.targetFrameRate = PlayerPrefs.GetInt("fps");
+            rotSpeed = PlayerPrefs.GetInt("rotSpeed");
+        }
+        else
+        {
+            PlayerPrefs.SetInt("fps",60);
+            PlayerPrefs.SetInt("rotSpeed",2000);
+            Application.targetFrameRate = 60;
+            rotSpeed = 2000;
         }
     }
 
@@ -161,6 +174,12 @@ public class GameManager : MonoBehaviour
         DataManager.Instance.SavePlayerData();
         Application.Quit();
     }
+    
+    public void FPS(int fps)
+    {
+        Application.targetFrameRate = fps;
+    }
+
 
    
     

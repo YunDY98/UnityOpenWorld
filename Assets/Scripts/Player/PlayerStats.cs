@@ -184,28 +184,28 @@ public class PlayerStats : MonoBehaviour
             Exp = 0;
             Gold = 1000000;
            
-            foreach(SelectCharacter _weapon in Enum.GetValues(typeof(SelectCharacter)))
+            foreach(SelectCharacter weapon in Enum.GetValues(typeof(SelectCharacter)))
             {
                
-               if(!weaponDictionary.ContainsKey(_weapon))
+               if(!weaponDictionary.ContainsKey(weapon))
                {
                    //weaponDictionary.Add(_weapon,1);
-                   weaponDictionary[_weapon] = 1;
+                   weaponDictionary[weapon] = 1;
                }
             }
                  
         }
         else
         {
-            foreach(var _weapon in playerData.weapons)
+            foreach(var weapon in playerData.weapons)
             {
-                SetWeapon(_weapon);
+                SetWeapon(weapon);
             }
             
               // skills 배열에 저장된 스킬
-            foreach(var _skill in playerData.skills)
+            foreach(var skill in playerData.skills)
             {
-                SetSkill(new Skill(_skill.whoSkill, _skill.skillName, _skill.level));
+                SetSkill(new Skill(skill.whoSkill, skill.skillName, skill.level));
                
             }
 
@@ -237,13 +237,13 @@ public class PlayerStats : MonoBehaviour
             
             Gold = playerData.gold;
             
-            int _skillsLength = playerData.skills.Length;
+            int skillsLength = playerData.skills.Length;
 
-            for(int i=0;i<_skillsLength;i++)
+            for(int i=0;i<skillsLength;i++)
             {
-                Skill _skill = playerData.skills[i];
+                Skill skill = playerData.skills[i];
                 
-                SetSkillLevel(_skill);
+                SetSkillLevel(skill);
        
             }
 
@@ -252,9 +252,9 @@ public class PlayerStats : MonoBehaviour
     }
    
    
-    public void SetSceneNumber(int _sceneNumber)
+    public void SetSceneNumber(int sceneNumber)
     {
-        sceneNumber = _sceneNumber;
+        this.sceneNumber = sceneNumber;
 
     }
 
@@ -311,14 +311,14 @@ public class PlayerStats : MonoBehaviour
    
 
     // 골드 획득시
-    public void AddGold(int _gold)
+    public void AddGold(int gold)
     {
         // 21억 넘어갈시 
         try
         {
             checked
             {
-                Gold += _gold;
+                Gold += gold;
                 
             }
         }
@@ -331,10 +331,10 @@ public class PlayerStats : MonoBehaviour
     }
 
     //골드 사용시 
-    public bool UseGold(int _use)
+    public bool UseGold(int use)
     {
         
-        if(0 > Gold - _use)
+        if(0 > Gold - use)
         {
 
             //골드 부족 
@@ -344,15 +344,15 @@ public class PlayerStats : MonoBehaviour
 
         }
             
-        Gold -= _use;
+        Gold -= use;
        
         return true;
     }
 
     //경험치 획득시 
-    public void AddExp(int _exp)
+    public void AddExp(int exp)
     {
-        Exp += _exp;
+        Exp += exp;
        
         if(Exp >= maxExp)
         {
@@ -420,14 +420,14 @@ public class PlayerStats : MonoBehaviour
     }
 
     //현재 스킬에 레벨 
-    public int GetSkillLevel(string _key)
+    public int GetSkillLevel(string key)
     {
         
        
-        if(!skillDictionary.ContainsKey(_key))
+        if(!skillDictionary.ContainsKey(key))
             return -1;
        
-        return skillDictionary[_key].level;
+        return skillDictionary[key].level;
     }
 
 
@@ -435,9 +435,9 @@ public class PlayerStats : MonoBehaviour
 
 
     // 딕셔너리에 스킬 추가 
-    void SetSkill(Skill _skill)
+    void SetSkill(Skill skill)
     {
-        skillDictionary[$"{_skill.whoSkill}{_skill.skillName}"] = _skill;
+        skillDictionary[$"{skill.whoSkill}{skill.skillName}"] = skill;
     }
     void SetWeapon(WeaponInfo _weapon)
     {
@@ -447,21 +447,21 @@ public class PlayerStats : MonoBehaviour
     public void NewSkill()
     {
         
-        Skill _skill = new Skill("Masa","Atk1",15);
-        AddSkill(_skill);
+        Skill skill = new Skill("Masa","Atk1",15);
+        AddSkill(skill);
 
     }
 
     // 스킬 추가 
-    public void AddSkill(Skill _skill,string _key = "")
+    public void AddSkill(Skill skill,string key = "")
     {
-        if(_key == "")
-            _key = $"{_skill.whoSkill}{_skill.skillName}";
+        if(key == "")
+            key = $"{skill.whoSkill}{skill.skillName}";
         
         
-        if(skillDictionary.ContainsKey(_key))
+        if(skillDictionary.ContainsKey(key))
             return;
-       // skillDictionary[_key] = _skill;
+       // skillDictionary[key] = skill;
        
 
 
@@ -469,12 +469,12 @@ public class PlayerStats : MonoBehaviour
         GameObject skillWindow = Instantiate(skillPrefab,contentPanel);
         TextMeshProUGUI[] texts = skillWindow.GetComponentsInChildren<TextMeshProUGUI>();
         Button button = skillWindow.GetComponentInChildren<Button>();
-        skillObjectDictionary[_key] = skillWindow;
+        skillObjectDictionary[key] = skillWindow;
 
         // 이미지 로드 및 할당
-        Sprite skillImage = Resources.Load<Sprite>("Sprites/" + _key); // 이미지 파일 경로
+        Sprite skillImage = Resources.Load<Sprite>("Sprites/" + key); // 이미지 파일 경로
         Transform imageTransform = skillWindow.transform.Find("SkillImage");
-        skillWindow.GetComponentInChildren<SkillInfo>().key = _key;
+        skillWindow.GetComponentInChildren<SkillInfo>().key = key;
 
         if(imageTransform != null)
         {
@@ -491,14 +491,14 @@ public class PlayerStats : MonoBehaviour
        
         
         //texts[0].text = // LV:고정
-        texts[(int)SkillText.Level].text = _skill.level.ToString(); // 레벨이 몇인지
-        texts[(int)SkillText.SkillName].text = _skill.skillName; // 스킬 이름 
+        texts[(int)SkillText.Level].text = skill.level.ToString(); // 레벨이 몇인지
+        texts[(int)SkillText.SkillName].text = skill.skillName; // 스킬 이름 
         //texts[3].text =  LevelUp 고정
         texts[(int)SkillText.Gold].text = "1000"; // 몇 골드 드는지
         //texts[5].text =  // G 고정 
         // 버튼 클릭 이벤트 추가
-        skillDictionary[_key] = _skill;
-        button.onClick.AddListener(() => SetSkillLevel(_skill,true));
+        skillDictionary[key] = skill;
+        button.onClick.AddListener(() => SetSkillLevel(skill,true));
 
        
         //DataManager.dataManager.SavePlayerData();
@@ -513,15 +513,15 @@ public class PlayerStats : MonoBehaviour
         int i = 0;
         foreach(KeyValuePair<string,Skill> enrty in skillDictionary)
         {
-            Skill _skill = enrty.Value;
-            string _key = $"{_skill.whoSkill}{_skill.skillName}";
+            Skill skill = enrty.Value;
+            string key = $"{skill.whoSkill}{skill.skillName}";
             GameObject skillWindow = Instantiate(skillPrefab,contentPanel);
             TextMeshProUGUI[] texts = skillWindow.GetComponentsInChildren<TextMeshProUGUI>();
             Button button = skillWindow.GetComponentInChildren<Button>();
-            skillObjectDictionary[_key] = skillWindow;
+            skillObjectDictionary[key] = skillWindow;
 
             // 이미지 로드 및 할당
-            Sprite skillImage = Resources.Load<Sprite>("Sprites/" + _key); // 이미지 파일 경로
+            Sprite skillImage = Resources.Load<Sprite>("Sprites/" + key); // 이미지 파일 경로
 
             Transform imageTransform = skillWindow.transform.Find("SkillImage");
             if (imageTransform != null)
@@ -537,20 +537,20 @@ public class PlayerStats : MonoBehaviour
             }
 
             SkillInfo skillInfo = skillWindow.GetComponentInChildren<SkillInfo>();
-            skillInfo.key = _key;
+            skillInfo.key = key;
 
              
-            _skill = playerData.skills[i++];
+            skill = playerData.skills[i++];
             //texts[0].text = // LV:고정
-            texts[(int)SkillText.Level].text = _skill.level.ToString(); // 레벨이 몇인지
-            texts[(int)SkillText.SkillName].text = _skill.skillName; // 스킬 이름 
+            texts[(int)SkillText.Level].text = skill.level.ToString(); // 레벨이 몇인지
+            texts[(int)SkillText.SkillName].text = skill.skillName; // 스킬 이름 
             //texts[3].text =  LevelUp 고정
             texts[(int)SkillText.Gold].text = "1000"; // 몇 골드 드는지
             //texts[5].text =  // G 고정 
 
 
             // 버튼 클릭 이벤트 추가
-            button.onClick.AddListener(() => SetSkillLevel(_skill,true));
+            button.onClick.AddListener(() => SetSkillLevel(skill,true));
       
         }
     }

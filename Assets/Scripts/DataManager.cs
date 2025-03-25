@@ -3,6 +3,7 @@ using System.IO;
 using TMPro;
 using System.ComponentModel;
 using UnityEngine.UIElements;
+using System.Text;
 
 
 
@@ -97,8 +98,8 @@ public class DataManager : MonoBehaviour
         string jsonData = JsonUtility.ToJson(_pd);
 
         // JSON 데이터를 파일로 저장
-        //File.WriteAllText(dataFilePath, EncryptAndDecrypt(jsonData));
-        File.WriteAllText(dataFilePath, (jsonData));
+        File.WriteAllText(dataFilePath, EncryptAndDecrypt(jsonData));
+        //File.WriteAllText(dataFilePath, (jsonData));
 
     }
 
@@ -114,8 +115,8 @@ public class DataManager : MonoBehaviour
 
             // JSON 데이터를 역직렬화하여 객체로 변환
 
-            //return JsonUtility.FromJson<PlayerData>(EncryptAndDecrypt(jsonData));
-            return JsonUtility.FromJson<PlayerData>((jsonData));
+            return JsonUtility.FromJson<PlayerData>(EncryptAndDecrypt(jsonData));
+            //return JsonUtility.FromJson<PlayerData>((jsonData));
         }
         else
         {
@@ -126,14 +127,16 @@ public class DataManager : MonoBehaviour
 
     private string EncryptAndDecrypt(string data)
     {
-        string result = "";
+        
+        StringBuilder sb = new();
 
         for(int i=0;i<data.Length;++i)
         {
-            result += (char)(data[i] ^ keyWord[i % keyWord.Length]);
+           
+            sb.Append((char)(data[i] ^ keyWord[i % keyWord.Length]));
         }
-
-        return result;
+       
+        return sb.ToString();
     }   
 
 

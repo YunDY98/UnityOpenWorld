@@ -37,6 +37,13 @@ public class UIManager : MonoBehaviour
     //마우스 감도 
     [SerializeField] private Slider rotSpeedSlider;
     [SerializeField] private TextMeshProUGUI rotSpeedText;
+    private int rotSpeed = 2000;
+
+    //FPS
+    [SerializeField] private Slider fpsSlider;
+    [SerializeField] private TextMeshProUGUI fpsText;
+    private int fps = 60;
+
 
     [SerializeField] private Slider hpSlider;
     [SerializeField] private Slider expSlider;     
@@ -46,7 +53,7 @@ public class UIManager : MonoBehaviour
 
     private Coroutine uiCoroutine;
 
-    public int rotSpeed = 2000;
+    
    
     private Stack<bool> uiStack = new();
     private PlayerStats playerStats;
@@ -83,24 +90,13 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    void Start()
+    void OnEnable()
     {
         keyboard.SetActive(false);
-        
-        
-    }
-
-    private void OnEnable()
-    {
-       
-        
-      
         playerStats = PlayerStats.Instance;
         gameManager = GameManager.Instance;
-       
 
-
-        // 이벤트 구독
+         // 이벤트 구독
         playerStats.GoldUpdate += GoldUpdate;  
         playerStats.AimOnOff += AimOnOff;
         playerStats.HpSlider += HpSlider;
@@ -111,8 +107,11 @@ public class UIManager : MonoBehaviour
         playerStats.GoldShortageEvent += GoldShortage;
         gameManager.GameLabel += GameLabel;
         gameManager.GameText += GameOver;
+       
+        
         
     }
+
 
     // public void SetInventory(IInventoryModel inventory)
     // {
@@ -141,15 +140,22 @@ public class UIManager : MonoBehaviour
        
         ToggleUI(KeyCode.K,skill,rectSkill);
         ToggleUI(KeyCode.M,keyboard,rectKeyboard);
-        ToggleUI(KeyCode.Escape,esc,rectESC);
+       
         ToggleUI(KeyCode.I,inventoryUI,rectInventory);
+
+        // 옵션창이 켜져있다면 esc  불가능
+        if(!option.activeSelf)
+            ToggleUI(KeyCode.Escape,esc,rectESC);
+
+        
        
     }
 
     // 골드 업데이트
-    private void GoldUpdate(int gold)
+    private void GoldUpdate(int value)
     {
-        textGold.text = gold.ToString();
+        //textGold.text = gold.ToString();
+        textGold.text = $"Gold : {value}";
     }
 
     private void AimOnOff(bool isAim)
@@ -165,14 +171,14 @@ public class UIManager : MonoBehaviour
         uiElement.SetAsLastSibling();
     }
 
-    public void UiStack(bool _bool)
+    public void UiStack(bool isbool)
     {
         
-        if(_bool)
+        if(isbool)
         {
             
             
-            uiStack.Push(_bool);
+            uiStack.Push(isbool);
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
             Time.timeScale = 0;
@@ -220,11 +226,11 @@ public class UIManager : MonoBehaviour
         {
             
             
-            bool _bool = !gameObject.activeSelf;
+            bool isbool = !gameObject.activeSelf;
             BringToFront(rectTransform);
 
-            UiStack(_bool);
-            gameObject.SetActive(_bool);
+            UiStack(isbool);
+            gameObject.SetActive(isbool);
            
         }
 
@@ -239,38 +245,69 @@ public class UIManager : MonoBehaviour
         if(option.activeSelf)
         {
            
-            if(PlayerPrefs.HasKey("rotSpeed"))
+            if(PlayerPrefs.HasKey("Data"))
             {
                 rotSpeedSlider.value = PlayerPrefs.GetInt("rotSpeed");
+                fpsSlider.value = PlayerPrefs.GetInt("fps");
             
             }
             else
             {
-                rotSpeedSlider.value = rotSpeed;
-            }
+                PlayerPrefs.SetInt("Data",1);
+                PlayerPrefs.SetInt("rotSpeed", rotSpeed);
+                PlayerPrefs.SetInt("fps", fps);
 
+                rotSpeedSlider.value = rotSpeed;
+                fpsSlider.value = fps;
+            }
             
-            rotSpeedText.text = rotSpeed.ToString();
+            
+            
+            rotSpeedText.text = $"{rotSpeed}";
+            fpsText.text = $"{fps}";
+
   
             
         }
-        else
-        {
-            PlayerPrefs.Save();
-            
-        }
         
+        
+    }
+
+    public void OptionApply()
+    {
+        PlayerPrefs.SetInt("rotSpeed", rotSpeed);
+        gameManager.rotSpeed = rotSpeed;
+
+        PlayerPrefs.SetInt("fps", fps);
+        gameManager.FPS(fps);
+        
+
+        PlayerPrefs.Save();
+
+        option.SetActive(!option.activeSelf);
     }
 
     public void MouseSensitivity()
     {
         rotSpeed = (int)rotSpeedSlider.value;
-        gameManager.rotSpeed = rotSpeed;
+        
         
         rotSpeedText.text = $"{rotSpeed}";
+
+        
         
 
-        PlayerPrefs.SetInt("rotSpeed", rotSpeed);
+       
+        
+    }
+    public void FPS()
+    {
+        fps = (int)fpsSlider.value;
+       
+        
+        fpsText.text = $"{fps}";
+        
+       
         
     }
 
@@ -310,7 +347,8 @@ public class UIManager : MonoBehaviour
     
     public void LevelText(int value)
     {
-        textLevel.text = value.ToString();
+       // textLevel.text = value.ToString();
+        textLevel.text = $"Lv : {value}";
     }
     public void LevelUp()
     {
