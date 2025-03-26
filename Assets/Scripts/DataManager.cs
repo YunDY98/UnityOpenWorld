@@ -52,50 +52,51 @@ public class DataManager : MonoBehaviour
         print("save");
 
          // 스킬 총 갯수 
-        int _skillCount = PlayerStats.Instance.skillDictionary.Count;
+        int skillCount = PlayerStats.Instance.skillDictionary.Count;
         // 아이템 갯수 
-        int _itemCount = inventory.ItemTypeCount();
+        int itemCount = inventory.ItemTypeCount();
 
-        int _weaponCount = PlayerStats.Instance.weaponDictionary.Count;
+        int weaponCount = PlayerStats.Instance.weaponDictionary.Count;
 
-        PlayerData _pd = new()
+        PlayerData pd = new()
         {
             level = PlayerStats.Instance.Level,
             exp = PlayerStats.Instance.Exp,
             gold = PlayerStats.Instance.Gold,
-            skills = new Skill[_skillCount],
-            items = new ItemInfo[_itemCount],
-            weapons = new WeaponInfo[_weaponCount]
+            skills = new Skill[skillCount],
+            items = new ItemInfo[itemCount],
+            weapons = new WeaponInfo[weaponCount],
+            position = PlayerMove.position
         };
 
-        int _index = 0;
+        int index = 0;
 
         foreach(var skill in PlayerStats.Instance.skillDictionary)
         {
-            _pd.skills[_index++] = skill.Value;
+            pd.skills[index++] = skill.Value;
             
         }
-        _index = 0;
+        index = 0;
         
         foreach(var item in inventory.GetItemsDictionary())
         {
            
-            _pd.items[_index++] = item.Value.itemInfo;
+            pd.items[index++] = item.Value.itemInfo;
             
     
         }
-        _index = 0;
+        index = 0;
         foreach(var weapon in PlayerStats.Instance.weaponDictionary)
         {
             WeaponInfo _weaponInfo = new(weapon.Key,weapon.Value);
            
-            _pd.weapons[_index++] = _weaponInfo;
+            pd.weapons[index++] = _weaponInfo;
             
         }
 
 
         // 데이터를 JSON으로 직렬화
-        string jsonData = JsonUtility.ToJson(_pd);
+        string jsonData = JsonUtility.ToJson(pd);
 
         // JSON 데이터를 파일로 저장
         File.WriteAllText(dataFilePath, EncryptAndDecrypt(jsonData));
@@ -155,6 +156,8 @@ public class PlayerData
     public int gold;
     public ItemInfo[] items;
     public Skill[] skills;
+
+    public Vector3 position;
 
     public WeaponInfo[] weapons;
 

@@ -6,6 +6,8 @@ public class PlayerMove : MonoBehaviour
 {
     Animator anim;
     [Header("PlayerInfo")]
+
+    public static Vector3 position;
    
     //이동 속도
     public float moveSpeed = 7;
@@ -38,7 +40,12 @@ public class PlayerMove : MonoBehaviour
        
        
         //transform.position = new Vector3(-388, -6.622408f,-240);
-        cc.transform.position = new Vector3(-388, -6.622408f,-240);
+        if(DataManager.Instance.LoadPlayerData() != null)
+            cc.transform.position = DataManager.Instance.LoadPlayerData().position;
+        else
+            cc.transform.position = new Vector3(-388, -6.622408f,-240);
+
+
         StartCoroutine(Gravity());
     }
 
@@ -50,6 +57,8 @@ public class PlayerMove : MonoBehaviour
         {
             return;
         }
+
+        position = transform.position;
         //print(Fly());
         
         if(cc.isGrounded)

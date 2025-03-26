@@ -169,7 +169,6 @@ public class PlayerStats : MonoBehaviour
     }
 
 
-    // 스크립트 실행 순서 조절 가능
     void Start()
     {  
         playerData = DataManager.Instance.LoadPlayerData();
@@ -183,6 +182,8 @@ public class PlayerStats : MonoBehaviour
             Level = 1;
             Exp = 0;
             Gold = 1000000;
+
+            
            
             foreach(SelectCharacter weapon in Enum.GetValues(typeof(SelectCharacter)))
             {
@@ -197,6 +198,7 @@ public class PlayerStats : MonoBehaviour
         }
         else
         {
+           
             foreach(var weapon in playerData.weapons)
             {
                 SetWeapon(weapon);
