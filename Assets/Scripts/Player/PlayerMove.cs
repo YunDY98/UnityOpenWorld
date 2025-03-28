@@ -18,7 +18,7 @@ public class PlayerMove : MonoBehaviour
     float yVelocity = 0;
 
     //점프
-    float jumpPower = 2.5f;
+    public float jumpPower = 2.5f;
     bool isJumping = false;
 
     //땅 체크 

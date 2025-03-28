@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rate: 1
   gold: 0
-  exp: 0
+  exp: 1000
   item:
     itemName: ItemSoldier
-    quantity: 1
+    quantity: 2
     type: 2

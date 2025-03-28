@@ -41,11 +41,11 @@ public class PlayerStats : MonoBehaviour
 
 
     //비행중인지 
-    private bool isFly;
+    private bool _isFly;
     public bool IsFly
     {
-        get { return isFly; }
-        set { isFly = value; }
+        get { return _isFly; }
+        set { _isFly = value; }
     }
     
     private int _level;
@@ -88,19 +88,33 @@ public class PlayerStats : MonoBehaviour
         }
     }
 
+  
+
     //기본 공격력
 
-    private int _atkDamage = 10;
-    public int AtkDamage
+    private int _atk = 10;
+    public int Atk
     {
         
-        get { return _atkDamage; }
+        get { return _atk; }
 
         set
         {
-            _atkDamage = value;
+            _atk = value;
         }
     }
+
+    private int _atkBuff = 0;
+    public int AtkBuff
+    {
+        get { return _atkBuff; }
+        set
+        {
+            _atkBuff = value;
+        }
+
+    }
+    public int AtkDamage =>  Atk + AtkBuff;
 
     private int _hp = 1000;
     //체력 
@@ -220,7 +234,7 @@ public class PlayerStats : MonoBehaviour
         SetPlayerData();
         maxExp = Level*2000;
         
-        AtkDamage = (int)(Level * 1.1f);
+        Atk = (int)(Level * 1.1f);
         print("maxExp"+maxExp);
        
     }
@@ -371,7 +385,7 @@ public class PlayerStats : MonoBehaviour
             Exp -= maxExp;
             Level++;
             AddGold(Level*1000);
-            AtkDamage = (int)(Level * 1.1f);
+            Atk = (int)(Level * 1.1f);
         }
         //textLevel.text = Level.ToString();
         LevelText.Invoke(Level);
@@ -609,7 +623,7 @@ public class PlayerStats : MonoBehaviour
         int _initDamage;
         // 전체기본공격력에 + 캐릭별 무기 공격력 
         _initDamage = AtkDamage + weaponDictionary[selectCharacter]*2 + Level*2;
-        print("AtkDamage" + AtkDamage + "WeaponDictionary" + weaponDictionary[selectCharacter]*2+ "Level" + Level*2);
+        print("Atk" + AtkDamage + "WeaponDictionary" + weaponDictionary[selectCharacter]*2+ "Level" + Level*2);
 
 
         return _initDamage;

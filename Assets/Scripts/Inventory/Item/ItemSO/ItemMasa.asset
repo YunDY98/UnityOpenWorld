@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rate: 1
   gold: 0
-  exp: 0
+  exp: 1000
   item:
     itemName: ItemMasa
-    quantity: 1
+    quantity: -2147483648
     type: 2

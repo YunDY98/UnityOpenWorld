@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rate: 1
   gold: 0
-  exp: 0
+  exp: 10000
   item:
     itemName: HPPotion
-    quantity: 1
+    quantity: 2
     type: 1
