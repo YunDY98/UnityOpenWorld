@@ -13,9 +13,9 @@ public class SpeedBuff : IBuff
 
     PlayerMove playerMove;
 
-    public SpeedBuff()
+    public SpeedBuff(PlayerMove playerMove)
     {
-        playerMove = playerStats.playerMove;
+        this.playerMove = playerMove;
         
     }
 

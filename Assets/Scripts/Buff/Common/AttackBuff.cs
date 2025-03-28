@@ -6,7 +6,12 @@ using UnityEngine.InputSystem.Interactions;
 public class AttackBuff : IBuff
 {
     
-    PlayerStats playerStats = PlayerStats.Instance;
+    PlayerStats playerStats;
+
+    public AttackBuff(PlayerStats playerStats)
+    {
+        this.playerStats = playerStats;
+    }
 
    
     public float Amount { get;private set;} 

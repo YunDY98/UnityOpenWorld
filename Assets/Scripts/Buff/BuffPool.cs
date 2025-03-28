@@ -6,10 +6,10 @@ public class BuffPool
 {
     public Dictionary<string,IBuff> buffEffectDic = new();
 
-    public BuffPool()
+    public BuffPool(PlayerStats playerStats)
     {
-        buffEffectDic.Add("CommonSpdUp",new SpeedBuff());
-        buffEffectDic.Add("CommonAtkUp",new AttackBuff());
+        buffEffectDic.Add("CommonSpdUp",new SpeedBuff(playerStats.playerMove));
+        buffEffectDic.Add("CommonAtkUp",new AttackBuff(playerStats));
 
     }
 

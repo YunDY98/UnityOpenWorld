@@ -32,16 +32,16 @@ public abstract class CharacterAtk : MonoBehaviour
     // 기본 단일 공격 메서드
     protected virtual void SingleAtk(string skillName, float rangeMult = 1.5f, int damageMult = 1, float goldMult = 0.1f)
     {
-        int _skillLevel = playerStats.GetSkillLevel(skillName);
+        int skillLevel = playerStats.GetSkillLevel(skillName);
         
 
-        if (_skillLevel < 0 || !playerStats.UseGold((int)(_skillLevel * goldMult)))
+        if (skillLevel < 0 || !playerStats.UseGold((int)(skillLevel * goldMult)))
         {
             return;
         }
 
-        attackDamage = (int)(playerStats.InitDamage() * _skillLevel * damageMult);
-        attackRange = rangeMult * _skillLevel;
+        attackDamage = (int)(playerStats.InitDamage() * skillLevel * damageMult);
+        attackRange = rangeMult * skillLevel;
 
         anim.SetTrigger(skillName);
 
@@ -81,9 +81,9 @@ public abstract class CharacterAtk : MonoBehaviour
         {
             return;
         }
-        int _skillLevel = playerStats.GetSkillLevel(skillName);
+        int skillLevel = playerStats.GetSkillLevel(skillName);
         
-        if(playerStats.UseGold((int)(_skillLevel*1.1f)))
+        if(playerStats.UseGold((int)(skillLevel*1.1f)))
         {
             
             anim.SetTrigger(skillName);
@@ -91,7 +91,7 @@ public abstract class CharacterAtk : MonoBehaviour
            
         }
 
-        MultiRaycastAtk(rangeMult,damageMult,cntMult,_skillLevel);
+        MultiRaycastAtk(rangeMult,damageMult,cntMult,skillLevel);
        
 
     }
@@ -99,15 +99,15 @@ public abstract class CharacterAtk : MonoBehaviour
     protected virtual void MultiRaycastAtk(float rangeMult,int damageMult,int cntMult,int skillLevel)
     {
              
-            float _range = rangeMult * skillLevel;
-            int _cnt = (int)(cntMult + (skillLevel/10));
+            float range = rangeMult * skillLevel;
+            int cnt = (int)(cntMult + (skillLevel/10));
 
            
-            int _damage =  playerStats.InitDamage() * damageMult * skillLevel;
+            int damage =  playerStats.InitDamage() * damageMult * skillLevel;
             print("InitDamage" + playerStats.InitDamage() +"DamageMult" + damageMult +"SKillLevle" + skillLevel);
            
             // 주변의 적을 감지
-            Collider[] colliders = Physics.OverlapSphere(transform.position, _range);
+            Collider[] colliders = Physics.OverlapSphere(transform.position, range);
             enemies.Clear(); // 리스트 초기화
             foreach(Collider other in colliders)
             {
@@ -121,14 +121,14 @@ public abstract class CharacterAtk : MonoBehaviour
         
             foreach(GameObject enemy in enemies)
             {
-                if(0 < _cnt)
+                if(0 < cnt)
                 {
                     // EnemyFSM 컴포넌트 가져오기
                     EnemyFSM efsm = enemy.GetComponent<EnemyFSM>();
                     if (efsm != null)
                     {
-                        efsm.HitEnemy(_damage);
-                        _cnt--;
+                        efsm.HitEnemy(damage);
+                        cnt--;
                     }
                 }
                 else
