@@ -29,4 +29,7 @@ public class InventoryManager : MonoBehaviour
     {
         presenter.Init();
     }
+
+  
+
 }

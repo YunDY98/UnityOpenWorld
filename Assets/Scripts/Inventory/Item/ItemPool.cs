@@ -32,10 +32,10 @@ public class ItemPool : MonoBehaviour
     {
         foreach (var dropItem in dropItems)
         {
-            float _rate = dropItem.itemSO.Rate;
+            float rate = dropItem.itemSO.Rate;
             
-            int _count = Mathf.RoundToInt(_rate * 100);
-            for (int i = 0; i < _count; i++)
+            int count = Mathf.RoundToInt(rate * 100);
+            for (int i = 0; i < count; i++)
             {
                 DropItem item = Instantiate(dropItem,transform);
                 item.itemPool = this;
@@ -59,10 +59,10 @@ public class ItemPool : MonoBehaviour
         
         if (itemPool.Count > 0)
         {
-            DropItem _item = itemPool[0];
+            DropItem item = itemPool[0];
             itemPool.RemoveAt(0);
-            _item.transform.position = position;
-            _item.gameObject.SetActive(true);
+            item.transform.position = position;
+            item.gameObject.SetActive(true);
             
            
         } 

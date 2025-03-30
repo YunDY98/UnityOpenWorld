@@ -27,7 +27,7 @@ public class DropItem : MonoBehaviour
     {
         if(other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-          
+            
            
             PlayerStats.Instance.AddGold(itemSO.Gold);
             PlayerStats.Instance.AddExp(itemSO.Exp);

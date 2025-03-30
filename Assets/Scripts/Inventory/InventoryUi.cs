@@ -10,7 +10,8 @@ public class InventoryUI : MonoBehaviour, IInventoryView
    
     [SerializeField] GameObject invenItem;
 
-    public event IInventoryView.LoadSpriteDelegate LoadSpriteEvent;
+
+    public event Func<string,Sprite> LoadSpriteEvent;
 
     public event Action<ItemData> AddItemDictionaryEvent;
 
@@ -51,21 +52,19 @@ public class InventoryUI : MonoBehaviour, IInventoryView
                 continue;
             
 
-            GameObject _itemObject = Instantiate(invenItem,content.transform);
+            GameObject itemObject = Instantiate(invenItem,content.transform);
 
-            
+            Sprite sprite = LoadSpriteEvent?.Invoke(dic.Key);
            
-            Sprite _sprite = LoadSpriteEvent?.Invoke(dic.Key);
-           
-           _itemObject.GetComponentInChildren<Image>().sprite = _sprite;
+            itemObject.GetComponentInChildren<Image>().sprite = sprite;
             
-            TextMeshProUGUI _itemCntText = _itemObject.GetComponentInChildren<TextMeshProUGUI>();
-            items[dic.Key].text = _itemCntText;
+            TextMeshProUGUI itemCntText = itemObject.GetComponentInChildren<TextMeshProUGUI>();
+            items[dic.Key].text = itemCntText;
 
            
             TextCnt(items[dic.Key]);
 
-            IsConsumable(dic.Value.itemInfo,_itemObject);
+            IsConsumable(dic.Value.itemInfo,itemObject);
             
         }
     }
@@ -73,20 +72,22 @@ public class InventoryUI : MonoBehaviour, IInventoryView
 
     public void CreateItem(ItemInfo item)
     {
-        GameObject _itemObject = Instantiate(invenItem,content.transform);  
-
-        Sprite _sprite = LoadSpriteEvent?.Invoke(item.itemName);
        
-        _itemObject.GetComponentInChildren<Image>().sprite = _sprite;
-        
-        TextMeshProUGUI _itemCntText = _itemObject.GetComponentInChildren<TextMeshProUGUI>();
-        _itemCntText.text = item.quantity.ToString();
+        GameObject itemObject = Instantiate(invenItem,content.transform);  
 
-        ItemData _ItemData = new(item,_sprite);
+        Sprite sprite = LoadSpriteEvent?.Invoke(item.itemName);
+       
+        itemObject.GetComponentInChildren<Image>().sprite = sprite;
         
-        AddItemDictionaryEvent?.Invoke(_ItemData);
+        TextMeshProUGUI itemCntText = itemObject.GetComponentInChildren<TextMeshProUGUI>();
+        itemCntText.text = item.quantity.ToString();
+        
+        ItemInfo itemInfo = new(item.itemName,item.quantity,item.type);
+        ItemData ItemData = new(itemInfo,sprite,itemCntText);
+        
+        AddItemDictionaryEvent?.Invoke(ItemData);
 
-        IsConsumable(item,_itemObject);
+        IsConsumable(item,itemObject);
     }
 
     public void TextCnt(ItemData item)

@@ -7,20 +7,20 @@ using UnityEngine;
 public class ItemSO : ScriptableObject
 {
     [SerializeField]
-    private float rate;
-    public float Rate => rate;
+    private float _rate;
+    public float Rate => _rate;
 
     [SerializeField]
-    private int gold;
-    public int Gold => gold;
+    private int _gold;
+    public int Gold => _gold;
 
     [SerializeField]
-    private int exp;
-    public int Exp => exp;
+    private int _exp;
+    public int Exp => _exp;
 
     [SerializeField]
-    private ItemInfo item;
-    public ItemInfo Item => item;
+    private ItemInfo _item;
+    public ItemInfo Item => _item;
 
     
    

@@ -21,7 +21,7 @@ public class InventoryPresenter
 
         this.view = view;
         
-        
+        Dispose();
         model.TextCntEvent += TextCnt;
         model.CreateItemEvent += CreateItem;
         model.InvenUpdateEvent += InvenUpdate;
@@ -42,13 +42,13 @@ public class InventoryPresenter
 
         playerData = playerStats.playerData;  // 레벨 경험치 재화 등 데이터 
 
-        if(playerData == null)return;
+        if(playerData.items == null)return;
 
         for(int i=0; i< playerData.items.Length; ++i )
         {
-            ItemData _item = new(playerData.items[i]);
+            ItemData item = new(playerData.items[i]);
 
-            model.AddItemDictionary(_item);
+            model.AddItemDictionary(item);
             
         }   
        
@@ -57,16 +57,16 @@ public class InventoryPresenter
        
 
     }
-    // void Dispose()
-    // {
-    //     model.TextCntEvent -= TextCnt;
-    //     model.CreateItemEvent -= CreateItem;
-    //     model.InvenUpdateEvent -= InvenUpdate;
-    //     view.LoadSpriteEvent -= LoadSprite;
-    //     view.ItemDictionaryAddEvent -= ItemDictionaryAdd;
+    void Dispose()
+    {
+        model.TextCntEvent -= TextCnt;
+        model.CreateItemEvent -= CreateItem;
+        model.InvenUpdateEvent -= InvenUpdate;
+        view.LoadSpriteEvent -= LoadSprite;
+        view.AddItemDictionaryEvent -= AddItemDictionary;
 
         
-    // }   
+    }   
 
     void TextCnt(ItemData item)
     {
@@ -84,9 +84,10 @@ public class InventoryPresenter
         return model.LoadSprite(itemName);
     }
 
-    void AddItemDictionary(ItemData itemInfo)
+    void AddItemDictionary(ItemData item)
     {
-        model.AddItemDictionary(itemInfo);
+       
+        model.AddItemDictionary(item);
     }
     
     public void AddItem(ItemInfo item)

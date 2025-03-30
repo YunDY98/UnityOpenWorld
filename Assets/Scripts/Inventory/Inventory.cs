@@ -17,6 +17,10 @@ public class Inventory : IInventoryModel
 
     public event Action<ItemInfo> CreateItemEvent;
 
+    // public void AllDelete()
+    // {
+    //     UseItem("ItemMasa",items["ItemMasa"].itemInfo.quantity);
+    // }
 
 
     public void AddItem(ItemInfo item)
@@ -40,6 +44,9 @@ public class Inventory : IInventoryModel
         }
         else
         {   
+            
+           
+           
             // 아이템 생성
             CreateItemEvent?.Invoke(item);
             

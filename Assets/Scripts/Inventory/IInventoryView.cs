@@ -6,8 +6,10 @@ using System;
 public interface IInventoryView
 {   
     
-    delegate Sprite LoadSpriteDelegate(string itemName);  
-    event LoadSpriteDelegate LoadSpriteEvent; 
+    // delegate Sprite LoadSpriteDelegate(string itemName);  
+    // event LoadSpriteDelegate LoadSpriteEvent; 
+
+    event Func<string,Sprite> LoadSpriteEvent;
     event Action<ItemData> AddItemDictionaryEvent;
     void ClearItems();
     void CreateItem(ItemInfo item);
