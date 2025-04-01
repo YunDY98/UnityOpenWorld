@@ -19,12 +19,6 @@ public class AttackBuff : IBuff
 
     public float Duration{get;private set;}
     public float DurationMult { get; private set; } = 0.5f;
-    
-
-
-    
-
- 
 
     readonly string buffName = "CommonAtkUp";
     

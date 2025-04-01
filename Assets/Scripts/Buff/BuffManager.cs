@@ -65,13 +65,13 @@ public class BuffManager : MonoBehaviour
     void UseBuff(string buffName)
     {
         
-        int _onBuff = GameUtility.StringToEnumInt(buffName,typeof(Buff));
+        int onBuff = GameUtility.StringToEnumInt(buffName,typeof(Buff));
 
-        if((buff & _onBuff) != 0 )
+        if((buff & onBuff) != 0 )
         {
             
             //버프 삭제 
-            buff -= _onBuff;
+            buff -= onBuff;
             return;
         }
 
@@ -87,7 +87,7 @@ public class BuffManager : MonoBehaviour
             
            
             BuffUI(buffName);
-            BuffOnOff(buffName,_onBuff);
+            BuffOnOff(buffName,onBuff);
             
         }
     
@@ -97,23 +97,23 @@ public class BuffManager : MonoBehaviour
 
     void BuffOnOff(string buffName,int onBuff)
     {
-        IBuff _IBuff = buffEffDic[buffName];
-        _IBuff.Apply();
+        IBuff IBuff = buffEffDic[buffName];
+        IBuff.Apply();
 
         buff += onBuff;
 
-        float _duration = _IBuff.Duration;
+        float _duration = IBuff.Duration;
   
         // 버프 지속 시간 동안 타이머 업데이트
-        Tween _Tween = DOTween.To(() => _duration, x => _duration = x, 0, _duration);
+        Tween Tween = DOTween.To(() => _duration, x => _duration = x, 0, _duration);
         TextMeshProUGUI _timeText = buffUIDic[buffName].GetComponentInChildren<TextMeshProUGUI>();
-        _Tween.OnUpdate(() => 
+        Tween.OnUpdate(() => 
         {
             
             if((buff & onBuff) == 0 )
             {
-                _Tween.Kill();
-                _IBuff.Remove();
+                Tween.Kill();
+                IBuff.Remove();
             
                 buffUIDic[buffName].SetActive(false);
                 
@@ -129,12 +129,12 @@ public class BuffManager : MonoBehaviour
         .OnComplete(() =>
         {
            
-            _Tween.Kill();
+            Tween.Kill();
             // 버프 제거
             buff -= onBuff;
             
             buffUIDic[buffName].SetActive(false);
-            _IBuff.Remove();
+            IBuff.Remove();
            
         });
 

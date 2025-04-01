@@ -5,13 +5,12 @@ public class ItemMove : MonoBehaviour
     
     private GameObject character; // 캐릭터의 Transform
     public float attractionDistance = 10f; // 아이템이 캐릭터에게 끌려오는 거리
-    private float attractionDuration = 0.08f; // 아이템이 캐릭터에게 이동하는 시간
+    private float attractionDuration = 0.09f; // 아이템이 캐릭터에게 이동하는 시간
     private Tween moveTween;
     void Start()
     {
         character = GameObject.Find("Player");
-      
-      
+    
     }
   
 

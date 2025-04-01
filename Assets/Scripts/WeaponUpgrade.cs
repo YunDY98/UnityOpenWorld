@@ -14,7 +14,7 @@ public class WeaponUpgrade : MonoBehaviour
 
     public TextMeshProUGUI useItem;
 
-    public InventoryPresenter presenter;
+    InventoryPresenter presenter;
     int level = 0;
     
     PlayerStats playerStats;

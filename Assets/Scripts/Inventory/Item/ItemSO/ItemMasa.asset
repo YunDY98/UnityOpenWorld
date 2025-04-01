@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45d912deb442048b290224bdd43eb26e, type: 3}
   m_Name: ItemMasa
   m_EditorClassIdentifier: 
-  rate: 1
-  gold: 0
-  exp: 1000
-  item:
-    itemName: ItemMasa
-    quantity: -2147483648
+  _rate: 1
+  _gold: 0
+  _exp: 0
+  _item:
+    itemName: ItemSoldier
+    quantity: 1
     type: 2

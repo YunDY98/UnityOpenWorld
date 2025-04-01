@@ -54,10 +54,10 @@ public class EnemyFSM : MonoBehaviour
     void Awake()
     {
         itemPool = FindObjectOfType<ItemPool>();
+        player = FindObjectOfType<PlayerMove>().transform;
         
         agent = GetComponent< NavMeshAgent>();
 
-        player = FindObjectOfType<PlayerMove>().transform;
 
         anim = transform.GetComponentInChildren<Animator>();
         

@@ -21,21 +21,15 @@ public class InventoryPresenter
 
         this.view = view;
         
-        Dispose();
-        model.TextCntEvent += TextCnt;
-        model.CreateItemEvent += CreateItem;
-        model.InvenUpdateEvent += InvenUpdate;
-        view.LoadSpriteEvent += LoadSprite;
-        view.AddItemDictionaryEvent += AddItemDictionary;
-        model.ItemWarningEvent += ItemWarning;
+      
+       
         
-        
+        EventSubscribe();
        
        
         
         
     }
-
     public void Init()
     {
         playerStats = PlayerStats.Instance; // 플레이어의 공격력 , 캐릭터 레벨등 상태
@@ -57,16 +51,28 @@ public class InventoryPresenter
        
 
     }
-    void Dispose()
+    void EventDispose()
     {
         model.TextCntEvent -= TextCnt;
         model.CreateItemEvent -= CreateItem;
         model.InvenUpdateEvent -= InvenUpdate;
+        model.ItemWarningEvent += ItemWarning;
         view.LoadSpriteEvent -= LoadSprite;
         view.AddItemDictionaryEvent -= AddItemDictionary;
 
         
     }   
+
+    void EventSubscribe()
+    {
+        model.TextCntEvent += TextCnt;
+        model.CreateItemEvent += CreateItem;
+        model.InvenUpdateEvent += InvenUpdate;
+        model.ItemWarningEvent += ItemWarning;
+        view.LoadSpriteEvent += LoadSprite;
+        view.AddItemDictionaryEvent += AddItemDictionary;
+
+    }
 
     void TextCnt(ItemData item)
     {

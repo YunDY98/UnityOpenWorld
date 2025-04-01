@@ -8,13 +8,16 @@ public class DropItem : MonoBehaviour
     
 
     public ItemSO itemSO;
+
+    WaitForSeconds wait = new WaitForSeconds(5);
    
 
-    [HideInInspector]public ItemPool itemPool;
+    [HideInInspector]
+    public ItemPool itemPool;
     void OnEnable()
     {
         //N초후 아이템 파괴 
-        StartCoroutine(Timer(5));
+        StartCoroutine(Timer(wait));
         
     }
 
@@ -47,10 +50,10 @@ public class DropItem : MonoBehaviour
 
     }
 
-    IEnumerator Timer(float time)
+    IEnumerator Timer(WaitForSeconds wait)
     {
 
-        yield return new WaitForSeconds(time);
+        yield return wait;
         itemPool.ReturnItem(this);
         
     }

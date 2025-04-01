@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Transactions;
-using Unity.VisualScripting;
+
 using UnityEngine;
 using Yun;
 
@@ -11,24 +10,21 @@ public class ItemPool : MonoBehaviour
     
     int cnt = 0;
     int shuffleCnt;
-    [SerializeField] DropItem[] dropItems;
+    [SerializeField] 
+    DropItem[] dropItems;
     List<DropItem> itemPool = new();
    
    
     InventoryPresenter presenter;
 
-   
-    
-    void Start()
-    {   
-        presenter = FindObjectOfType<InventoryManager>().presenter;
-       
-        InitializePool();
+    public void Init(InventoryPresenter presenter)
+    {
+        this.presenter = presenter;
+        InitPool();
         shuffleCnt = itemPool.Count;
-       
     }
 
-    private void InitializePool()
+    private void InitPool()
     {
         foreach (var dropItem in dropItems)
         {
@@ -38,6 +34,7 @@ public class ItemPool : MonoBehaviour
             for (int i = 0; i < count; i++)
             {
                 DropItem item = Instantiate(dropItem,transform);
+                
                 item.itemPool = this;
                 item.gameObject.SetActive(false);
                 itemPool.Add(item);
@@ -47,7 +44,6 @@ public class ItemPool : MonoBehaviour
 
         GameUtility.Shuffle(itemPool); // 아이템 섞기
     }
-  
 
     public InventoryPresenter GetPresenter()
     {

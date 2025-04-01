@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.InputSystem.Interactions;
+
 
 
 
@@ -32,10 +34,11 @@ public class Inventory : IInventoryModel
     
             // 아이템 수량 업데이트
             items[item.itemName].itemInfo.quantity += item.quantity;
-
+          
             //0에서 증가한 경우 
             if (items[item.itemName].itemInfo.quantity == item.quantity) 
             {
+                
                 InvenUpdateEvent?.Invoke(items);
             }   
             

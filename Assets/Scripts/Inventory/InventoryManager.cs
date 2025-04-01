@@ -6,8 +6,10 @@ using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
 {
+
     public InventoryPresenter presenter;
-    [SerializeField] InventoryUI InventoryUI;
+    [SerializeField] private InventoryUI InventoryUI;
+    [SerializeField] private ItemPool itemPool;
     Inventory inventory;
     void Awake()
     {
@@ -28,6 +30,7 @@ public class InventoryManager : MonoBehaviour
     void Start()
     {
         presenter.Init();
+        itemPool.Init(presenter);
     }
 
   

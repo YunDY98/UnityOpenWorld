@@ -43,6 +43,7 @@ public class InventoryUI : MonoBehaviour, IInventoryView
     public void InvenUpdate(Dictionary<string, ItemData> items)
     {
         
+        
         ClearItems();
 
         foreach(KeyValuePair<string, ItemData> dic in items)
@@ -72,6 +73,7 @@ public class InventoryUI : MonoBehaviour, IInventoryView
 
     public void CreateItem(ItemInfo item)
     {
+        
        
         GameObject itemObject = Instantiate(invenItem,content.transform);  
 
@@ -84,7 +86,7 @@ public class InventoryUI : MonoBehaviour, IInventoryView
         
         ItemInfo itemInfo = new(item.itemName,item.quantity,item.type);
         ItemData ItemData = new(itemInfo,sprite,itemCntText);
-        
+       
         AddItemDictionaryEvent?.Invoke(ItemData);
 
         IsConsumable(item,itemObject);

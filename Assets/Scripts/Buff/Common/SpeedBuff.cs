@@ -20,7 +20,6 @@ public class SpeedBuff : IBuff
     }
 
     
-
     readonly string buffName = "CommonSpdUp";
     
     

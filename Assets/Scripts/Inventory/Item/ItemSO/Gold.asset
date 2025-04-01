@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45d912deb442048b290224bdd43eb26e, type: 3}
   m_Name: Gold
   m_EditorClassIdentifier: 
-  rate: 1
-  gold: 1000
-  exp: 1000
-  item:
-    itemName: Gold
+  _rate: 1
+  _gold: 1000
+  _exp: 100
+  _item:
+    itemName: 
     quantity: 0
     type: 0
