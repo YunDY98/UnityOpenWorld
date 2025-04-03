@@ -28,7 +28,7 @@ public class PlayerRotate : MonoBehaviour
             //mx += mouse_X * GameManager.gameManager.rotSpeed * Time.deltaTime;
 
             // 스무딩을 적용하여 회전 값을 부드럽게 업데이트
-            mx = Mathf.Lerp(mx, mx + mouse_X * GameManager.Instance.rotSpeed * Time.deltaTime, 0.1f);
+            mx = Mathf.Lerp(mx, mx + mouse_X * GameManager.Instance.rotSpeed , 0.01f * Time.deltaTime);
             
 
             transform.eulerAngles = new Vector3(0,mx,0);
